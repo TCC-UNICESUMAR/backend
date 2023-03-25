@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    password: ${passDb}
+    url: jdbc:sqlserver://matheusbonnet:1433;databaseName=db_tcc;encrypt=true;trustServerCertificate=true
+    username: ${userDb}
+  flyway:
+    baselineOnMigrate: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        format_sql: true
+    show-sql: true
+  security:
+     oauth2:
+       client:
+         registration:
+           google:
+            clientId: ${secretId}
+            clientSecret: ${secretName}
