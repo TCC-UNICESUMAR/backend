@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.auth;
+package com.br.tcc.bfn.services;
 
 
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,5 +1,8 @@
-package com.br.tcc.bfn.auth;
+package com.br.tcc.bfn.services;
 
+import com.br.tcc.bfn.auth.AuthenticationRequest;
+import com.br.tcc.bfn.auth.AuthenticationResponse;
+import com.br.tcc.bfn.auth.RegisterRequest;
 import com.br.tcc.bfn.config.JwtService;
 import com.br.tcc.bfn.dto.UserDTO;
 import com.br.tcc.bfn.model.Role;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -42,8 +46,8 @@ public class AuthenticationService {
 		user.setEmail(request.getEmail());
 		user.setCpfOrCnpj(request.getCnpjOrCpf());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		List<Role> roles = roleRepository.findAll();
-		user.setRoles(roles);
+		Role role = roleRepository.findById(1L).get();
+		user.setRoles(Arrays.asList(role));
 		repository.save(user);
 
 	}
@@ -55,6 +59,7 @@ public class AuthenticationService {
 		user.setFirstname(request.getFirstname());
 		user.setLastname(request.getLastname());
 		user.setEmail(request.getEmail());
+		user.setRoles(roleRepository.findAll());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		repository.save(user);
 
