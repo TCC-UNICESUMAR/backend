@@ -1,5 +1,7 @@
-package com.br.tcc.bfn.auth;
+package com.br.tcc.bfn.controllers;
 
+import com.br.tcc.bfn.dto.AuthenticationRequest;
+import com.br.tcc.bfn.dto.RegisterRequest;
 import com.br.tcc.bfn.dto.UserDTO;
 import com.br.tcc.bfn.model.User;
 import com.br.tcc.bfn.repositories.UserRepository;
@@ -24,20 +26,6 @@ public class AuthenticationController {
 		this.repository = repository;
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity register(@RequestBody RegisterRequest request) {
-		try{
-			service.register(request);
-			return ResponseEntity.ok(HttpStatus.CREATED);
-		}catch (Exception e){
-			return ResponseEntity.internalServerError().body(e);
-		}
-	}
-
-	@PostMapping("/register-admin")
-	public ResponseEntity<UserDTO> registerAdmin(@RequestBody RegisterRequest request) {
-		return ResponseEntity.ok(service.registerAdmin(request));
-	}
 
 	@PostMapping("/authenticate")
 	public ResponseEntity authenticate(@RequestBody AuthenticationRequest request) {
@@ -46,12 +34,6 @@ public class AuthenticationController {
 		}catch (Exception e){
 			return ResponseEntity.notFound().build();
 		}
-	}
-
-	@GetMapping("/findAll")
-	public List<User> findAll() {
-		 List<User> users = repository.findAll();
-		 return users;
 	}
 
 
