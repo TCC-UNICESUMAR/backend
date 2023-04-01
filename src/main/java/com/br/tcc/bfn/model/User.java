@@ -1,13 +1,13 @@
 package com.br.tcc.bfn.model;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,11 +21,19 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String firstname;
     private String lastname;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String cpfOrCnpj;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
+    private Boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
+    private LocalDateTime deleteAt;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -33,17 +41,21 @@ public class User implements UserDetails, Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
+    public User() {
+    }
 
-    public User(Long id, String firstname, String lastname, String cpfOrCnpj, String email, String password) {
+    public User(Long id, String firstname, String lastname, String cpfOrCnpj, String email, String password, Boolean active, LocalDateTime createdAt, LocalDateTime updateAt, LocalDateTime deleteAt, List<Role> roles) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
         this.password = password;
-    }
-
-    public User() {
+        this.active = active;
+        this.createdAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+        this.deleteAt = deleteAt;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -131,5 +143,37 @@ public class User implements UserDetails, Serializable {
 
     public void setCpfOrCnpj(String cpfOrCnpj) {
         this.cpfOrCnpj = cpfOrCnpj;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }
