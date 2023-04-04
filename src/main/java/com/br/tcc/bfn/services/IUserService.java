@@ -9,7 +9,7 @@ public interface IUserService {
 
     UserDTO registerAdmin(RegisterRequest request) throws Exception;
 
-    void disableUser(String email) throws Exception;
+    void disableUser(Long id) throws Exception;
 
     UserDTO update(Long id, RegisterRequest request) throws Exception;
 }
