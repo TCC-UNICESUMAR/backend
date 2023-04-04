@@ -57,11 +57,11 @@ public class UserController{
 
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<Response<UserDTO>> disableUser(@PathVariable String email){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<UserDTO>> disableUser(@PathVariable Long id){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            userServiceImpl.disableUser(email);
+            userServiceImpl.disableUser(id);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

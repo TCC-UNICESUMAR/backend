@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements IUserService {
 
-    private final static String ERRO_SAVE_USER = "Cannot save Object, consulting your suport";
+    private final static String ERRO_SAVE_USER = "Cannot save Object, consulting your support";
     private final static String USER_NOT_FOUND = "USER NOT FOUND!!!";
     private final static String USER_EXIST_BY_EMAIL = "EXIST USER WITH EMAIL, TRY OTHER!!!";
     private final UserRepository repository;
@@ -41,7 +41,10 @@ public class UserServiceImpl implements IUserService {
             user.setEmail(request.getEmail());
             user.setCpfOrCnpj(request.getCnpjOrCpf());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            Role role = roleRepository.findById(1L).get();
+            user.setUpdateAt(LocalDateTime.now());
+            user.setCreatedAt(LocalDateTime.now());
+            user.setActive(Boolean.TRUE);
+            Role role = roleRepository.findById(3L).get();
             user.setRoles(Arrays.asList(role));
             repository.save(user);
             return new UserDTO(user.getEmail(), user.getAuthorities());
@@ -68,9 +71,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void disableUser(String email) throws Exception {
+    public void disableUser(Long id) throws Exception {
         try {
-          User user = repository.findByEmail(email).get();
+          User user = repository.findById(id).get();
            if(user == null){
                throw new Exception(USER_NOT_FOUND);
            }
