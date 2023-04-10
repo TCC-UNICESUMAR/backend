@@ -19,7 +19,7 @@ public class User implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String firstname;

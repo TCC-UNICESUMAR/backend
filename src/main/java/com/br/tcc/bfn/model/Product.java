@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
