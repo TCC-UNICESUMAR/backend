@@ -1,5 +1,6 @@
 package com.br.tcc.bfn.config;
 
+import com.br.tcc.bfn.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,10 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.br.tcc.bfn.repositories.UserRepository;
+import java.util.logging.Logger;
 
 @Configuration
 public class ApplicationConfig {
+
+	private final static Logger LOGGER = Logger.getLogger(ApplicationConfig.class.getName());
 
 	private final UserRepository repository;
 

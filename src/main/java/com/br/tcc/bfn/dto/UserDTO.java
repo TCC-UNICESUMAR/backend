@@ -6,11 +6,13 @@ import java.util.Collection;
 
 public class UserDTO {
 
+    private Long id;
     private String email;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDTO(String email, Collection<? extends GrantedAuthority> authorities) {
+    public UserDTO(Long id, String email, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.authorities = authorities;
         this.email = email;
     }
@@ -29,5 +31,13 @@ public class UserDTO {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

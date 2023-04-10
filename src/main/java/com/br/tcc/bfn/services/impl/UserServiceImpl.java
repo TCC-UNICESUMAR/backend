@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -24,6 +26,7 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
 
     public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.repository = repository;
@@ -47,7 +50,7 @@ public class UserServiceImpl implements IUserService {
             Role role = roleRepository.findById(3L).get();
             user.setRoles(Arrays.asList(role));
             repository.save(user);
-            return new UserDTO(user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(ERRO_SAVE_USER);
         }
@@ -64,7 +67,7 @@ public class UserServiceImpl implements IUserService {
             user.setRoles(roleRepository.findAll());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             repository.save(user);
-            return new UserDTO(user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(ERRO_SAVE_USER);
         }
@@ -85,6 +88,10 @@ public class UserServiceImpl implements IUserService {
         } catch (Exception e) {
             throw new Exception(e);
         }
+    }
+    @Override
+    public List<User> findAll(){
+            return repository.findAll();
     }
 
     @Override
@@ -108,7 +115,7 @@ public class UserServiceImpl implements IUserService {
             user.setCpfOrCnpj(request.getCnpjOrCpf());
             user.setUpdateAt(LocalDateTime.now());
             repository.save(user);
-            return new UserDTO(user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(e);
         }

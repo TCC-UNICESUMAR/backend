@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController{
@@ -19,6 +21,8 @@ public class UserController{
     private final UserServiceImpl userServiceImpl;
 
     private final UserRepository repository;
+
+    private final static Logger LOGGER = Logger.getLogger(TicketController.class.getName());
 
     public UserController(UserServiceImpl userServiceImpl, UserRepository repository) {
         this.userServiceImpl = userServiceImpl;
@@ -96,8 +100,8 @@ public class UserController{
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Response<UserDTO>> disableUser(@PathVariable Long id, @RequestBody RegisterRequest request){
+    @PutMapping("/{id}")
+    public ResponseEntity<Response<UserDTO>> updateUser(@PathVariable Long id, @RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             UserDTO userDTO = userServiceImpl.update(id,request);

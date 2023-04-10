@@ -1,19 +1,18 @@
 spring:
   datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    password: ${passDb}
-    url: jdbc:sqlserver://matheusbonnet:1433;databaseName=db_tcc;encrypt=true;trustServerCertificate=true
-    username: ${userDb}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Mat123456
+    url: jdbc:mysql://localhost:3306/db_tcc
+    username: root
   flyway:
     baselineOnMigrate: true
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-        format_sql: true
-    show-sql: true
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
   security:
      oauth2:
        client:
@@ -21,3 +20,6 @@ spring:
            google:
             clientId: ${secretId}
             clientSecret: ${secretName}
+
+jwt:
+  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970

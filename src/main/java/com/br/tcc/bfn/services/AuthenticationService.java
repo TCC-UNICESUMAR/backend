@@ -38,7 +38,7 @@ public class AuthenticationService {
 			authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-			AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user));
+			AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user), jwtService.refreshToken(user));
 			response.setData(authenticationResponse);
 			response.setStatusCode(HttpStatus.OK.value());
 			return response;
