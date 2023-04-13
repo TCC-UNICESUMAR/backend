@@ -1,10 +1,10 @@
 package com.br.tcc.bfn.handler;
 
-import com.br.tcc.bfn.dto.ChatMessage;
-import com.br.tcc.bfn.dto.UserDTO;
+import com.br.tcc.bfn.dtos.ChatMessage;
+import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.events.Event;
 import com.br.tcc.bfn.events.EventType;
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.pubsub.Publisher;
 import com.br.tcc.bfn.services.ITicketService;
 import com.br.tcc.bfn.services.IUserService;
@@ -75,7 +75,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
         MessagePayload payload = new ObjectMapper().readValue(message.getPayload(), MessagePayload.class);
         String userIdFrom = userIds.get(session.getId());
-        publisher.publishChatMessage(userIdFrom, payload.getTo(), payload.getTo());
+        Long chatId = payload.getChatId()  != null ? payload.getChatId() : null;
+        publisher.publishChatMessage(userIdFrom, payload.getTo(), payload.getTo(), chatId);
     }
 
     @Override
@@ -101,7 +102,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         List<UserDTO> userDto = new ArrayList<>();
         for(User u : userService.findAll()){
             if(!(u.getUsername().equalsIgnoreCase(user))){
-                UserDTO dto = new UserDTO(u.getId(), u.getEmail(), null);
+                UserDTO dto = new UserDTO(u.getUserId(), u.getEmail(), null);
                 userDto.add(dto);
             }
         }

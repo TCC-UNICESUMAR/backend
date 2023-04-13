@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.dto;
+package com.br.tcc.bfn.dtos;
 
 import org.springframework.hateoas.RepresentationModel;
 

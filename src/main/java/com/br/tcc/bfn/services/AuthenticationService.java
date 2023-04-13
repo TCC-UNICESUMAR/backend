@@ -1,19 +1,13 @@
 package com.br.tcc.bfn.services;
 
-import com.br.tcc.bfn.dto.*;
-import com.br.tcc.bfn.config.JwtService;
-import com.br.tcc.bfn.model.Role;
-import com.br.tcc.bfn.repositories.RoleRepository;
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.dtos.*;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 public class AuthenticationService {

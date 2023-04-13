@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.dto;
+package com.br.tcc.bfn.dtos;
 
 public class RegisterRequest {
 

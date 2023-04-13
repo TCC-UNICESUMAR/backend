@@ -1,6 +1,7 @@
 package com.br.tcc.bfn.config;
 
 
+import com.br.tcc.bfn.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

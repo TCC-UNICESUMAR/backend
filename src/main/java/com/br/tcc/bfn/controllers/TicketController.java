@@ -1,6 +1,6 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dto.Response;
+import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.services.ITicketService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
