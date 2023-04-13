@@ -1,7 +1,7 @@
 package com.br.tcc.bfn.pubsub;
 
 import com.br.tcc.bfn.config.ws.RedisConfig;
-import com.br.tcc.bfn.dto.ChatMessage;
+import com.br.tcc.bfn.dtos.ChatMessage;
 import com.br.tcc.bfn.handler.WebSocketHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

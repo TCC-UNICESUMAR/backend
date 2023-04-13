@@ -5,12 +5,15 @@ public class MessagePayload {
     private String to;
     private String text;
 
+    private Long chatId;
+
     public MessagePayload() {
     }
 
-    public MessagePayload(String to, String text) {
+    public MessagePayload(String to, String text, Long chatId) {
         this.to = to;
         this.text = text;
+        this.chatId = chatId;
     }
 
     public String getTo() {
@@ -27,5 +30,13 @@ public class MessagePayload {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 }

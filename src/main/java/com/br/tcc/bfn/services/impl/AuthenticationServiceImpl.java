@@ -1,10 +1,9 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.config.JwtService;
-import com.br.tcc.bfn.controllers.TicketController;
-import com.br.tcc.bfn.dto.AuthenticationRequest;
-import com.br.tcc.bfn.dto.Response;
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.services.JwtService;
+import com.br.tcc.bfn.dtos.AuthenticationRequest;
+import com.br.tcc.bfn.dtos.Response;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IAuthenticationService;
 import org.springframework.http.HttpStatus;

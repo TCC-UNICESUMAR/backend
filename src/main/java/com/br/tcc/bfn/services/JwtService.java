@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.config;
+package com.br.tcc.bfn.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.key}")
     private String secretKey;
 
     private final static Logger LOGGER = Logger.getLogger(JwtService.class.getName());

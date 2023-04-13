@@ -1,29 +1,32 @@
-package com.br.tcc.bfn.model;
+package com.br.tcc.bfn.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_users")
 public class User implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String cpfOrCnpj;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -31,55 +34,46 @@ public class User implements UserDetails, Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
     private Boolean active;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
-    private LocalDateTime deleteAt;
+    private Date createdAt;
+    private Date updateAt;
+    private Date deleteAt;
+    @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
+    @JsonIgnore()
+    @OneToMany
+    @JoinColumn(name = "user_from")
+    private List<Conversation> userConversation;
 
     public User() {
     }
 
-    public User(Long id, String firstname, String lastname, String cpfOrCnpj, String email, String password, Boolean active, LocalDateTime createdAt, LocalDateTime updateAt, LocalDateTime deleteAt, List<Role> roles) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.cpfOrCnpj = cpfOrCnpj;
-        this.email = email;
-        this.password = password;
-        this.active = active;
-        this.createdAt = LocalDateTime.now();
-        this.updateAt = LocalDateTime.now();
-        this.deleteAt = deleteAt;
-        this.roles = roles;
+    public Long getUserId() {
+        return userId;
     }
 
-    public Long getId() {
-        return id;
+    public void setUserId(Long id) {
+        this.userId = userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public void setFirstname(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastname(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -153,27 +147,35 @@ public class User implements UserDetails, Serializable {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
-    public LocalDateTime getDeleteAt() {
+    public Date getDeleteAt() {
         return deleteAt;
     }
 
-    public void setDeleteAt(LocalDateTime deleteAt) {
+    public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }
+
+    public List<Conversation> getUserConversation() {
+        return userConversation;
+    }
+    public void setUserConversation(List<Conversation> userConversation) {
+        this.userConversation = userConversation;
+    }
+
 }

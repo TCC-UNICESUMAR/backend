@@ -1,8 +1,10 @@
-package com.br.tcc.bfn.dto;
+package com.br.tcc.bfn.dtos;
 
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.models.User;
 
-public class ChatMessage {
+import java.io.Serializable;
+
+public class ChatMessage implements Serializable {
 
     private User from;
     private User to;

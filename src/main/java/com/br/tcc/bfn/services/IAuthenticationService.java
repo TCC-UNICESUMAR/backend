@@ -1,8 +1,7 @@
 package com.br.tcc.bfn.services;
 
-import com.br.tcc.bfn.dto.AuthenticationRequest;
-import com.br.tcc.bfn.dto.AuthenticationResponse;
-import com.br.tcc.bfn.dto.Response;
+import com.br.tcc.bfn.dtos.AuthenticationRequest;
+import com.br.tcc.bfn.dtos.Response;
 
 public interface IAuthenticationService {
 

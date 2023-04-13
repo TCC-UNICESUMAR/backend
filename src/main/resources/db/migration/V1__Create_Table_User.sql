@@ -1,4 +1,4 @@
-CREATE TABLE tb_user(
+CREATE TABLE tb_users(
 	user_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	cpf_or_cnpj varchar(255) NULL,
 	email varchar(255) NOT NULL,

@@ -1,33 +1,33 @@
-package com.br.tcc.bfn.model;
+package com.br.tcc.bfn.models;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_role")
+@Table(name = "tb_roles")
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roleId;
     private String roleName;
 
     public Role() {
     }
 
-    public Role(Long id, String roleName) {
+    public Role(Long roleId, String roleName) {
         super();
-        this.id = id;
+        this.roleId = roleId;
         this.roleName = roleName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {

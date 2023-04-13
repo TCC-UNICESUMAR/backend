@@ -1,20 +1,19 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.dto.RegisterRequest;
-import com.br.tcc.bfn.dto.UserDTO;
-import com.br.tcc.bfn.model.Role;
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.dtos.RegisterRequest;
+import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.models.Role;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IUserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -44,13 +43,13 @@ public class UserServiceImpl implements IUserService {
             user.setEmail(request.getEmail());
             user.setCpfOrCnpj(request.getCnpjOrCpf());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setUpdateAt(LocalDateTime.now());
-            user.setCreatedAt(LocalDateTime.now());
+            user.setUpdateAt(new Date());
+            user.setCreatedAt(new Date());
             user.setActive(Boolean.TRUE);
             Role role = roleRepository.findById(3L).get();
             user.setRoles(Arrays.asList(role));
             repository.save(user);
-            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getUserId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(ERRO_SAVE_USER);
         }
@@ -67,7 +66,7 @@ public class UserServiceImpl implements IUserService {
             user.setRoles(roleRepository.findAll());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             repository.save(user);
-            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getUserId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(ERRO_SAVE_USER);
         }
@@ -82,7 +81,7 @@ public class UserServiceImpl implements IUserService {
            }
 
            user.setActive(Boolean.FALSE);
-           user.setDeleteAt(LocalDateTime.now());
+           user.setDeleteAt(new Date());
            repository.save(user);
 
         } catch (Exception e) {
@@ -113,12 +112,24 @@ public class UserServiceImpl implements IUserService {
             user.setLastname(request.getLastname());
             user.setPassword(request.getPassword());
             user.setCpfOrCnpj(request.getCnpjOrCpf());
-            user.setUpdateAt(LocalDateTime.now());
+            user.setUpdateAt(new Date());
             repository.save(user);
-            return new UserDTO(user.getId(), user.getEmail(), user.getAuthorities());
+            return new UserDTO(user.getUserId(), user.getEmail(), user.getAuthorities());
         } catch (Exception e) {
             throw new Exception(e);
         }
+    }
+
+    @Override
+    public Optional<User> findAuth() throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> usuario = this.repository.findByEmail(auth.getName());
+
+        if(usuario.isEmpty()) {
+            throw new Exception();
+        }
+
+        return usuario;
     }
 
 }

@@ -1,9 +1,9 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dto.RegisterRequest;
-import com.br.tcc.bfn.dto.Response;
-import com.br.tcc.bfn.dto.UserDTO;
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.dtos.RegisterRequest;
+import com.br.tcc.bfn.dtos.Response;
+import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.impl.UserServiceImpl;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dto.AuthenticationRequest;
+import com.br.tcc.bfn.dtos.AuthenticationRequest;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;

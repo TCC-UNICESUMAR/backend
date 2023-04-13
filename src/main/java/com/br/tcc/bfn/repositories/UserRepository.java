@@ -1,6 +1,6 @@
 package com.br.tcc.bfn.repositories;
 
-import com.br.tcc.bfn.model.User;
+import com.br.tcc.bfn.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
