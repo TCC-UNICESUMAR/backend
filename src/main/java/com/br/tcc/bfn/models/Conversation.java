@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +21,12 @@ public class Conversation implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_to")
     private User userTo;
-    @OneToMany
-    @Column(name = "message_id")
-    private List<Message> messageId;
+    @OneToMany(
+            mappedBy = "conversation",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Message> messages = new ArrayList<>();
     private Date createdAt;
     private Date deleteAt;
 
@@ -51,14 +55,6 @@ public class Conversation implements Serializable {
 
     public void setUserTo(User userTo) {
         this.userTo = userTo;
-    }
-
-    public List<Message> getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(List<Message> messageId) {
-        this.messageId = messageId;
     }
 
     public Date getCreatedAt() {

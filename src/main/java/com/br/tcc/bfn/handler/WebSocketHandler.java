@@ -67,7 +67,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         LOGGER.info("[handleTextMessage] text " + message.getPayload());
         if (message.getPayload().equals("ping")) {
             session.sendMessage(new TextMessage("pong"));
@@ -76,7 +76,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         MessagePayload payload = new ObjectMapper().readValue(message.getPayload(), MessagePayload.class);
         String userIdFrom = userIds.get(session.getId());
         Long chatId = payload.getChatId()  != null ? payload.getChatId() : null;
-        publisher.publishChatMessage(userIdFrom, payload.getTo(), payload.getTo(), chatId);
+        publisher.publishChatMessage(userIdFrom, payload.getTo(), payload.getText(), chatId);
     }
 
     @Override
@@ -102,7 +102,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
         List<UserDTO> userDto = new ArrayList<>();
         for(User u : userService.findAll()){
             if(!(u.getUsername().equalsIgnoreCase(user))){
-                UserDTO dto = new UserDTO(u.getUserId(), u.getEmail(), null);
+                UserDTO dto = new UserDTO();
+                dto.setId(u.getUserId());
+                dto.setEmail(u.getEmail());
                 userDto.add(dto);
             }
         }
@@ -113,7 +115,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     public void notify(ChatMessage chatMessage) {
         Event<ChatMessage> event = new Event<>(EventType.CHAT_MESSAGE_WAS_CREATED, chatMessage);
-        List<String> userIds = List.of(chatMessage.getFrom().getUsername(), chatMessage.getTo().getUsername());
+        List<String> userIds = List.of(chatMessage.getFrom().getEmail(), chatMessage.getTo().getEmail());
         userIds.stream()
                 .distinct()
                 .map(sessions::get)

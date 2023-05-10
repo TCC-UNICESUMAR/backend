@@ -22,7 +22,7 @@ public class Product {
     private String description;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tb_product_category",
@@ -73,11 +73,11 @@ public class Product {
     }
 
     public User getUser() {
-        return userId;
+        return user;
     }
 
     public void setUser(User user) {
-        this.userId = userId;
+        this.user = user;
     }
 
     public Boolean getReserved() {

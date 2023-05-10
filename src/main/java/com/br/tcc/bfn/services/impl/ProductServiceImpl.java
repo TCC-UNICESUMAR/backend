@@ -52,9 +52,10 @@ public class ProductServiceImpl implements IProductService {
             this.productPopulator.populate(product, request);
             Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow();
             product.setCategories(Arrays.asList(category));
-            product.setUser(userService.findAuth().orElseThrow());
+            product.setUser(userService.findAuth().get());
             product.setCreatedAt(LocalDateTime.now());
             product.setUpdateAt(LocalDateTime.now());
+            product.setReserved(Boolean.FALSE);
             return productRepository.save(product);
         } catch (Exception e) {
             LOGGER.info(String.format(ERRO_SAVE_PRODUCT));
@@ -111,15 +112,11 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product findById(Long id) throws Exception {
         try {
-            Product product = productRepository.findById(id).get();
-            if (product == null) {
-                LOGGER.info(String.format(PRODUCT_NOT_FOUND));
-                throw new Exception();
-            }
+            return productRepository.findById(id).orElseThrow();
 
-            return product;
         } catch (Exception e) {
-            throw new Exception();
+            LOGGER.info(String.format(PRODUCT_NOT_FOUND));
+            throw new Exception(PRODUCT_NOT_FOUND);
         }
     }
 }

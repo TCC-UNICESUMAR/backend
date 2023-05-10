@@ -44,7 +44,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .anyRequest()
                 .authenticated()
                 .and()
-//                .oauth2Login();
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

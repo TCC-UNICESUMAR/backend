@@ -60,7 +60,7 @@ public class ProductController {
             dtoResponse.setData(productService.findById(id));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
-            dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
             dtoResponse.setError(e.getMessage());
             return ResponseEntity.internalServerError().body(dtoResponse);
         }

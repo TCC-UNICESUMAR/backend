@@ -2,8 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: Mat123456
-    url: jdbc:mysql://localhost:3306/db_tcc
+    url: jdbc:mysql://localhost:3306/db_tcc?useTimezone=true&serverTimezone=America/Sao_Paulo
     username: root
+  jpa:
+    show:
+      sql: true
   flyway:
     baselineOnMigrate: true
   redis:
@@ -23,3 +26,9 @@ spring:
 
 jwt:
   key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
+aws:
+  region: eu-west-1
+  s3:
+    buckets:
+      customer: tcc-bfn-image-profile

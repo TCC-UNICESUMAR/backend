@@ -2,7 +2,9 @@ package com.br.tcc.bfn.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_messages")
@@ -14,7 +16,10 @@ public class Message {
     private String message;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "conversation_id")
+    private Conversation conversation;
     private Date createdAt;
     private int orderBy;
     public Message() {
@@ -36,12 +41,12 @@ public class Message {
         this.message = message;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {
@@ -58,5 +63,13 @@ public class Message {
 
     public void setOrderBy(int orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
 }

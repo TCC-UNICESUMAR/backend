@@ -28,8 +28,14 @@ public class User implements UserDetails, Serializable {
     private String firstName;
     private String lastName;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Column(
+            unique = true
+    )
     private String cpfOrCnpj;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Column(
+            unique = true
+    )
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
@@ -37,6 +43,10 @@ public class User implements UserDetails, Serializable {
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
+    @Column(
+            unique = true
+    )
+    private String profileImageId;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
@@ -44,10 +54,17 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
-    @JsonIgnore()
-    @OneToMany
-    @JoinColumn(name = "user_from")
+    @OneToMany( mappedBy = "userFrom",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
     private List<Conversation> userConversation;
+    @OneToMany( mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Product> products = new ArrayList<>();
 
     public User() {
     }
@@ -178,4 +195,11 @@ public class User implements UserDetails, Serializable {
         this.userConversation = userConversation;
     }
 
+    public String getProfileImageId() {
+        return profileImageId;
+    }
+
+    public void setProfileImageId(String profileImageId) {
+        this.profileImageId = profileImageId;
+    }
 }

@@ -4,7 +4,6 @@ public class MessagePayload {
 
     private String to;
     private String text;
-
     private Long chatId;
 
     public MessagePayload() {

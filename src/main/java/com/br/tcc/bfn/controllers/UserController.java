@@ -5,12 +5,15 @@ import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
+import com.br.tcc.bfn.services.IUserService;
 import com.br.tcc.bfn.services.impl.UserServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.logging.Logger;
 
@@ -18,14 +21,14 @@ import java.util.logging.Logger;
 @RequestMapping("/api/v1/user")
 public class UserController{
 
-    private final UserServiceImpl userServiceImpl;
+    private final IUserService userService;
 
     private final UserRepository repository;
 
     private final static Logger LOGGER = Logger.getLogger(TicketController.class.getName());
 
-    public UserController(UserServiceImpl userServiceImpl, UserRepository repository) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(IUserService userService, UserRepository repository) {
+        this.userService = userService;
         this.repository = repository;
     }
 
@@ -34,7 +37,7 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
 
         try{
-            UserDTO userDTO = userServiceImpl.register(request);
+            UserDTO userDTO = userService.register(request);
             dtoResponse.setData(userDTO);
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
@@ -49,7 +52,7 @@ public class UserController{
     public ResponseEntity<Response<UserDTO>> registerAdmin(@RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            UserDTO userDTO = userServiceImpl.registerAdmin(request);
+            UserDTO userDTO = userService.registerAdmin(request);
             dtoResponse.setData(userDTO);
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
@@ -65,7 +68,7 @@ public class UserController{
     public ResponseEntity<Response<UserDTO>> disableUser(@PathVariable Long id){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            userServiceImpl.disableUser(id);
+            userService.disableUser(id);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -104,7 +107,7 @@ public class UserController{
     public ResponseEntity<Response<UserDTO>> updateUser(@PathVariable Long id, @RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            UserDTO userDTO = userServiceImpl.update(id,request);
+            UserDTO userDTO = userService.update(id,request);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.setData(userDTO);
             return ResponseEntity.ok().body(dtoResponse);
@@ -113,6 +116,45 @@ public class UserController{
             dtoResponse.setError(e.getMessage());
             return ResponseEntity.badRequest().body(dtoResponse);
         }
+    }
+    @PostMapping(
+            value = "{userId}/profile-image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<Response<String>> uploadCustomerProfileImage(
+            @PathVariable("userId") Long userId,
+            @RequestParam("file") MultipartFile file) {
+        Response<String> dtoResponse = new Response<>();
+        try{
+            userService.uploadCustomerProfileImage(userId, file);
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(HttpStatus.CREATED.toString());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+
+    }
+
+    @GetMapping(
+            value = "{userId}/profile-image",
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public ResponseEntity<Response<byte[]>> getCustomerProfileImage(
+            @PathVariable("userId") Long userId) {
+        Response<byte[]> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(userService.getCustomerProfileImage(userId));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+
     }
 
 }

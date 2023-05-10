@@ -6,32 +6,32 @@ import java.io.Serializable;
 
 public class ChatMessage implements Serializable {
 
-    private User from;
-    private User to;
+    private UserDTO from;
+    private UserDTO to;
     private String text;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(User from, User to, String text) {
+    public ChatMessage(UserDTO from, UserDTO to, String text) {
         this.from = from;
         this.to = to;
         this.text = text;
     }
 
-    public User getFrom() {
+    public UserDTO getFrom() {
         return from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(UserDTO from) {
         this.from = from;
     }
 
-    public User getTo() {
+    public UserDTO getTo() {
         return to;
     }
 
-    public void setTo(User to) {
+    public void setTo(UserDTO to) {
         this.to = to;
     }
 

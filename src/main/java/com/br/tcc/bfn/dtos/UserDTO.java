@@ -1,5 +1,6 @@
 package com.br.tcc.bfn.dtos;
 
+import com.br.tcc.bfn.models.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -8,13 +9,23 @@ public class UserDTO {
 
     private Long id;
     private String email;
+    private String profileImageId;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    public UserDTO() {
+    }
 
-    public UserDTO(Long id, String email, Collection<? extends GrantedAuthority> authorities) {
+    public UserDTO(User user) {
+        id = user.getUserId();
+        email = user.getEmail();
+        profileImageId = user.getProfileImageId();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
-        this.authorities = authorities;
-        this.email = email;
     }
 
     public String getEmail() {
@@ -25,19 +36,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public String getProfileImageId() {
+        return profileImageId;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setProfileImageId(String profileImageId) {
+        this.profileImageId = profileImageId;
     }
 }
