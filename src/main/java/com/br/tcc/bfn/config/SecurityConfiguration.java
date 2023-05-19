@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.logging.Logger;
@@ -39,7 +40,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .disable()
                 .cors().and()
                 .authorizeHttpRequests()
-                .requestMatchers(  "/api/v1/user/register", "/api/v1/auth/authenticate")
+                .requestMatchers(new AntPathRequestMatcher("/api/v1/user/register"), new AntPathRequestMatcher("/api/v1/auth/authenticate")
+                , new AntPathRequestMatcher("/h2-console/**"))
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -53,7 +55,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .logoutUrl("/api/v1/auth/logout")
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
-
+        http.headers().frameOptions().disable();
         return http.build();
     }
 }

@@ -60,11 +60,6 @@ public class User implements UserDetails, Serializable {
             fetch = FetchType.EAGER
     )
     private List<Conversation> userConversation;
-    @OneToMany( mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Product> products = new ArrayList<>();
 
     public User() {
     }

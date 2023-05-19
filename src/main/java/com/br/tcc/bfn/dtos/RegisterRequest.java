@@ -7,15 +7,10 @@ public class RegisterRequest {
 	private String email;
 	private String password;
 	private String cnpjOrCpf;
+	private String profileImageId;
 
 
 	public RegisterRequest(String firstname, String lastname, String email, String password, String cnpjOrCpf) {
-		super();
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.password = password;
-		this.cnpjOrCpf = cnpjOrCpf;
 	}
 
 	public RegisterRequest() {
@@ -60,5 +55,13 @@ public class RegisterRequest {
 
 	public void setCnpjOrCpf(String cnpjOrCpf) {
 		this.cnpjOrCpf = cnpjOrCpf;
+	}
+
+	public String getProfileImageId() {
+		return profileImageId;
+	}
+
+	public void setProfileImageId(String profileImageId) {
+		this.profileImageId = profileImageId;
 	}
 }

@@ -11,16 +11,9 @@ import java.util.Optional;
 public interface IUserService {
 
     UserDTO register(RegisterRequest request) throws Exception;
-
     UserDTO registerAdmin(RegisterRequest request) throws Exception;
-
     void disableUser(Long id) throws Exception;
-
     UserDTO update(Long id, RegisterRequest request) throws Exception;
-
     List<User> findAll();
-
     Optional<User> findAuth() throws Exception;
-    void uploadCustomerProfileImage(Long userId, MultipartFile file);
-    byte[] getCustomerProfileImage(Long userId);
 }

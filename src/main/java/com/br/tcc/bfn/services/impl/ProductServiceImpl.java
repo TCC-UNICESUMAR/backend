@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Page<ProductDto> findAll(Pageable pageable) {
-        Page<Product> productDtos = productRepository.findAll(pageable);
+        Page<Product> productDtos = productRepository.searchAll(pageable);
         return productDtos.map(x -> new ProductDto(x));
     }
 

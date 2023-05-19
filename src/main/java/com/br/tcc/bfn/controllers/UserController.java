@@ -117,44 +117,5 @@ public class UserController{
             return ResponseEntity.badRequest().body(dtoResponse);
         }
     }
-    @PostMapping(
-            value = "{userId}/profile-image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public ResponseEntity<Response<String>> uploadCustomerProfileImage(
-            @PathVariable("userId") Long userId,
-            @RequestParam("file") MultipartFile file) {
-        Response<String> dtoResponse = new Response<>();
-        try{
-            userService.uploadCustomerProfileImage(userId, file);
-            dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(HttpStatus.CREATED.toString());
-            return ResponseEntity.ok().body(dtoResponse);
-        }catch (Exception e){
-            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            dtoResponse.setError(e.getMessage());
-            return ResponseEntity.badRequest().body(dtoResponse);
-        }
-
-    }
-
-    @GetMapping(
-            value = "{userId}/profile-image",
-            produces = MediaType.IMAGE_JPEG_VALUE
-    )
-    public ResponseEntity<Response<byte[]>> getCustomerProfileImage(
-            @PathVariable("userId") Long userId) {
-        Response<byte[]> dtoResponse = new Response<>();
-        try{
-            dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userService.getCustomerProfileImage(userId));
-            return ResponseEntity.ok().body(dtoResponse);
-        }catch (Exception e){
-            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            dtoResponse.setError(e.getMessage());
-            return ResponseEntity.badRequest().body(dtoResponse);
-        }
-
-    }
 
 }

@@ -15,9 +15,6 @@ public class Category implements Serializable {
     private Long categoryId;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String categoryName;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products;
     private Boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
