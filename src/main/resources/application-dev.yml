@@ -1,28 +1,28 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    password: ${DB_PASSWORD:Mat123456}
-    url: ${DB_PASSWORD:jdbc:mysql://localhost:3306/db_tcc?useTimezone=true&serverTimezone=America/Sao_Paulo}
-    username: ${DB_USER:root}
-  jpa:
-    show:
-      sql: true
-  flyway:
-    baselineOnMigrate: true
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-  cache:
-    type: redis
-    redis:
-      time-to-live: 600000
-  security:
-     oauth2:
-       client:
-         registration:
-           google:
-            clientId: ${CLIENT_ID:$secretId}
-            clientSecret: ${CLIENT_SECRET:$secretName}
-
-jwt:
-  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    password: ${DB_PASSWORD:Mat123456}
+#    url: ${DB_PASSWORD:jdbc:mysql://localhost:3306/db_tcc?useTimezone=true&serverTimezone=America/Sao_Paulo}
+#    username: ${DB_USER:root}
+#  jpa:
+#    show:
+#      sql: true
+#  flyway:
+#    baselineOnMigrate: true
+#  redis:
+#    host: ${REDIS_HOST:localhost}
+#    port: ${REDIS_PORT:6379}
+#  cache:
+#    type: redis
+#    redis:
+#      time-to-live: 600000
+#  security:
+#     oauth2:
+#       client:
+#         registration:
+#           google:
+#            clientId: ${CLIENT_ID:$secretId}
+#            clientSecret: ${CLIENT_SECRET:$secretName}
+#
+#jwt:
+#  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
