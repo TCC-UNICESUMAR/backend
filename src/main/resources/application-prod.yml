@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ${DB_PASSWORD}
-    url: ${DB_URL:jdbc:mysql://containers-us-west-167.railway.app:6981/railway}
+    url: ${DB_URL}
     username: ${DB_USER}
   jpa:
     show:
@@ -10,10 +10,10 @@ spring:
   flyway:
     baselineOnMigrate: ${FLYWAY_BASE_LINE}
   redis:
-    host: redis-15391.c262.us-east-1-3.ec2.cloud.redislabs.com
-    port: 15391
-    password: fn6C7OeO9NVCETa9HVSWZVIeN96YBl9P
-    user: default
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+    user: ${REDIS_USER}
   cache:
     type: redis
     redis:
