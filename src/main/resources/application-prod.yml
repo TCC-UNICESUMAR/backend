@@ -10,10 +10,10 @@ spring:
   flyway:
     baselineOnMigrate: ${FLYWAY_BASE_LINE}
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    user: ${REDIS_USER}
-    password: ${REDIS_PASSWORD}
+    host: containers-us-west-64.railway.app
+    port: 6226
+    user: default
+    password: xC1fjO0QWs1vPUErn9R3
   cache:
     type: redis
     redis:
