@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ${DB_PASSWORD}
-    url: ${DB_URL:jdbc:mysql://containers-us-west-167.railway.app:6981/railway}
+    url: ${DB_URL}
     username: ${DB_USER}
   jpa:
     show:
