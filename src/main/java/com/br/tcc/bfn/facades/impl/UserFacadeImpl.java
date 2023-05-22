@@ -1,5 +1,7 @@
 package com.br.tcc.bfn.facades.impl;
 
+import com.br.tcc.bfn.builder.UserBuilder;
+import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
@@ -54,12 +56,7 @@ public class UserFacadeImpl implements UserFacade {
                 throw new UserException(BfnConstants.USER_NOT_FOUND);
             }
 
-            user.setEmail(request.getEmail());
-            user.setFirstname(request.getFirstname());
-            user.setLastname(request.getLastname());
-            user.setPassword(request.getPassword());
-            user.setCpfOrCnpj(request.getCnpjOrCpf());
-            user.setUpdateAt(new Date());
+            userPopulator.populate(user, request);
             repository.save(user);
             userDTOPopulator.populate(userDTO, user);
             return userDTO;
@@ -74,11 +71,29 @@ public class UserFacadeImpl implements UserFacade {
             if(Objects.isNull(request)) {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
-            User user = new User();
-            UserDTO userDTO = new UserDTO();
-            userPopulator.populate(user,request);
+            User user = UserBuilder.builder()
+                    .firstName(request.getFirstname())
+                    .lastName(request.getLastname())
+                    .email(request.getEmail())
+                    .cpfOrCnpj(request.getCnpjOrCpf())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .active(Boolean.TRUE)
+                    .createdAt(new Date())
+                    .updateAt(new Date())
+                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
+                    .profileImageId(request.getProfileImageId())
+                    .build();
+
             repository.save(user);
-            userDTOPopulator.populate(userDTO, user);
+
+            UserDTO userDTO = UserDtoBuilder.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .profileImageId(user.getProfileImageId())
+                    .email(user.getEmail())
+                    .roles(user.getRoles())
+                    .build();
+
             return userDTO;
         } catch (UserException e) {
             throw new UserException(e.getMessage());

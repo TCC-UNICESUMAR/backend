@@ -29,9 +29,5 @@ public class UserPopulator implements Populator<User, RegisterRequest>{
         user.setEmail(request.getEmail());
         user.setCpfOrCnpj(request.getCnpjOrCpf());
         user.setUpdateAt(new Date(System.currentTimeMillis()));
-        user.setCreatedAt(new Date(System.currentTimeMillis()));
-        user.setActive(Boolean.TRUE);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Arrays.asList(roleRepository.findById(3L).get()));
     }
 }

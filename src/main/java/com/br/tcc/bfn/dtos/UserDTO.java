@@ -16,9 +16,6 @@ public class UserDTO {
     private String lastName;
     private List<Role> roles;
 
-    public UserDTO() {
-    }
-
     public Long getId() {
         return id;
     }
