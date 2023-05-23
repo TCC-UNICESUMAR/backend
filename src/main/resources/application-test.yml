@@ -24,13 +24,6 @@ spring:
     type: redis
     redis:
       time-to-live: 600000
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: ${CLIENT_ID:$secretId}
-            clientSecret: ${CLIENT_SECRET:$secretName}
 
 
 jwt:

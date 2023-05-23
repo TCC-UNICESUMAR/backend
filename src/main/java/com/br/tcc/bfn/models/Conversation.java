@@ -3,7 +3,6 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
