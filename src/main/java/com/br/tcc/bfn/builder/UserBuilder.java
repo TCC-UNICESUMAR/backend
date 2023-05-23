@@ -1,5 +1,6 @@
 package com.br.tcc.bfn.builder;
 
+import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
 
@@ -59,6 +60,11 @@ public class UserBuilder {
     }
     public UserBuilder roles(List<Role> roles){
         this.user.setRoles(roles);
+        return this;
+    }
+
+    public UserBuilder address(Address address){
+        this.user.setAddress(address);
         return this;
     }
 

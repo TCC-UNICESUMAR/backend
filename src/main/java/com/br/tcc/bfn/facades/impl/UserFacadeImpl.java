@@ -1,11 +1,13 @@
 package com.br.tcc.bfn.facades.impl;
 
+import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.UserBuilder;
 import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
+import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.populators.UserDTOPopulator;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -71,6 +74,18 @@ public class UserFacadeImpl implements UserFacade {
             if(Objects.isNull(request)) {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
+
+            Address address = AddressBuilder.builder()
+                    .streetName(request.getAddressDto().getStreetName())
+                    .streetNumber(request.getAddressDto().getStreetNumber())
+                    .uf(request.getAddressDto().getUf())
+                    .complement(request.getAddressDto().getComplement())
+                    .phone(request.getAddressDto().getPhone())
+                    .zipCode(request.getAddressDto().getZipCode())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
             User user = UserBuilder.builder()
                     .firstName(request.getFirstname())
                     .lastName(request.getLastname())
@@ -82,6 +97,7 @@ public class UserFacadeImpl implements UserFacade {
                     .updateAt(new Date())
                     .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
                     .profileImageId(request.getProfileImageId())
+                    .address(address)
                     .build();
 
             repository.save(user);

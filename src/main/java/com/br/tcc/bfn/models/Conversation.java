@@ -16,11 +16,11 @@ public class Conversation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conversationId;
     @ManyToOne
-    @JoinColumn(name = "user_from")
-    private User userFrom;
+    @JoinColumn(name = "user_one")
+    private User userOne;
     @ManyToOne
-    @JoinColumn(name = "user_to")
-    private User userTo;
+    @JoinColumn(name = "user_two")
+    private User userTwo;
     @OneToMany(
             mappedBy = "conversation",
             cascade = CascadeType.ALL,
@@ -41,20 +41,28 @@ public class Conversation implements Serializable {
         this.conversationId = conversationId;
     }
 
-    public User getUserFrom() {
-        return userFrom;
+    public User getUserOne() {
+        return userOne;
     }
 
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
+    public void setUserOne(User userOne) {
+        this.userOne = userOne;
     }
 
-    public User getUserTo() {
-        return userTo;
+    public User getUserTwo() {
+        return userTwo;
     }
 
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
+    public void setUserTwo(User userTwo) {
+        this.userTwo = userTwo;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     public Date getCreatedAt() {

@@ -54,12 +54,14 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
-    @OneToMany( mappedBy = "userFrom",
+    @OneToMany( mappedBy = "userOne",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private List<Conversation> userConversation;
+    @OneToOne
+    private Address address;
 
     public User() {
     }
@@ -196,5 +198,13 @@ public class User implements UserDetails, Serializable {
 
     public void setProfileImageId(String profileImageId) {
         this.profileImageId = profileImageId;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

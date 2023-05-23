@@ -21,7 +21,7 @@ public class Message {
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
     private Date createdAt;
-    private int orderBy;
+
     public Message() {
     }
 
@@ -55,14 +55,6 @@ public class Message {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public int getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(int orderBy) {
-        this.orderBy = orderBy;
     }
 
     public Conversation getConversation() {

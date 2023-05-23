@@ -8,6 +8,7 @@ public class RegisterRequest {
 	private String password;
 	private String cnpjOrCpf;
 	private String profileImageId;
+	private AddressDto addressDto;
 
 
 	public RegisterRequest(String firstname, String lastname, String email, String password, String cnpjOrCpf) {
@@ -63,5 +64,13 @@ public class RegisterRequest {
 
 	public void setProfileImageId(String profileImageId) {
 		this.profileImageId = profileImageId;
+	}
+
+	public AddressDto getAddressDto() {
+		return addressDto;
+	}
+
+	public void setAddressDto(AddressDto addressDto) {
+		this.addressDto = addressDto;
 	}
 }
