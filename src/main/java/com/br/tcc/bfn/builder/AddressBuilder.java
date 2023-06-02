@@ -4,6 +4,7 @@ import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.User;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class AddressBuilder {
 
@@ -40,11 +41,11 @@ public class AddressBuilder {
         this.address.setPhone(name);
         return this;
     }
-    public AddressBuilder createdAt(LocalDateTime date){
+    public AddressBuilder createdAt(Date date){
         this.address.setCreatedAt(date);
         return this;
     }
-    public AddressBuilder updatedAt(LocalDateTime date){
+    public AddressBuilder updatedAt(Date date){
         this.address.setUpdateAt(date);
         return this;
     }

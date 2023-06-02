@@ -7,4 +7,8 @@ public class BfnConstants {
     public final static String USER_EXIST_BY_EMAIL = "EXIST USER WITH EMAIL, TRY OTHER!!!";
     public final static String REQUEST_IS_NULL = "REQUEST CANNOT BE NULL!!!";
     public final static Long ROLE_DEFAULT = 3L;
+    public final static String CATEGORY_NOT_FOUND = "CATEGORY NOT FOUND!!!";
+    public final static String ERRO_SAVE_PRODUCT = "Cannot save Object, consulting your support";
+    public final static String PRODUCT_NOT_FOUND = "PRODUCT NOT FOUND!!!";
+    public final static String ERRO_GENERIC = "Error consulting your support to more infos";
 }

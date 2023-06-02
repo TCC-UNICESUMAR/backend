@@ -12,5 +12,6 @@ public class ProductPopulator implements Populator<Product, RegisterProductDto>{
         product.setName(registerProductDto.getName());
         product.setDescription(registerProductDto.getDescription());
         product.setQuantity(registerProductDto.getQuantity());
+        product.setImageProductList(registerProductDto.getImageProductList());
     }
 }

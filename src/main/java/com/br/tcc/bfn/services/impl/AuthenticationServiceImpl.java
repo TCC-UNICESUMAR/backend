@@ -1,6 +1,5 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.services.JwtService;
 import com.br.tcc.bfn.dtos.AuthenticationRequest;
 import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.models.User;

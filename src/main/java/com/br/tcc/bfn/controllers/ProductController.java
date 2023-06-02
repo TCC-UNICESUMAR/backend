@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
@@ -80,6 +82,20 @@ public class ProductController {
             return ResponseEntity.internalServerError().body(dtoResponse);
         }
 
+    }
+
+    @GetMapping("/region/{uf}")
+    public ResponseEntity<Response<List<ProductDto>>> findByRegion(@PathVariable String uf){
+        Response<List<ProductDto>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(productService.findByUf(uf));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.internalServerError().body(dtoResponse);
+        }
     }
 
     @PutMapping("/{id}")

@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.services;
+package com.br.tcc.bfn.services.impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -3,9 +3,14 @@ package com.br.tcc.bfn.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,9 +26,9 @@ public class Product {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
-
+    @JdbcType(value = JsonJdbcType.class)
+    private List<String> imageProductList = new ArrayList<>();
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -32,9 +37,9 @@ public class Product {
     private List<Category> categories = new ArrayList<>();
     private Boolean reserved;
     private Boolean active;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
-    private LocalDateTime deleteAt;
+    private Date createdAt;
+    private Date updateAt;
+    private Date deleteAt;
 
     public Product() {
     }
@@ -96,27 +101,27 @@ public class Product {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
-    public LocalDateTime getDeleteAt() {
+    public Date getDeleteAt() {
         return deleteAt;
     }
 
-    public void setDeleteAt(LocalDateTime deleteAt) {
+    public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }
 
@@ -126,5 +131,13 @@ public class Product {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<String> getImageProductList() {
+        return imageProductList;
+    }
+
+    public void setImageProductList(List<String> imageProductList) {
+        this.imageProductList = imageProductList;
     }
 }
