@@ -1,4 +1,4 @@
-package com.br.tcc.bfn.services;
+package com.br.tcc.bfn.services.impl;
 
 import com.br.tcc.bfn.dtos.*;
 import com.br.tcc.bfn.models.User;

@@ -1,7 +1,11 @@
 package com.br.tcc.bfn.services.impl;
 
+import com.br.tcc.bfn.builder.ProductBuilder;
 import com.br.tcc.bfn.dtos.ProductDto;
 import com.br.tcc.bfn.dtos.RegisterProductDto;
+import com.br.tcc.bfn.exceptions.CategoryException;
+import com.br.tcc.bfn.exceptions.ProductException;
+import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import com.br.tcc.bfn.models.Category;
 import com.br.tcc.bfn.models.Product;
 import com.br.tcc.bfn.populators.ProductPopulator;
@@ -9,15 +13,15 @@ import com.br.tcc.bfn.repositories.CategoryRepository;
 import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.services.IProductService;
 import com.br.tcc.bfn.services.IUserService;
+import com.br.tcc.bfn.utils.BfnConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -26,12 +30,8 @@ public class ProductServiceImpl implements IProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final IUserService userService;
-    private final static String ERRO_SAVE_PRODUCT = "Cannot save Object, consulting your support";
-    private final static String PRODUCT_NOT_FOUND = "PRODUCT NOT FOUND!!!";
-    private final static String REQUEST_IS_NULL = "Cannot save Object, Request is NULL";
-    private final static String ERRO_GENERIC = "Error consulting your support to more infos";
 
-    private final static Logger LOGGER = Logger.getLogger(ProductServiceImpl.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     public ProductServiceImpl(ProductPopulator productPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService) {
         this.productPopulator = productPopulator;
@@ -44,62 +44,71 @@ public class ProductServiceImpl implements IProductService {
     public Product register(RegisterProductDto request) throws Exception {
         try {
             if (Objects.isNull(request)) {
-                LOGGER.info(String.format(REQUEST_IS_NULL));
-                throw new Exception();
+                LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
+                throw new Exception(BfnConstants.REQUEST_IS_NULL);
             }
 
-            Product product = new Product();
-            this.productPopulator.populate(product, request);
-            Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow();
-            product.setCategories(Arrays.asList(category));
-            product.setUser(userService.findAuth().get());
-            product.setCreatedAt(LocalDateTime.now());
-            product.setUpdateAt(LocalDateTime.now());
-            product.setReserved(Boolean.FALSE);
+            Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
+            Product product = ProductBuilder.builder()
+                    .active(Boolean.TRUE)
+                    .imageList(request.getImageProductList())
+                    .createdAt(new Date())
+                    .name(request.getName())
+                    .category(Arrays.asList(category))
+                    .user(userService.findAuth().get())
+                    .updateAt(new Date())
+                    .reserved(Boolean.FALSE)
+                    .quantity(request.getQuantity())
+                    .build();
+
             return productRepository.save(product);
+        } catch (ProductException e) {
+            LOGGER.info(String.format(BfnConstants.ERRO_SAVE_PRODUCT));
+            throw new ProductException(e.getMessage());
+        } catch (CategoryException e) {
+            throw new CategoryException(e.getMessage());
         } catch (Exception e) {
-            LOGGER.info(String.format(ERRO_SAVE_PRODUCT));
-            throw new Exception();
+            throw new Exception(e.getMessage());
         }
     }
 
     @Override
-    public void disableProduct(Long id) throws Exception {
+    public void disableProduct(Long id) throws ProductNotFoundException {
         try {
-            Optional<Product> product = productRepository.findById(id);
-            if (product.isEmpty()) {
-                LOGGER.info(String.format(PRODUCT_NOT_FOUND));
-                throw new Exception();
-            }
+            Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
-            product.get().setActive(Boolean.FALSE);
-            product.get().setUpdateAt(LocalDateTime.now());
-            product.get().setDeleteAt(LocalDateTime.now());
-            productRepository.save(product.get());
+            product.setActive(Boolean.FALSE);
+            product.setUpdateAt(new Date());
+            product.setDeleteAt(new Date());
+            productRepository.save(product);
 
-        } catch (Exception e) {
-            LOGGER.info(String.format(ERRO_GENERIC));
-            throw new Exception(e);
+        } catch (ProductNotFoundException e) {
+            LOGGER.error(String.format(BfnConstants.ERRO_GENERIC));
+            throw new ProductNotFoundException(e.getMessage());
         }
     }
 
     @Override
-    public Product update(Long id, RegisterProductDto request) throws Exception {
+    public Product update(Long id, RegisterProductDto request) throws ProductException, ProductNotFoundException, CategoryException {
         try {
             if (Objects.isNull(request)) {
-                LOGGER.info(String.format(REQUEST_IS_NULL));
-                throw new Exception();
+                LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
+                throw new ProductException(BfnConstants.REQUEST_IS_NULL);
             }
 
             Product product = findById(id);
 
-            Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow();
+            Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
             product.setCategories(Arrays.asList(category));
             this.productPopulator.populate(product, request);
             return productRepository.save(product);
-        } catch (Exception e) {
-            LOGGER.info(String.format(ERRO_GENERIC));
-            throw new Exception();
+        } catch (ProductException e) {
+            LOGGER.error(String.format(BfnConstants.ERRO_GENERIC));
+            throw new ProductException(e.getMessage());
+        } catch (ProductNotFoundException e) {
+            throw new ProductNotFoundException(e.getMessage());
+        }catch (CategoryException e) {
+            throw new CategoryException(e.getMessage());
         }
     }
 
@@ -110,13 +119,34 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product findById(Long id) throws Exception {
-        try {
-            return productRepository.findById(id).orElseThrow();
+    public Product findById(Long id) throws ProductNotFoundException {
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
+    }
 
-        } catch (Exception e) {
-            LOGGER.info(String.format(PRODUCT_NOT_FOUND));
-            throw new Exception(PRODUCT_NOT_FOUND);
+    @Override
+    public List<ProductDto> findByUf(String uf) throws ProductNotFoundException {
+        try {
+
+            if (uf == null){
+                throw new ProductNotFoundException("UF CANNOT BE NULL!");
+            }
+
+            List<Product> products = productRepository.searchAllByUf(uf);
+            List<ProductDto> productDtoList = new ArrayList<>();
+
+            if (products == null){
+                return new ArrayList<ProductDto>();
+            }
+
+            for(Product product : products){
+                ProductDto productDto = new ProductDto(product);
+                productDtoList.add(productDto);
+            }
+
+            return productDtoList;
+
+        }catch (ProductNotFoundException exc){
+            throw new ProductNotFoundException(exc.getMessage());
         }
     }
 }

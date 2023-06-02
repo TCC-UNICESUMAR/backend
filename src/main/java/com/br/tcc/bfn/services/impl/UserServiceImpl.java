@@ -1,9 +1,14 @@
 package com.br.tcc.bfn.services.impl;
 
+import com.br.tcc.bfn.builder.AddressBuilder;
+import com.br.tcc.bfn.builder.UserBuilder;
+import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.exceptions.ProductException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
+import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.populators.UserPopulator;
@@ -18,9 +23,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -50,38 +54,56 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO registerAdmin(RegisterRequest request) throws Exception {
+    public UserDTO registerAdmin(RegisterRequest request) throws UserException {
         try {
-            User user = new User();
-            UserDTO userDTO = new UserDTO();
-            user.setFirstname(request.getFirstname());
-            user.setFirstname(request.getFirstname());
-            user.setLastname(request.getLastname());
-            user.setEmail(request.getEmail());
-            user.setRoles(roleRepository.findAll());
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+            if (Objects.isNull(request)) {
+                throw new UserException(BfnConstants.REQUEST_IS_NULL);
+            }
+
+            User user = UserBuilder.builder()
+                    .firstName(request.getFirstname())
+                    .lastName(request.getLastname())
+                    .email(request.getEmail())
+                    .cpfOrCnpj(request.getCnpjOrCpf())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .active(Boolean.TRUE)
+                    .createdAt(new Date())
+                    .updateAt(new Date())
+                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
+                    .build();
+
+
+            UserDTO userDTO = UserDtoBuilder.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .profileImageId(user.getProfileImageId())
+                    .email(user.getEmail())
+                    .roles(user.getRoles())
+                    .build();
+
             repository.save(user);
-            userPopulator.populate(userDTO, user);
+
             return userDTO;
-        } catch (Exception e) {
-            throw new Exception(BfnConstants.ERRO_SAVE_USER);
+        } catch (UserException e) {
+            throw new UserException(BfnConstants.ERRO_SAVE_USER);
         }
     }
 
     @Override
-    public void disableUser(Long id) throws Exception {
+    public void disableUser(Long id) throws UserException {
         try {
           User user = repository.findById(id).get();
            if(user == null){
-               throw new Exception(BfnConstants.USER_NOT_FOUND);
+               throw new UserException(BfnConstants.USER_NOT_FOUND);
            }
 
            user.setActive(Boolean.FALSE);
            user.setDeleteAt(new Date());
            repository.save(user);
 
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
         }
     }
     @Override
@@ -90,21 +112,21 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO update(Long id, RegisterRequest request) throws Exception {
+    public UserDTO update(Long id, RegisterRequest request) throws UserException {
         try {
             return userFacade.updateUser(id, request);
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
         }
     }
 
     @Override
-    public Optional<User> findAuth() throws Exception {
+    public Optional<User> findAuth() throws UserException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> usuario = this.repository.findByEmail(auth.getName());
 
         if(usuario.isEmpty()) {
-            throw new Exception();
+            throw new UserException(BfnConstants.USER_NOT_FOUND);
         }
 
         return usuario;

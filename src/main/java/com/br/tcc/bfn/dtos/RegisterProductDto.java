@@ -1,11 +1,15 @@
 package com.br.tcc.bfn.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegisterProductDto {
 
     private String name;
     private String description;
     private Integer quantity;
     private String category;
+    private List<String> imageProductList = new ArrayList<>();
 
     public RegisterProductDto() {
     }
@@ -47,5 +51,13 @@ public class RegisterProductDto {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<String> getImageProductList() {
+        return imageProductList;
+    }
+
+    public void setImageProductList(List<String> imageProductList) {
+        this.imageProductList = imageProductList;
     }
 }

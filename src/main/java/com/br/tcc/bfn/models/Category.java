@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,20 +17,11 @@ public class Category implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String categoryName;
     private Boolean active;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
-    private LocalDateTime deleteAt;
+    private Date createdAt;
+    private Date updateAt;
+    private Date deleteAt;
 
     public Category() {
-    }
-
-    public Category(Long categoryId, String categoryName, Boolean active, LocalDateTime createdAt, LocalDateTime updateAt, LocalDateTime deleteAt) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updateAt = updateAt;
-        this.deleteAt = deleteAt;
     }
 
     public Long getCategoryId() {
@@ -56,26 +48,26 @@ public class Category implements Serializable {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
-    public LocalDateTime getDeleteAt() {
+    public Date getDeleteAt() {
         return deleteAt;
     }
-    public void setDeleteAt(LocalDateTime deleteAt) {
+    public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }
 }

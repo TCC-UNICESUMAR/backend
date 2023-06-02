@@ -43,9 +43,6 @@ public class User implements UserDetails, Serializable {
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
-    @Column(
-            unique = true
-    )
     private String profileImageId;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)

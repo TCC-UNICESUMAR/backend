@@ -6,9 +6,10 @@ CREATE TABLE tb_users(
 	last_name varchar(255) NULL,
 	profile_image_id varchar(100) NULL,
 	password varchar(255) NOT NULL,
-	created_at date NOT NULL,
-	update_at date NOT NULL,
-	delete_at date NULL,
+	created_at timestamp(6) NOT NULL,
+	update_at timestamp(6) NOT NULL,
+	delete_at timestamp(6) NULL,
 	active int NOT NULL,
-	isOng int NULL
+	isOng int NULL,
+	address_address_id bigint NULL
 );

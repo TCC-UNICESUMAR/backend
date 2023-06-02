@@ -15,10 +15,8 @@ public class Conversation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conversationId;
     @ManyToOne
-    @JoinColumn(name = "user_one")
     private User userOne;
     @ManyToOne
-    @JoinColumn(name = "user_two")
     private User userTwo;
     @OneToMany(
             mappedBy = "conversation",

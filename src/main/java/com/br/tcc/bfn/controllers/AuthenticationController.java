@@ -2,7 +2,7 @@ package com.br.tcc.bfn.controllers;
 
 import com.br.tcc.bfn.dtos.AuthenticationRequest;
 import com.br.tcc.bfn.repositories.UserRepository;
-import com.br.tcc.bfn.services.AuthenticationService;
+import com.br.tcc.bfn.services.impl.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -15,10 +15,8 @@ public class Message {
     private Long messageId;
     private String message;
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "conversation_id")
     private Conversation conversation;
     private Date createdAt;
 

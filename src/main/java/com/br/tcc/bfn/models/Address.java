@@ -3,6 +3,7 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_addresses")
@@ -17,9 +18,9 @@ public class Address {
     private String complement;
     private String zipCode;
     private String phone;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
-    private LocalDateTime deleteAt;
+    private Date createdAt;
+    private Date updateAt;
+    private Date deleteAt;
 
     public Address() {
     }
@@ -80,27 +81,27 @@ public class Address {
         this.phone = phone;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
-    public LocalDateTime getDeleteAt() {
+    public Date getDeleteAt() {
         return deleteAt;
     }
 
-    public void setDeleteAt(LocalDateTime deleteAt) {
+    public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }
 }

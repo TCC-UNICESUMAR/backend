@@ -3,12 +3,11 @@ CREATE TABLE tb_products(
 	name varchar(255) NULL,
 	quantity int NOT NULL,
 	description varchar(255) NULL,
-	user_id bigint NOT NULL,
-	created_at date NOT NULL,
-	update_at date NOT NULL,
-	delete_at date NULL,
+	user_user_id bigint NOT NULL,
+	created_at timestamp(6) NOT NULL,
+	update_at timestamp(6) NOT NULL,
+	delete_at timestamp(6) NULL,
 	active int NOT NULL,
-	reserved int NOT NULL
+	reserved int NOT NULL,
+	image_product_list JSON NULL
 );
-
-ALTER TABLE tb_products ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES tb_users (user_id) ;

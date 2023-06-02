@@ -1,6 +1,5 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.services.JwtService;
 import com.br.tcc.bfn.services.ITicketService;
 import com.br.tcc.bfn.services.IUserService;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -2,6 +2,7 @@ package com.br.tcc.bfn.services;
 
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,10 +11,10 @@ import java.util.Optional;
 
 public interface IUserService {
 
-    UserDTO register(RegisterRequest request) throws Exception;
-    UserDTO registerAdmin(RegisterRequest request) throws Exception;
-    void disableUser(Long id) throws Exception;
-    UserDTO update(Long id, RegisterRequest request) throws Exception;
+    UserDTO register(RegisterRequest request) throws UserException;
+    UserDTO registerAdmin(RegisterRequest request) throws UserException;
+    void disableUser(Long id) throws UserException;
+    UserDTO update(Long id, RegisterRequest request) throws UserException;
     List<User> findAll();
-    Optional<User> findAuth() throws Exception;
+    Optional<User> findAuth() throws UserException;
 }

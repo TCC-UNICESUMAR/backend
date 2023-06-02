@@ -75,17 +75,6 @@ public class UserFacadeImpl implements UserFacade {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
 
-            Address address = AddressBuilder.builder()
-                    .streetName(request.getAddressDto().getStreetName())
-                    .streetNumber(request.getAddressDto().getStreetNumber())
-                    .uf(request.getAddressDto().getUf())
-                    .complement(request.getAddressDto().getComplement())
-                    .phone(request.getAddressDto().getPhone())
-                    .zipCode(request.getAddressDto().getZipCode())
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
-
             User user = UserBuilder.builder()
                     .firstName(request.getFirstname())
                     .lastName(request.getLastname())
@@ -96,8 +85,6 @@ public class UserFacadeImpl implements UserFacade {
                     .createdAt(new Date())
                     .updateAt(new Date())
                     .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
-                    .profileImageId(request.getProfileImageId())
-                    .address(address)
                     .build();
 
             repository.save(user);
