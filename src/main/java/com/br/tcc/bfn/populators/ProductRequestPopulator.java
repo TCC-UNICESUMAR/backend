@@ -5,7 +5,7 @@ import com.br.tcc.bfn.models.Product;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductPopulator implements Populator<Product, RegisterProductDto>{
+public class ProductRequestPopulator implements Populator<Product, RegisterProductDto>{
     @Override
     public void populate(Product product, RegisterProductDto registerProductDto) {
         product.setActive(Boolean.TRUE);

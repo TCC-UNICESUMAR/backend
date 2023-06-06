@@ -8,40 +8,45 @@ import com.br.tcc.bfn.exceptions.ProductException;
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import com.br.tcc.bfn.models.Category;
 import com.br.tcc.bfn.models.Product;
-import com.br.tcc.bfn.populators.ProductPopulator;
+import com.br.tcc.bfn.populators.ProductDtoPopulator;
+import com.br.tcc.bfn.populators.ProductRequestPopulator;
 import com.br.tcc.bfn.repositories.CategoryRepository;
 import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.services.IProductService;
 import com.br.tcc.bfn.services.IUserService;
 import com.br.tcc.bfn.utils.BfnConstants;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    private final ProductPopulator productPopulator;
+    private final ProductRequestPopulator productRequestPopulator;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final IUserService userService;
-
+    private final ModelMapper productModelMapper;
+    private final ProductDtoPopulator productDtoPopulator;
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-    public ProductServiceImpl(ProductPopulator productPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService) {
-        this.productPopulator = productPopulator;
+    public ProductServiceImpl(ProductRequestPopulator productRequestPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService, ModelMapper productModelMapper, ProductDtoPopulator productDtoPopulator) {
+        this.productRequestPopulator = productRequestPopulator;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userService = userService;
+        this.productModelMapper = productModelMapper;
+        this.productDtoPopulator = productDtoPopulator;
     }
 
+
     @Override
-    public Product register(RegisterProductDto request) throws Exception {
+    public ProductDto register(RegisterProductDto request) throws Exception {
         try {
             if (Objects.isNull(request)) {
                 LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
@@ -59,9 +64,12 @@ public class ProductServiceImpl implements IProductService {
                     .updateAt(new Date())
                     .reserved(Boolean.FALSE)
                     .quantity(request.getQuantity())
+                    .description(request.getDescription())
                     .build();
 
-            return productRepository.save(product);
+            productRepository.save(product);
+            return productModelMapper.map(product, ProductDto.class);
+
         } catch (ProductException e) {
             LOGGER.info(String.format(BfnConstants.ERRO_SAVE_PRODUCT));
             throw new ProductException(e.getMessage());
@@ -89,63 +97,66 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product update(Long id, RegisterProductDto request) throws ProductException, ProductNotFoundException, CategoryException {
+    public ProductDto update(Long id, RegisterProductDto request) throws ProductException, ProductNotFoundException, CategoryException {
         try {
             if (Objects.isNull(request)) {
                 LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
                 throw new ProductException(BfnConstants.REQUEST_IS_NULL);
             }
 
-            Product product = findById(id);
+            Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
             Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
             product.setCategories(Arrays.asList(category));
-            this.productPopulator.populate(product, request);
-            return productRepository.save(product);
+            this.productRequestPopulator.populate(product, request);
+            productRepository.save(product);
+            return productModelMapper.map(product, ProductDto.class);
         } catch (ProductException e) {
             LOGGER.error(String.format(BfnConstants.ERRO_GENERIC));
             throw new ProductException(e.getMessage());
         } catch (ProductNotFoundException e) {
             throw new ProductNotFoundException(e.getMessage());
-        }catch (CategoryException e) {
+        } catch (CategoryException e) {
             throw new CategoryException(e.getMessage());
         }
     }
 
     @Override
     public Page<ProductDto> findAll(Pageable pageable) {
-        Page<Product> productDtos = productRepository.searchAll(pageable);
-        return productDtos.map(x -> new ProductDto(x));
+        Page<Product> product = productRepository.searchAll(pageable);
+        return product.map(x -> productModelMapper.map(x, ProductDto.class));
     }
 
     @Override
-    public Product findById(Long id) throws ProductNotFoundException {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
+    public ProductDto findById(Long id) throws ProductNotFoundException {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
+        return this.productModelMapper.map(product, ProductDto.class);
     }
 
     @Override
     public List<ProductDto> findByUf(String uf) throws ProductNotFoundException {
         try {
 
-            if (uf == null){
+            if (uf == null) {
                 throw new ProductNotFoundException("UF CANNOT BE NULL!");
             }
 
             List<Product> products = productRepository.searchAllByUf(uf);
             List<ProductDto> productDtoList = new ArrayList<>();
 
-            if (products == null){
+            if (products == null) {
                 return new ArrayList<ProductDto>();
             }
 
-            for(Product product : products){
-                ProductDto productDto = new ProductDto(product);
+            for (Product product : products) {
+                ProductDto productDto = new ProductDto();
+                productDtoPopulator.populate(productDto,product);
                 productDtoList.add(productDto);
             }
 
             return productDtoList;
 
-        }catch (ProductNotFoundException exc){
+        } catch (ProductNotFoundException exc) {
             throw new ProductNotFoundException(exc.getMessage());
         }
     }

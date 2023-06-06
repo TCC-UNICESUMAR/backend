@@ -14,13 +14,6 @@ public class RegisterProductDto {
     public RegisterProductDto() {
     }
 
-    public RegisterProductDto(String name, String description, Integer quantity, String category) {
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.category = category;
-    }
-
     public String getName() {
         return name;
     }

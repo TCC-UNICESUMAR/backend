@@ -99,16 +99,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     private void sendChatUsers(WebSocketSession session, String user) throws Exception {
-        List<UserDTO> userDto = new ArrayList<>();
-        for(User u : userService.findAll()){
-            if(!(u.getUsername().equalsIgnoreCase(user))){
-                UserDTO dto = new UserDTO();
-                dto.setId(u.getUserId());
-                dto.setEmail(u.getEmail());
-                userDto.add(dto);
-            }
-        }
-
+        List<UserDTO> userDto = userService.findAll();
         Event<List<UserDTO>> event = new Event<>(EventType.CHAT_USERS_WERE_UPDATED, userDto);
         sendEvent(session, event);
     }

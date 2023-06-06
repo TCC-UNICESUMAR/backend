@@ -1,60 +1,51 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.s3.S3Buckets;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.services.s3.AmazonS3;
 import com.br.tcc.bfn.services.S3Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
-import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
-import java.time.Duration;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class S3ServiceImpl implements S3Service {
-    private final S3Buckets s3Buckets;
-    @Value("${aws.region}")
-    private String awsRegion;
+    private final AmazonS3 amazonS3;
 
-    public S3ServiceImpl(S3Buckets s3Buckets) {
-        this.s3Buckets = s3Buckets;
+    @Value("${aws.s3.buckets.user}")
+    private String bucketImageProfile;
+    @Value("${aws.s3.buckets.product}")
+    private String bucketImageProduct;
+
+    public S3ServiceImpl(AmazonS3 amazonS3) {
+        this.amazonS3 = amazonS3;
     }
-
 
     @Override
     public String generateUrlPreSignedToProfileImage(final Long id) throws Exception {
         try {
-
             final String profileImageId = UUID.randomUUID().toString();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.MINUTE, 10); //validity of 10 minutes
+            return amazonS3.generatePresignedUrl(bucketImageProfile, "profile-image/%s/%s".formatted(id, profileImageId), calendar.getTime(), HttpMethod.PUT).toString();
 
-            ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 
-            S3Presigner presigner = S3Presigner.builder()
-                    .region(Region.of(awsRegion))
-                    .credentialsProvider(credentialsProvider)
-                    .build();
+    public String generateUrlPreSignedToProductImage(final Long id) throws Exception {
+        try {
+            final String productImageId = UUID.randomUUID().toString();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.MINUTE, 10); //validity of 10 minutes
+            return amazonS3.generatePresignedUrl(bucketImageProfile, "product-image/%s/%s".formatted(id, productImageId), calendar.getTime(), HttpMethod.PUT).toString();
 
-            final PutObjectRequest objectRequest = PutObjectRequest.builder()
-                    .bucket(s3Buckets.getCustomer())
-                    .contentType("image/png")
-                    .key("profile-image/%s/%s".formatted(id, profileImageId))
-                    .build();
-
-            final PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                    .signatureDuration(Duration.ofMinutes(30))
-                    .putObjectRequest(objectRequest)
-                    .build();
-
-            final PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
-
-            return presignedRequest.url().toString();
-
-        } catch (S3Exception e) {
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }

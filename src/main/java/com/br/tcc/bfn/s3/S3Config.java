@@ -1,23 +1,34 @@
 package com.br.tcc.bfn.s3;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 public class S3Config {
 
+    @Value("${aws.accessKey}")
+    private String accessKeyId;
+
+    @Value("${aws.secretKey}")
+    private String accessKeySecret;
+
     @Value("${aws.region}")
-    private String awsRegion;
+    private String s3RegionName;
 
     @Bean
-    public S3Client s3Client() {
-        S3Client client = S3Client.builder()
-                .region(Region.of(awsRegion))
+    public AmazonS3 getAmazonS3Client() {
+        final BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(accessKeyId, accessKeySecret);
+        // Get Amazon S3 client and return the S3 client object
+        return AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(basicAwsCredentials))
+                .withRegion(s3RegionName)
                 .build();
-        return client;
     }
 
 }

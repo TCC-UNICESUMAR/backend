@@ -2,6 +2,7 @@ package com.br.tcc.bfn.controllers;
 
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.Response;
+import com.br.tcc.bfn.dtos.UpdateAddressRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,8 +39,8 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
 
         try{
-            UserDTO userDTO = userService.register(request);
-            dtoResponse.setData(userDTO);
+            LOGGER.info("Method Register User Default");
+            dtoResponse.setData(userService.register(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -52,8 +54,7 @@ public class UserController{
     public ResponseEntity<Response<UserDTO>> registerAdmin(@RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            UserDTO userDTO = userService.registerAdmin(request);
-            dtoResponse.setData(userDTO);
+            dtoResponse.setData(userService.registerAdmin(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -89,12 +90,8 @@ public class UserController{
     public ResponseEntity<Response<User>> findById(@PathVariable Long id) {
         Response<User> dtoResponse = new Response<>();
         try {
-            User user = repository.findById(id).get();
-            if(user == null){
-                throw new Exception("USER_NOT_FOUND");
-            }
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(user);
+            dtoResponse.setData(repository.findById(id).get());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -107,9 +104,23 @@ public class UserController{
     public ResponseEntity<Response<UserDTO>> updateUser(@PathVariable Long id, @RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
-            UserDTO userDTO = userService.update(id,request);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userDTO);
+            dtoResponse.setData(userService.update(id,request));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @PutMapping("/address/{id}")
+    public ResponseEntity<Response<UserDTO>> updateAddressUser(@PathVariable Long id,@Validated @RequestBody UpdateAddressRequest request){
+        Response<UserDTO> dtoResponse = new Response<>();
+        try{
+            LOGGER.info("Method Register Address To User");
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(userService.updateAddress(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());

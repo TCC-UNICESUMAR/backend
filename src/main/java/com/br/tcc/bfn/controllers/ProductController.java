@@ -24,12 +24,11 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseEntity<Response<Product>> register(@RequestBody RegisterProductDto request) {
-        Response<Product> dtoResponse = new Response<>();
+    public ResponseEntity<Response<ProductDto>> register(@RequestBody RegisterProductDto request) {
+        Response<ProductDto> dtoResponse = new Response<>();
 
         try{
-            Product product =  productService.register(request);
-            dtoResponse.setData(product);
+            dtoResponse.setData(productService.register(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         }catch (Exception e){
@@ -40,8 +39,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Product>> disableProduct(@PathVariable Long id){
-        Response<Product> dtoResponse = new Response<>();
+    public ResponseEntity<Response<Void>> disableProduct(@PathVariable Long id){
+        Response<Void> dtoResponse = new Response<>();
         try{
             productService.disableProduct(id);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
@@ -55,8 +54,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<Product>> findById(@PathVariable Long id){
-        Response<Product> dtoResponse = new Response<>();
+    public ResponseEntity<Response<ProductDto>> findById(@PathVariable Long id){
+        Response<ProductDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.setData(productService.findById(id));
@@ -99,12 +98,11 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Product>> updateProduct(@PathVariable Long id, @RequestBody RegisterProductDto request){
-        Response<Product> dtoResponse = new Response<>();
+    public ResponseEntity<Response<ProductDto>> updateProduct(@PathVariable Long id, @RequestBody RegisterProductDto request){
+        Response<ProductDto> dtoResponse = new Response<>();
         try{
-            Product product = productService.update(id,request);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(product);
+            dtoResponse.setData(productService.update(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
