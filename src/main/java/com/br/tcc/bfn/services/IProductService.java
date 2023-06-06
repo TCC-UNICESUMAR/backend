@@ -11,15 +11,15 @@ import java.util.List;
 
 public interface IProductService {
 
-    Product register(RegisterProductDto request) throws Exception;
+    ProductDto register(RegisterProductDto request) throws Exception;
 
     void disableProduct(Long id) throws Exception;
 
-    Product update(Long id, RegisterProductDto request) throws Exception;
+    ProductDto update(Long id, RegisterProductDto request) throws Exception;
 
     Page<ProductDto> findAll(Pageable pageable);
 
-    Product findById(Long id) throws ProductNotFoundException;
+    ProductDto findById(Long id) throws ProductNotFoundException;
 
     List<ProductDto> findByUf(String uf) throws ProductNotFoundException;
 }

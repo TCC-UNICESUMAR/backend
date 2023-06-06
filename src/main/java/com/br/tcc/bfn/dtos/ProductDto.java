@@ -2,43 +2,107 @@ package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Category;
 import com.br.tcc.bfn.models.Product;
+import com.br.tcc.bfn.models.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProductDto {
 
-    private Long id;
+    private Long productId;
     private String name;
-
     private String description;
-    private List<CategoryDto> categoryDtoList = new ArrayList<>();
-
-    private List<String> images;
+    private List<CategoryDto> categories = new ArrayList<>();
+    private Integer quantity;
+    private UserDTO user;
+    private List<String> imageProductList = new ArrayList<>();
+    private Boolean reserved;
+    private Boolean active;
+    private Date createdAt;
+    private Date updateAt;
+    private Date deleteAt;
 
     public ProductDto() {
     }
 
     public ProductDto(Product product) {
-        id = product.getProductId();
-        name = product.getName();
-        description = product.getDescription();
-        images = product.getImageProductList() != null ? product.getImageProductList() : new ArrayList<>();
-        List<CategoryDto> categoryDtos = new ArrayList<>();
-        for (Category category :
-                product.getCategories()) {
-            categoryDtos.add(new CategoryDto(category.getCategoryId(), category.getCategoryName()));
-        }
-
-        categoryDtoList = categoryDtos;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public List<String> getImageProductList() {
+        return imageProductList;
+    }
+
+    public void setImageProductList(List<String> imageProductList) {
+        this.imageProductList = imageProductList;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public Date getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(Date deleteAt) {
+        this.deleteAt = deleteAt;
     }
 
     public String getName() {
@@ -49,10 +113,6 @@ public class ProductDto {
         this.name = name;
     }
 
-    public List<CategoryDto> getCategoryDtoList() {
-        return categoryDtoList;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -61,11 +121,11 @@ public class ProductDto {
         this.description = description;
     }
 
-    public List<String> getImages() {
-        return images;
+    public List<CategoryDto> getCategories() {
+        return categories;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setCategories(List<CategoryDto> categories) {
+        this.categories = categories;
     }
 }

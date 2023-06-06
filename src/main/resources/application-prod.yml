@@ -1,29 +1,35 @@
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    password: ${DB_PASSWORD}
-#    url: ${DB_URL}
-#    username: ${DB_USER}
-#  jpa:
-#    show:
-#      sql: true
-#  flyway:
-#    baselineOnMigrate: ${FLYWAY_BASE_LINE}
-#  redis:
-#    host: ${REDIS_HOST}
-#    port: ${REDIS_PORT}
-#    password: ${REDIS_PASSWORD}
-#    user: ${REDIS_USER}
-#  cache:
-#    type: redis
-#    redis:
-#      time-to-live: 600000
-#  security:
-#     oauth2:
-#       client:
-#         registration:
-#           google:
-#            clientId: ${CLIENT_ID}
-#            clientSecret: ${CLIENT_SECRET}
-#jwt:
-#  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+##spring:
+##  datasource:
+##    driver-class-name: com.mysql.cj.jdbc.Driver
+##    password: ${DB_PASSWORD}
+##    url: ${DB_URL}
+##    username: ${DB_USER}
+##  jpa:
+##    show:
+##      sql: true
+##  flyway:
+##    baselineOnMigrate: ${FLYWAY_BASE_LINE}
+##  redis:
+##    host: ${REDIS_HOST}
+##    port: ${REDIS_PORT}
+##    password: ${REDIS_PASSWORD}
+##    user: ${REDIS_USER}
+##  cache:
+##    type: redis
+##    redis:
+##      time-to-live: 600000
+##  security:
+##     oauth2:
+##       client:
+##         registration:
+##           google:
+##            clientId: ${CLIENT_ID}
+##            clientSecret: ${CLIENT_SECRET}
+##jwt:
+##  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#
+#aws:
+#  region: eu-west-1
+#  s3:
+#    buckets:
+#      customer: tcc-bfn-image-profile
