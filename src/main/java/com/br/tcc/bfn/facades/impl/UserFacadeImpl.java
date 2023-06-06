@@ -1,26 +1,22 @@
 package com.br.tcc.bfn.facades.impl;
 
-import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.UserBuilder;
-import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
-import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.populators.UserPopulator;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.utils.BfnConstants;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -33,14 +29,17 @@ public class UserFacadeImpl implements UserFacade {
     private final UserDTOPopulator userDTOPopulator;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+
+    private final ModelMapper modelMapper;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserFacadeImpl.class.getName());
 
-    public UserFacadeImpl(UserRepository repository, UserPopulator userPopulator, UserDTOPopulator userDTOPopulator, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserFacadeImpl(UserRepository repository, UserPopulator userPopulator, UserDTOPopulator userDTOPopulator, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper) {
         this.repository = repository;
         this.userPopulator = userPopulator;
         this.userDTOPopulator = userDTOPopulator;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -61,8 +60,8 @@ public class UserFacadeImpl implements UserFacade {
 
             userPopulator.populate(user, request);
             repository.save(user);
-            userDTOPopulator.populate(userDTO, user);
-            return userDTO;
+
+            return this.modelMapper.map(user, UserDTO.class);
         }catch (UserException exc){
             throw new UserException(exc.getMessage());
         }
@@ -89,15 +88,7 @@ public class UserFacadeImpl implements UserFacade {
 
             repository.save(user);
 
-            UserDTO userDTO = UserDtoBuilder.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .profileImageId(user.getProfileImageId())
-                    .email(user.getEmail())
-                    .roles(user.getRoles())
-                    .build();
-
-            return userDTO;
+            return modelMapper.map(user, UserDTO.class);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }

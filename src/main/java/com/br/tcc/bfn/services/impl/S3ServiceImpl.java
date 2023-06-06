@@ -1,11 +1,11 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.s3.S3Buckets;
-import com.br.tcc.bfn.services.IUserService;
 import com.br.tcc.bfn.services.S3Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -17,21 +17,14 @@ import java.util.UUID;
 
 @Service
 public class S3ServiceImpl implements S3Service {
-
-    private final S3Client s3;
-
     private final S3Buckets s3Buckets;
+    @Value("${aws.region}")
+    private String awsRegion;
 
-    private final IUserService userService;
-
-    private final S3Presigner presigner;
-
-    public S3ServiceImpl(S3Client s3, S3Buckets s3Buckets, IUserService userService, S3Presigner presigner) {
-        this.s3 = s3;
+    public S3ServiceImpl(S3Buckets s3Buckets) {
         this.s3Buckets = s3Buckets;
-        this.userService = userService;
-        this.presigner = presigner;
     }
+
 
     @Override
     public String generateUrlPreSignedToProfileImage(final Long id) throws Exception {
@@ -39,8 +32,16 @@ public class S3ServiceImpl implements S3Service {
 
             final String profileImageId = UUID.randomUUID().toString();
 
-           final PutObjectRequest objectRequest = PutObjectRequest.builder()
+            ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+
+            S3Presigner presigner = S3Presigner.builder()
+                    .region(Region.of(awsRegion))
+                    .credentialsProvider(credentialsProvider)
+                    .build();
+
+            final PutObjectRequest objectRequest = PutObjectRequest.builder()
                     .bucket(s3Buckets.getCustomer())
+                    .contentType("image/png")
                     .key("profile-image/%s/%s".formatted(id, profileImageId))
                     .build();
 

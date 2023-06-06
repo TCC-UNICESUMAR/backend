@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: ${DB_PASSWORD:}
-    url: ${DB_URL:jdbc:mysql://localhost:3306/tcc_bfn?useTimezone=true&serverTimezone=America/Sao_Paulo}
+    password: ${DB_PASSWORD:Mat123456}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/db_tcc?useTimezone=true&serverTimezone=America/Sao_Paulo}
     username: ${DB_USER:root}
   jpa:
     show:
