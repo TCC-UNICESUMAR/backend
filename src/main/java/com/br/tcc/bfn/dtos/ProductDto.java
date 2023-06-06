@@ -27,6 +27,8 @@ public class ProductDto {
     private Date updateAt;
     private Date deleteAt;
 
+    private AddressDto address;
+
     public ProductDto() {
     }
 
@@ -127,5 +129,13 @@ public class ProductDto {
 
     public void setCategories(List<CategoryDto> categories) {
         this.categories = categories;
+    }
+
+    public AddressDto getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDto address) {
+        this.address = address;
     }
 }

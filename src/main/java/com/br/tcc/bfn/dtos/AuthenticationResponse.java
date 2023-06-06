@@ -2,7 +2,7 @@ package com.br.tcc.bfn.dtos;
 
 public class AuthenticationResponse {
 
-	private String acessToken;
+	private String accessToken;
 
 	private String refreshToken;
 
@@ -10,18 +10,18 @@ public class AuthenticationResponse {
 		super();
 	}
 
-	public AuthenticationResponse(String acessToken, String refreshToken) {
+	public AuthenticationResponse(String accessToken, String refreshToken) {
 		super();
-		this.acessToken = acessToken;
+		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 	}
 
-	public String getAcessToken() {
-		return acessToken;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setAcessToken(String acessToken) {
-		this.acessToken = acessToken;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	public String getRefreshToken() {

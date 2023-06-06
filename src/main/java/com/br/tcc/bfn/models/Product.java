@@ -29,7 +29,7 @@ public class Product {
     private User user;
     @JdbcType(value = JsonJdbcType.class)
     private List<String> imageProductList = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
@@ -40,6 +40,8 @@ public class Product {
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
+    @OneToOne
+    private Address address;
 
     public Product() {
     }
@@ -139,5 +141,13 @@ public class Product {
 
     public void setImageProductList(List<String> imageProductList) {
         this.imageProductList = imageProductList;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

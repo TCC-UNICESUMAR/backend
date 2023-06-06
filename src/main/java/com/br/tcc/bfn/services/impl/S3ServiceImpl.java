@@ -13,7 +13,6 @@ import java.util.UUID;
 @Service
 public class S3ServiceImpl implements S3Service {
     private final AmazonS3 amazonS3;
-
     @Value("${aws.s3.buckets.user}")
     private String bucketImageProfile;
     @Value("${aws.s3.buckets.product}")
@@ -36,14 +35,14 @@ public class S3ServiceImpl implements S3Service {
             throw new Exception(e.getMessage());
         }
     }
-
-    public String generateUrlPreSignedToProductImage(final Long id) throws Exception {
+    @Override
+    public String generateUrlPreSignedToProductImage() throws Exception {
         try {
             final String productImageId = UUID.randomUUID().toString();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.MINUTE, 10); //validity of 10 minutes
-            return amazonS3.generatePresignedUrl(bucketImageProfile, "product-image/%s/%s".formatted(id, productImageId), calendar.getTime(), HttpMethod.PUT).toString();
+            return amazonS3.generatePresignedUrl(bucketImageProfile, "product-image/%s".formatted(productImageId), calendar.getTime(), HttpMethod.PUT).toString();
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());

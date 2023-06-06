@@ -2,8 +2,8 @@ package com.br.tcc.bfn.facades.impl;
 
 import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.UserBuilder;
+import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
-import com.br.tcc.bfn.dtos.UpdateAddressRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
@@ -74,25 +74,13 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UserDTO updateUserAddress(Long id, UpdateAddressRequest request) throws UserException {
+    public UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException {
         try {
-            User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-            Address address = user.getAddress() != null ? user.getAddress() : null;
+            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
+            final Address address = user.getAddress() != null ? user.getAddress() : null;
 
-            if (user.getAddress() == null) {
-                address = AddressBuilder.builder()
-                        .streetName(request.getStreetName())
-                        .streetNumber(request.getStreetNumber())
-                        .zipCode(request.getZipCode())
-                        .complement(request.getComplement() != null ? request.getComplement() : StringUtils.EMPTY)
-                        .uf(request.getUf())
-                        .phone(request.getPhone())
-                        .createdAt(new Date())
-                        .updatedAt(new Date())
-                        .build();
-                addressRepository.save(address);
-                user.setAddress(address);
-                repository.save(user);
+            if (address == null) {
+                throw new UserException(BfnConstants.ADDRESS_NOT_FOUND);
             }
 
             populateAddressWithNewValues(request, address);
@@ -103,9 +91,33 @@ public class UserFacadeImpl implements UserFacade {
             throw new UserException(exc.getMessage());
         }
     }
+    @Override
+    public UserDTO saveUserAddress(Long id, AddressRequest request) throws UserException {
+        try {
+            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
 
-    private void populateAddressWithNewValues(UpdateAddressRequest request, Address address) {
-        address.setComplement(request.getComplement());
+            Address address = AddressBuilder.builder()
+                    .uf(request.getUf())
+                    .phone(request.getPhone())
+                    .streetName(request.getStreetName())
+                    .streetNumber(request.getStreetNumber())
+                    .zipCode(request.getZipCode())
+                    .complement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY)
+                    .createdAt(new Date())
+                    .updatedAt(new Date())
+                    .build();
+
+            addressRepository.save(address);
+            user.setAddress(address);
+            repository.save(user);
+            return this.modelMapper.map(user, UserDTO.class);
+        } catch (UserException exc) {
+            throw new UserException(exc.getMessage());
+        }
+    }
+
+    private void populateAddressWithNewValues(AddressRequest request, Address address) {
+        address.setComplement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY);
         address.setPhone(request.getPhone());
         address.setUf(request.getUf());
         address.setStreetName(request.getStreetName());
