@@ -40,7 +40,7 @@ public class AuthenticationController {
 		}
 	}
 
-	@PostMapping("/refreshToken")
+	@GetMapping("/refreshToken")
 	public ResponseEntity<Response<AuthenticationResponse>> getRefreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
 		Response<AuthenticationResponse> dtoResponse = new Response<>();
 		try{

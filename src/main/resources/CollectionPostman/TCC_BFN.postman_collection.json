@@ -1,0 +1,892 @@
+{
+	"info": {
+		"_postman_id": "02358a99-ac70-468e-8453-dabeca2c2f98",
+		"name": "TCC_BFN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15797639"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Matheus\",\r\n    \"lastname\": \"Bonnet\",\r\n    \"email\": \"matheus@gmail.com\",\r\n    \"cnpjOrCpf\": \"12954040955\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/user/register",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbXSwic3ViIjoibWF0QGdtYWlsLmNvbSIsImlhdCI6MTY3OTMyNTEwMiwiZXhwIjoxNjc5MzI2NTQyfQ.3AHnN-PQHhnX85Qo-ZxbEsfto-1aN10M6IjBWlqd-dM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Admin 2\",\r\n    \"lastname\": \"Admin 2\",\r\n    \"email\": \"admin2@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register-admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register-admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/findAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"findAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Messages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/chat/user/findAllMessagesByUserId/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chat",
+								"user",
+								"findAllMessagesByUserId",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Address",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streetName\": \"Rua Bahia\",\n    \"streetNumber\": \"354\",\n    \"uf\": \"PR\",\n    \"zipCode\": \"80630-250\",\n    \"phone\":\"(41)98497-6664\",\n    \"complement\": \"Sobrado 3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/user/address/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"address",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Address On User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streetName\": \"Rua Bahia\",\n    \"streetNumber\": \"354\",\n    \"uf\": \"PR\",\n    \"zipCode\": \"80630-250\",\n    \"phone\":\"(41)98497-6664\",\n    \"complement\": \"Sobrado 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/user/address/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"address",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disable User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/user/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" if(responseCode.code >= 200 && responseCode.code < 201){\r",
+									"     var json = JSON.parse(responseBody)\r",
+									"     postman.setEnvironmentVariable('token', json.data.accessToken)\r",
+									" }\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"matheus@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"mat@gmail.com\",\r\n    \"password\":\"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get ticket",
+			"item": [
+				{
+					"name": "get ticket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" if(responseCode.code >= 200 && responseCode.code < 201){\r",
+									"     var json = JSON.parse(responseBody)\r",
+									"     postman.setEnvironmentVariable('ticket', json.data.ticket)\r",
+									" }\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ticket",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ticket"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Add Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cadeira Gamer Usada\",\r\n    \"description\": \"Cadeira Gamer em Otimas condicoes para uso\",\r\n    \"quantity\": \"1\",\r\n    \"category\": \"Eletronicos\",\r\n    \"imageProductList\": [\r\n        \"gserhgeerth\"\r\n    ],\r\n    \"addressDto\": \r\n        {\r\n            \"streetName\": \"Rua Bahia\",\r\n            \"streetNumber\": \"354\",\r\n            \"uf\": \"PR\",\r\n            \"zipCode\": \"80630-250\",\r\n            \"phone\": \"(41)98497-6664\",\r\n            \"complement\": \"Sobrado 3\"\r\n        }\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/product",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/product/4",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/product",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/product/category/Eletronicos",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"category",
+								"Eletronicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By UF",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/product/region/PR",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"region",
+								"PR"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/product/3",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cadeira Gamer Usada\",\r\n    \"description\": \"Cadeira Gamer em Otimas condicoes para uso\",\r\n    \"quantity\": \"1\",\r\n    \"category\": \"Eletronicos\",\r\n    \"imageProductList\": [\r\n            \"gserhgeerth\"\r\n       ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/product/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "S3 Pre Signed Url",
+			"item": [
+				{
+					"name": "Get Url To Image User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/s3/preSignedUrlUser/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"s3",
+								"preSignedUrlUser",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Url To  Product Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/s3/preSignedUrlProduct",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"s3",
+								"preSignedUrlProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload User Image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/C:/Users/NL365ZD/OneDrive - EY/Pictures/Captura de tela 2023-06-05 162441.png"
+							}
+						},
+						"url": {
+							"raw": "https://tcc-bfn-image-profile.s3.eu-west-1.amazonaws.com/profile-image/1/780fe351-3527-4be2-ae24-9c981deae7cf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230605T192038Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Expires=1799&X-Amz-Credential=AKIAUT6UORFO76RHYDBP%2F20230605%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Signature=6c41c9be713037093f59027dc09ad3142fc7cb6e5ee417dc5b4a4df85491318e",
+							"protocol": "https",
+							"host": [
+								"tcc-bfn-image-profile",
+								"s3",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"profile-image",
+								"1",
+								"780fe351-3527-4be2-ae24-9c981deae7cf"
+							],
+							"query": [
+								{
+									"key": "X-Amz-Algorithm",
+									"value": "AWS4-HMAC-SHA256"
+								},
+								{
+									"key": "X-Amz-Date",
+									"value": "20230605T192038Z"
+								},
+								{
+									"key": "X-Amz-SignedHeaders",
+									"value": "content-type%3Bhost"
+								},
+								{
+									"key": "X-Amz-Expires",
+									"value": "1799"
+								},
+								{
+									"key": "X-Amz-Credential",
+									"value": "AKIAUT6UORFO76RHYDBP%2F20230605%2Feu-west-1%2Fs3%2Faws4_request"
+								},
+								{
+									"key": "X-Amz-Signature",
+									"value": "6c41c9be713037093f59027dc09ad3142fc7cb6e5ee417dc5b4a4df85491318e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Product Image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/C:/Users/NL365ZD/OneDrive - EY/Pictures/Captura de tela 2023-06-05 162441.png"
+							}
+						},
+						"url": {
+							"raw": "https://tcc-bfn-image-profile.s3.eu-west-1.amazonaws.com/profile-image/1/780fe351-3527-4be2-ae24-9c981deae7cf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230605T192038Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Expires=1799&X-Amz-Credential=AKIAUT6UORFO76RHYDBP%2F20230605%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Signature=6c41c9be713037093f59027dc09ad3142fc7cb6e5ee417dc5b4a4df85491318e",
+							"protocol": "https",
+							"host": [
+								"tcc-bfn-image-profile",
+								"s3",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"profile-image",
+								"1",
+								"780fe351-3527-4be2-ae24-9c981deae7cf"
+							],
+							"query": [
+								{
+									"key": "X-Amz-Algorithm",
+									"value": "AWS4-HMAC-SHA256"
+								},
+								{
+									"key": "X-Amz-Date",
+									"value": "20230605T192038Z"
+								},
+								{
+									"key": "X-Amz-SignedHeaders",
+									"value": "content-type%3Bhost"
+								},
+								{
+									"key": "X-Amz-Expires",
+									"value": "1799"
+								},
+								{
+									"key": "X-Amz-Credential",
+									"value": "AKIAUT6UORFO76RHYDBP%2F20230605%2Feu-west-1%2Fs3%2Faws4_request"
+								},
+								{
+									"key": "X-Amz-Signature",
+									"value": "6c41c9be713037093f59027dc09ad3142fc7cb6e5ee417dc5b4a4df85491318e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
