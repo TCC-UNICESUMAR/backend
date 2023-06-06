@@ -1,5 +1,6 @@
 package com.br.tcc.bfn.builder;
 
+import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Category;
 import com.br.tcc.bfn.models.Product;
 import com.br.tcc.bfn.models.User;
@@ -66,6 +67,10 @@ public class ProductBuilder {
 
     public ProductBuilder category(List<Category> categoryList){
         this.product.setCategories(categoryList);
+        return this;
+    }
+    public ProductBuilder address(Address address){
+        this.product.setAddress(address);
         return this;
     }
 

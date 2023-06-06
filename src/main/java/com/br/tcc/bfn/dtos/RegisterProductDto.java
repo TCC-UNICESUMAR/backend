@@ -10,6 +10,7 @@ public class RegisterProductDto {
     private Integer quantity;
     private String category;
     private List<String> imageProductList = new ArrayList<>();
+    private AddressDto addressDto;
 
     public RegisterProductDto() {
     }
@@ -52,5 +53,13 @@ public class RegisterProductDto {
 
     public void setImageProductList(List<String> imageProductList) {
         this.imageProductList = imageProductList;
+    }
+
+    public AddressDto getAddressDto() {
+        return addressDto;
+    }
+
+    public void setAddressDto(AddressDto addressDto) {
+        this.addressDto = addressDto;
     }
 }

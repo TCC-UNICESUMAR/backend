@@ -2,7 +2,7 @@ package com.br.tcc.bfn.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class UpdateAddressRequest {
+public class AddressRequest {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String streetName;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -15,7 +15,7 @@ public class UpdateAddressRequest {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phone;
 
-    public UpdateAddressRequest() {
+    public AddressRequest() {
     }
 
     public String getStreetName() {
