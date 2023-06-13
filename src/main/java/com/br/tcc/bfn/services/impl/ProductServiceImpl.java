@@ -74,7 +74,6 @@ public class ProductServiceImpl implements IProductService {
             Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
             Product product = ProductBuilder.builder()
                     .active(Boolean.TRUE)
-                    .imageList(request.getImageProductList())
                     .createdAt(new Date())
                     .name(request.getName())
                     .category(Arrays.asList(category))

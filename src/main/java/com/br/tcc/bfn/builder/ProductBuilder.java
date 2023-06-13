@@ -60,8 +60,8 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder imageList(List<String> list){
-        this.product.setImageProductList(list);
+    public ProductBuilder imageList(String value){
+        this.product.setImageProductKey(value);
         return this;
     }
 

@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/s3")
-public class S3PreSignedUrlController {
+public class S3Controller {
 
     private final S3Service s3Service;
 
-    public S3PreSignedUrlController(S3Service s3Service) {
+    public S3Controller(S3Service s3Service) {
         this.s3Service = s3Service;
     }
 
@@ -35,12 +35,27 @@ public class S3PreSignedUrlController {
 
     }
 
-    @GetMapping("/preSignedUrlProduct")
-    public ResponseEntity<Response<String>> getUrlToProductImage(){
+    @GetMapping("/preSignedUrlProduct/{id}")
+    public ResponseEntity<Response<String>> getUrlToProductImage(@PathVariable final Long id){
         Response<String> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(s3Service.generateUrlPreSignedToProductImage());
+            dtoResponse.setData(s3Service.generateUrlPreSignedToProductImage(id));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+
+    }
+
+    @GetMapping("/getObjectUserProfile/{id}")
+    public ResponseEntity<Response<Void>> getObjectBucketUser(@PathVariable final Long id){
+        Response<Void> dtoResponse = new Response<>();
+        try{
+            s3Service.getObjectOnBucktUser(id);
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
