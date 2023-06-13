@@ -13,4 +13,7 @@ public class BfnConstants {
     public final static String ADDRESS_NOT_FOUND = "ADDRESS NOT FOUND!!!";
     public final static String ERRO_GENERIC = "ERROR CONSULTING YOUR SUPPORT TO MORE INFOS";
     public final static String TOKEN_IS_VALID = "THE TOKEN IS STILL VALID FOR USE IN THE API.";
+    public final static String INVALID_DOCUMENT = "THE DOCUMENT IS INVALID.";
+    public final static Long ROLE_DEFAULT_ONG = 2L;
+    public final static Long ROLE_ADMIN = 1L;
 }
