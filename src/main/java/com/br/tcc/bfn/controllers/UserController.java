@@ -1,10 +1,20 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dtos.*;
+import com.br.tcc.bfn.dtos.AddressRequest;
+import com.br.tcc.bfn.dtos.RegisterRequest;
+import com.br.tcc.bfn.dtos.Response;
+import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +37,14 @@ public class UserController{
         this.repository = repository;
     }
 
+    @Operation(summary = "Register new User on Application")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Register new User Default",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Register User Default",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) })})
     @PostMapping("/register")
     public ResponseEntity<Response<UserDTO>> register(@RequestBody RegisterRequest request) {
         Response<UserDTO> dtoResponse = new Response<>();
@@ -43,6 +61,14 @@ public class UserController{
         }
     }
 
+    @Operation(summary = "Register Admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Register Admin",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Register Admin",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) })})
     @PostMapping("/register-admin")
     public ResponseEntity<Response<UserDTO>> registerAdmin(@RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
@@ -59,6 +85,17 @@ public class UserController{
 
     }
 
+    @Operation(summary = "Disable User on Application")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Disable User",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Disable User",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<UserDTO>> disableUser(@PathVariable Long id){
         Response<UserDTO> dtoResponse = new Response<>();
@@ -75,6 +112,17 @@ public class UserController{
 
     }
 
+    @Operation(summary = "Find All Users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Find All Users",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find All Users",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @GetMapping("/findAll")
     public ResponseEntity<Response<Page<UserDTO>>> findAll(Pageable pageable) {
         LOGGER.info("Method Find All Users");
@@ -85,6 +133,17 @@ public class UserController{
 
     }
 
+    @Operation(summary = "Find User By Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Find User By Id",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find User",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @GetMapping("/{id}")
     public ResponseEntity<Response<UserDTO>> findById(@PathVariable Long id) {
         Response<UserDTO> dtoResponse = new Response<>();
@@ -92,6 +151,8 @@ public class UserController{
             LOGGER.info("Method Find User By Id");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.setData(userService.findById(id));
+            dtoResponse.add(WebMvcLinkBuilder
+                    .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(id, new RegisterRequest())).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -100,6 +161,17 @@ public class UserController{
         }
     }
 
+    @Operation(summary = "Update User on Application")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Disable User",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Disable User",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @PutMapping("/{id}")
     public ResponseEntity<Response<UserDTO>> updateUser(@PathVariable Long id, @RequestBody RegisterRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
@@ -107,6 +179,8 @@ public class UserController{
             LOGGER.info("Method Update User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.setData(userService.update(id,request));
+            dtoResponse.add(WebMvcLinkBuilder
+                    .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -115,12 +189,25 @@ public class UserController{
         }
     }
 
+    @Operation(summary = "Update User Address")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Update User Address",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Update User Address",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @PutMapping("/address/{id}")
     public ResponseEntity<Response<UserDTO>> updateAddressUser(@PathVariable Long id,@Validated @RequestBody AddressRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method Update Address In User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.add(WebMvcLinkBuilder
+                    .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             dtoResponse.setData(userService.updateAddress(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -130,6 +217,17 @@ public class UserController{
         }
     }
 
+    @Operation(summary = "Save User Address")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Save User Address",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Save User Address",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
     @PostMapping("/address/{id}")
     public ResponseEntity<Response<UserDTO>> saveAddreesInUser(@PathVariable Long id,@Validated @RequestBody AddressRequest request){
         Response<UserDTO> dtoResponse = new Response<>();
@@ -137,6 +235,8 @@ public class UserController{
             LOGGER.info("Method Register Address In User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.setData(userService.saveUserAddress(id,request));
+            dtoResponse.add(WebMvcLinkBuilder
+                    .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());

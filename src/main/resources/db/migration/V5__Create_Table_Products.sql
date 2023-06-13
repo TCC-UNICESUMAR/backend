@@ -9,6 +9,6 @@ CREATE TABLE tb_products(
 	delete_at timestamp(6) NULL,
 	active int NOT NULL,
 	reserved int NOT NULL,
-	image_product_list JSON NULL,
+	image_product_key varchar(100) NULL,
 	address_address_id bigint NOT NULL
 );

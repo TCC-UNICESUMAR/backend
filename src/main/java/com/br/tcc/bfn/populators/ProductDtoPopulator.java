@@ -24,7 +24,6 @@ public class ProductDtoPopulator implements Populator<ProductDto, Product>{
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
         productDto.setQuantity(product.getQuantity());
-        productDto.setImageProductList(product.getImageProductList());
         productDto.setProductId(productDto.getProductId());
         productDto.setCategories(product.getCategories().stream().map( x -> new CategoryDto(x.getCategoryId(), x.getCategoryName())).collect(Collectors.toList()));
         productDto.setCreatedAt(product.getCreatedAt());

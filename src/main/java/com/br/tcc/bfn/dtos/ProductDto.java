@@ -20,7 +20,7 @@ public class ProductDto {
     private List<CategoryDto> categories = new ArrayList<>();
     private Integer quantity;
     private UserDTO user;
-    private List<String> imageProductList = new ArrayList<>();
+    private String imageProductKey;
     private Boolean reserved;
     private Boolean active;
     private Date createdAt;
@@ -59,12 +59,12 @@ public class ProductDto {
         this.user = user;
     }
 
-    public List<String> getImageProductList() {
-        return imageProductList;
+    public String getImageProductKey() {
+        return imageProductKey;
     }
 
-    public void setImageProductList(List<String> imageProductList) {
-        this.imageProductList = imageProductList;
+    public void setImageProductKey(String imageProductKey) {
+        this.imageProductKey = imageProductKey;
     }
 
     public Boolean getReserved() {
