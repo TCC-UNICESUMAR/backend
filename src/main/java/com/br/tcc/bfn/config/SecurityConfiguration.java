@@ -41,7 +41,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers(new AntPathRequestMatcher("/api/v1/user/register"), new AntPathRequestMatcher("/api/v1/auth/authenticate")
-                , new AntPathRequestMatcher("/h2-console/**"))
+                , new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/api/v1/user/register-admin"))
                 .permitAll()
                 .anyRequest()
                 .authenticated()

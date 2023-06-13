@@ -5,6 +5,7 @@ import com.br.tcc.bfn.builder.UserBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
 import com.br.tcc.bfn.models.Address;
@@ -14,6 +15,9 @@ import com.br.tcc.bfn.populators.UserPopulator;
 import com.br.tcc.bfn.repositories.AddressRepository;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
+import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
+import com.br.tcc.bfn.strategies.impl.CnpjValidator;
+import com.br.tcc.bfn.strategies.impl.CpfValidator;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -36,6 +40,7 @@ public class UserFacadeImpl implements UserFacade {
     private final RoleRepository roleRepository;
     private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
+    private ValidatorDocumentStrategy validatorDocumentStrategy;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserFacadeImpl.class.getName());
 
     public UserFacadeImpl(UserRepository repository, UserPopulator userPopulator, UserDTOPopulator userDTOPopulator, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AddressRepository addressRepository, ModelMapper modelMapper) {
@@ -133,6 +138,14 @@ public class UserFacadeImpl implements UserFacade {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
 
+            LOGGER.info(String.format("Verifying CPF Or CNPJ-> %s", request.getCnpjOrCpf()));
+
+            validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
+
+            if(Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(request.getCnpjOrCpf()))){
+                throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
+            }
+
             User user = UserBuilder.builder()
                     .firstName(request.getFirstname())
                     .lastName(request.getLastname())
@@ -142,14 +155,31 @@ public class UserFacadeImpl implements UserFacade {
                     .active(Boolean.TRUE)
                     .createdAt(new Date())
                     .updateAt(new Date())
-                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
+                    .roles(validatorDocumentStrategy instanceof CnpjValidator ?
+                            Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT_ONG).get())
+                            : Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
                     .build();
 
             repository.save(user);
 
             return modelMapper.map(user, UserDTO.class);
-        } catch (UserException e) {
+        } catch (UserException | DocumentException e) {
             throw new UserException(e.getMessage());
         }
+    }
+
+    private ValidatorDocumentStrategy getValidator(String value) {
+        if(isCpf(value)){
+            return new CpfValidator();
+        }
+        return  new CnpjValidator();
+    }
+
+    private boolean isCpf(String value) {
+        if(value.length() == 11){
+            return true;
+        }
+
+        return false;
     }
 }

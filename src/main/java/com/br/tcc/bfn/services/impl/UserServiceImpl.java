@@ -5,13 +5,16 @@ import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
 import com.br.tcc.bfn.models.User;
-import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IUserService;
+import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
+import com.br.tcc.bfn.strategies.impl.CnpjValidator;
+import com.br.tcc.bfn.strategies.impl.CpfValidator;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -33,6 +36,7 @@ public class UserServiceImpl implements IUserService {
     private final RoleRepository roleRepository;
     private final ModelMapper userModelMapper;
     private final UserFacade userFacade;
+    private ValidatorDocumentStrategy validatorDocumentStrategy;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class.getName());
 
     public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper userModelMapper, UserFacade userFacade) {
@@ -54,13 +58,20 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO registerAdmin(RegisterRequest request) throws UserException {
+    public UserDTO registerAdmin(RegisterRequest request) throws UserException, DocumentException {
         try {
 
             if (Objects.isNull(request)) {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
 
+            LOGGER.info(String.format("Verifying CPF Or CNPJ-> %s", request.getCnpjOrCpf()));
+
+            validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
+
+            if(Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(request.getCnpjOrCpf()))){
+               throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
+            }
             User user = UserBuilder.builder()
                     .firstName(request.getFirstname())
                     .lastName(request.getLastname())
@@ -70,24 +81,24 @@ public class UserServiceImpl implements IUserService {
                     .active(Boolean.TRUE)
                     .createdAt(new Date())
                     .updateAt(new Date())
-                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
-                    .build();
-
-
-            UserDTO userDTO = UserDtoBuilder.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .profileImageId(user.getProfileImageId())
-                    .email(user.getEmail())
-                    .roles(user.getRoles())
+                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_ADMIN).get()))
                     .build();
 
             repository.save(user);
 
-            return userDTO;
+            return userModelMapper.map(user, new UserDTO().getClass());
         } catch (UserException e) {
             throw new UserException(BfnConstants.ERRO_SAVE_USER);
+        } catch (DocumentException e) {
+            throw new DocumentException(e.getMessage());
         }
+    }
+
+    private ValidatorDocumentStrategy getValidator(String value) {
+        if(isCpf(value)){
+            return new CpfValidator();
+        }
+        return  new CnpjValidator();
     }
 
     @Override
@@ -160,5 +171,12 @@ public class UserServiceImpl implements IUserService {
         }
 
         return usuario;
+    }
+    private boolean isCpf(String value) {
+        if(value.length() == 11){
+            return true;
+        }
+
+        return false;
     }
 }

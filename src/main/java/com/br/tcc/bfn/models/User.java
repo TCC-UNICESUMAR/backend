@@ -28,14 +28,8 @@ public class User implements UserDetails, Serializable {
     private String firstName;
     private String lastName;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @Column(
-            unique = true
-    )
     private String cpfOrCnpj;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @Column(
-            unique = true
-    )
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
