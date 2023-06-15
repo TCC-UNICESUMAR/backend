@@ -2,7 +2,9 @@ package com.br.tcc.bfn.dtos;
 
 import org.springframework.hateoas.RepresentationModel;
 
-public class Response<T> extends RepresentationModel<Response<T>> {
+import java.io.Serializable;
+
+public class Response<T> extends RepresentationModel<Response<T>> implements Serializable {
 
     private int statusCode;
 

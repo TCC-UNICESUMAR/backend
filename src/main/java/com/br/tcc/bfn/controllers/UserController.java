@@ -4,7 +4,6 @@ import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.dtos.UserDTO;
-import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -30,11 +30,14 @@ public class UserController{
 
     private final UserRepository repository;
 
+    private final ModelMapper modelMapper;
+
     private final static Logger LOGGER = Logger.getLogger(TicketController.class.getName());
 
-    public UserController(IUserService userService, UserRepository repository) {
+    public UserController(IUserService userService, UserRepository repository, ModelMapper modelMapper) {
         this.userService = userService;
         this.repository = repository;
+        this.modelMapper = modelMapper;
     }
 
     @Operation(summary = "Register new User on Application")
@@ -153,6 +156,21 @@ public class UserController{
             dtoResponse.setData(userService.findById(id));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(id, new RegisterRequest())).withSelfRel());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @GetMapping("/getUserBySession")
+    public ResponseEntity<Response<UserDTO>> getUserSession() {
+        Response<UserDTO> dtoResponse = new Response<>();
+        try {
+            LOGGER.info("Method Get User By Session");
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(modelMapper.map(userService.findAuth().get(), UserDTO.class));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());

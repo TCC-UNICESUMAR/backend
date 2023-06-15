@@ -19,13 +19,8 @@ public class UserDtoBuilder {
         return new UserDtoBuilder();
     }
 
-    public UserDtoBuilder firstName(String name){
-        this.user.setFirstName(name);
-        return this;
-    }
-
-    public UserDtoBuilder lastName(String name){
-        this.user.setLastName(name);
+    public UserDtoBuilder name(String name){
+        this.user.setName(name);
         return this;
     }
 

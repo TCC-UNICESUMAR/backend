@@ -2,10 +2,10 @@ package com.br.tcc.bfn.dtos;
 
 public class RegisterRequest {
 
-	private String firstname;
-	private String lastname;
+	private String name;
 	private String email;
 	private String password;
+	private String phone;
 	private String cnpjOrCpf;
 
 
@@ -16,20 +16,12 @@ public class RegisterRequest {
 		super();
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -54,5 +46,13 @@ public class RegisterRequest {
 
 	public void setCnpjOrCpf(String cnpjOrCpf) {
 		this.cnpjOrCpf = cnpjOrCpf;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

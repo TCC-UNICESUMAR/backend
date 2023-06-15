@@ -4,31 +4,31 @@ import com.br.tcc.bfn.models.Category;
 
 public class CategoryDto {
 
-    private Long id;
+    private Long categoryId;
 
-    private String name;
+    private String categoryName;
 
     public CategoryDto() {
     }
 
-    public CategoryDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public CategoryDto(Long categoryId, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

@@ -14,8 +14,9 @@ public class UserDTO {
     private Long id;
     private String email;
     private String profileImageId;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String phone;
+    private String cpfOrCnpj;
     private List<Role> roles;
     private Address address;
     private Boolean active;
@@ -47,20 +48,12 @@ public class UserDTO {
         this.profileImageId = profileImageId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Role> getRoles() {
@@ -109,5 +102,21 @@ public class UserDTO {
 
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCpfOrCnpj() {
+        return cpfOrCnpj;
+    }
+
+    public void setCpfOrCnpj(String cpfOrCnpj) {
+        this.cpfOrCnpj = cpfOrCnpj;
     }
 }

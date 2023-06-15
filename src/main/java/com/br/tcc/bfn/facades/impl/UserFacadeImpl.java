@@ -57,7 +57,6 @@ public class UserFacadeImpl implements UserFacade {
     public UserDTO updateUser(Long id, RegisterRequest request) throws UserException {
         try {
             User user = repository.findById(id).orElseThrow();
-            UserDTO userDTO = new UserDTO();
 
             if (Objects.nonNull(user) && !(user.getEmail() == request.getEmail())) {
                 if (repository.findByEmail(request.getEmail()).isPresent()) {
@@ -103,7 +102,6 @@ public class UserFacadeImpl implements UserFacade {
 
             Address address = AddressBuilder.builder()
                     .uf(request.getUf())
-                    .phone(request.getPhone())
                     .streetName(request.getStreetName())
                     .streetNumber(request.getStreetNumber())
                     .zipCode(request.getZipCode())
@@ -123,7 +121,6 @@ public class UserFacadeImpl implements UserFacade {
 
     private void populateAddressWithNewValues(AddressRequest request, Address address) {
         address.setComplement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY);
-        address.setPhone(request.getPhone());
         address.setUf(request.getUf());
         address.setStreetName(request.getStreetName());
         address.setStreetNumber(request.getStreetNumber());
@@ -147,14 +144,14 @@ public class UserFacadeImpl implements UserFacade {
             }
 
             User user = UserBuilder.builder()
-                    .firstName(request.getFirstname())
-                    .lastName(request.getLastname())
+                    .name(request.getName())
                     .email(request.getEmail())
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .active(Boolean.TRUE)
                     .createdAt(new Date())
                     .updateAt(new Date())
+                    .phone(request.getPhone())
                     .roles(validatorDocumentStrategy instanceof CnpjValidator ?
                             Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT_ONG).get())
                             : Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))

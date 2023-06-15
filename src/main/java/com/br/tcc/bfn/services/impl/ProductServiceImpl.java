@@ -2,6 +2,7 @@ package com.br.tcc.bfn.services.impl;
 
 import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.ProductBuilder;
+import com.br.tcc.bfn.dtos.CategoryDto;
 import com.br.tcc.bfn.dtos.ProductDto;
 import com.br.tcc.bfn.dtos.RegisterProductDto;
 import com.br.tcc.bfn.exceptions.CategoryException;
@@ -27,7 +28,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -60,7 +63,6 @@ public class ProductServiceImpl implements IProductService {
 
             Address address = AddressBuilder.builder()
                     .uf(request.getAddressDto().getUf())
-                    .phone(request.getAddressDto().getPhone())
                     .streetName(request.getAddressDto().getStreetName())
                     .streetNumber(request.getAddressDto().getStreetNumber())
                     .zipCode(request.getAddressDto().getZipCode())
@@ -200,6 +202,19 @@ public class ProductServiceImpl implements IProductService {
 
         } catch (ProductNotFoundException exc) {
             throw new ProductNotFoundException(exc.getMessage());
+        }
+    }
+
+    @Override
+    public List<CategoryDto> getAllCategories() throws Exception {
+        try {
+
+            final List<Category> all = categoryRepository.findAll();
+
+            return all.stream().map(x -> this.productModelMapper.map(x, CategoryDto.class)).collect(Collectors.toList());
+
+        } catch (Exception exc) {
+            throw new Exception(exc);
         }
     }
 }

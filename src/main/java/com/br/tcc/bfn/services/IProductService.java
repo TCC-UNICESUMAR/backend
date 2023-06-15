@@ -1,10 +1,13 @@
 package com.br.tcc.bfn.services;
 
+import com.br.tcc.bfn.dtos.CategoryDto;
 import com.br.tcc.bfn.dtos.ProductDto;
 import com.br.tcc.bfn.dtos.RegisterProductDto;
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface IProductService {
 
@@ -20,4 +23,5 @@ public interface IProductService {
 
     Page<ProductDto> findByUf(String uf, Pageable pageable) throws ProductNotFoundException;
     Page<ProductDto> findByCategory(String uf, Pageable pageable) throws ProductNotFoundException;
+    List<CategoryDto> getAllCategories() throws Exception;
 }

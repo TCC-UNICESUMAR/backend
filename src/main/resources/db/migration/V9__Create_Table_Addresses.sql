@@ -3,7 +3,6 @@ create table tb_addresses (
     complement varchar(255),
     created_at timestamp(6),
     delete_at timestamp(6),
-    phone varchar(14),
     street_name varchar(255),
     street_number varchar(255),
     uf varchar(2),

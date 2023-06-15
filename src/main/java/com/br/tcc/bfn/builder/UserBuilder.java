@@ -19,13 +19,8 @@ public class UserBuilder {
         return new UserBuilder();
     }
 
-    public UserBuilder firstName(String name){
-        this.user.setFirstname(name);
-        return this;
-    }
-
-    public UserBuilder lastName(String name){
-        this.user.setLastname(name);
+    public UserBuilder name(String name){
+        this.user.setName(name);
         return this;
     }
 
@@ -56,6 +51,11 @@ public class UserBuilder {
     }
     public UserBuilder profileImageId(String profileImageId){
         this.user.setProfileImageId(profileImageId);
+        return this;
+    }
+
+    public UserBuilder phone(String phone){
+        this.user.setPhone(phone);
         return this;
     }
     public UserBuilder roles(List<Role> roles){

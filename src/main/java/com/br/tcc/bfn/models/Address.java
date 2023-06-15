@@ -17,7 +17,6 @@ public class Address {
     private String uf;
     private String complement;
     private String zipCode;
-    private String phone;
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
@@ -73,13 +72,6 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public Date getCreatedAt() {
         return createdAt;

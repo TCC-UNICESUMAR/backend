@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 @Component
-public class UserPopulator implements Populator<User, RegisterRequest>{
+public class UserPopulator implements Populator<User, RegisterRequest> {
 
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
@@ -23,9 +23,7 @@ public class UserPopulator implements Populator<User, RegisterRequest>{
 
     @Override
     public void populate(User user, RegisterRequest request) {
-        user.setFirstname(request.getFirstname());
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
+        user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setCpfOrCnpj(request.getCnpjOrCpf());
         user.setUpdateAt(new Date(System.currentTimeMillis()));

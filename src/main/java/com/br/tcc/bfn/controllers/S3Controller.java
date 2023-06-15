@@ -1,8 +1,14 @@
 package com.br.tcc.bfn.controllers;
 
 import com.br.tcc.bfn.dtos.Response;
+import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.models.Product;
 import com.br.tcc.bfn.services.S3Service;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +26,14 @@ public class S3Controller {
         this.s3Service = s3Service;
     }
 
+    @Operation(summary = "Get Pre Signed Url on AWS S3 To Upload User Profile Image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get Pre Signed Url on AWS S3 To Upload User Profile Image",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Get Pre Signed Url on AWS S3 To Upload User Profile Image",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/preSignedUrlUser/{id}")
     public ResponseEntity<Response<String>> getUrlToProfileImage(@PathVariable final Long id){
         Response<String> dtoResponse = new Response<>();
@@ -34,7 +48,14 @@ public class S3Controller {
         }
 
     }
-
+    @Operation(summary = "Get Pre Signed Url on AWS S3 To Upload Product Image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get Pre Signed Url on AWS S3 To Upload Product Image",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Get Pre Signed Url on AWS S3 To Upload Product Image",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/preSignedUrlProduct/{id}")
     public ResponseEntity<Response<String>> getUrlToProductImage(@PathVariable final Long id){
         Response<String> dtoResponse = new Response<>();

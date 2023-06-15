@@ -1,7 +1,6 @@
 package com.br.tcc.bfn.services.impl;
 
 import com.br.tcc.bfn.builder.UserBuilder;
-import com.br.tcc.bfn.builder.UserDtoBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
@@ -73,8 +72,7 @@ public class UserServiceImpl implements IUserService {
                throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
             }
             User user = UserBuilder.builder()
-                    .firstName(request.getFirstname())
-                    .lastName(request.getLastname())
+                    .name(request.getName())
                     .email(request.getEmail())
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))

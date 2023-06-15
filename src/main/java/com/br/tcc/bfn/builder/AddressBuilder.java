@@ -37,10 +37,7 @@ public class AddressBuilder {
         this.address.setComplement(name);
         return this;
     }
-    public AddressBuilder phone(String name){
-        this.address.setPhone(name);
-        return this;
-    }
+
     public AddressBuilder createdAt(Date date){
         this.address.setCreatedAt(date);
         return this;

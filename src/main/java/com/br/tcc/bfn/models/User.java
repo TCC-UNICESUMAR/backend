@@ -25,14 +25,15 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String firstName;
-    private String lastName;
+    private String name;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String cpfOrCnpj;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String phone;
     private Boolean active;
     private Date createdAt;
     private Date updateAt;
@@ -65,20 +66,12 @@ public class User implements UserDetails, Serializable {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastname(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -197,5 +190,13 @@ public class User implements UserDetails, Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

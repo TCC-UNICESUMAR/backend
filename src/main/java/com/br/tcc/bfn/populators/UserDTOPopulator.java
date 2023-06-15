@@ -10,9 +10,8 @@ public class UserDTOPopulator implements Populator<UserDTO, User>{
     public void populate(UserDTO userDTO, User user) {
         userDTO.setEmail(user.getEmail());
         userDTO.setId(user.getUserId());
-        userDTO.setFirstName(user.getFirstName());
         userDTO.setProfileImageId(user.getProfileImageId());
-        userDTO.setLastName(user.getLastName());
         userDTO.setRoles(user.getRoles());
+        userDTO.setName(user.getName());
     }
 }
