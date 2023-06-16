@@ -138,7 +138,7 @@ public class Product {
         return imageProductKey;
     }
 
-    public void setImageProductKey(String imageProductList) {
+    public void setImageProductKey(String imageProductKey) {
         this.imageProductKey = imageProductKey;
     }
 
