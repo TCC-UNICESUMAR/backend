@@ -22,6 +22,12 @@ public interface IProductService {
     ProductDto findById(Long id) throws ProductNotFoundException;
 
     Page<ProductDto> findByUf(String uf, Pageable pageable) throws ProductNotFoundException;
+
     Page<ProductDto> findByCategory(String uf, Pageable pageable) throws ProductNotFoundException;
+
     List<CategoryDto> getAllCategories() throws Exception;
+
+    List<ProductDto> findAllProductWithImage() throws Exception;
+
+    Page<ProductDto> findProductsByUserId(Long userId, Pageable pageable) throws ProductNotFoundException;
 }

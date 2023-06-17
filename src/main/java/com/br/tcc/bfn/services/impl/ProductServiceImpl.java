@@ -17,6 +17,7 @@ import com.br.tcc.bfn.repositories.CategoryRepository;
 import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.services.IProductService;
 import com.br.tcc.bfn.services.IUserService;
+import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -26,7 +27,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -42,14 +42,16 @@ public class ProductServiceImpl implements IProductService {
     private final ModelMapper productModelMapper;
     private final AddressRepository addressRepository;
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final S3Service s3Service;
 
-    public ProductServiceImpl(ProductRequestPopulator productRequestPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService, ModelMapper productModelMapper, AddressRepository addressRepository) {
+    public ProductServiceImpl(ProductRequestPopulator productRequestPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService, ModelMapper productModelMapper, AddressRepository addressRepository, S3Service s3Service) {
         this.productRequestPopulator = productRequestPopulator;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userService = userService;
         this.productModelMapper = productModelMapper;
         this.addressRepository = addressRepository;
+        this.s3Service = s3Service;
     }
 
 
@@ -148,6 +150,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public List<ProductDto> findAllProductWithImage() throws Exception {
+        final List<Product> imgOnBucketProductImage = s3Service.getImgOnBucketProductImage();
+        return imgOnBucketProductImage.stream().map(x -> productModelMapper.map(x, ProductDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public ProductDto findById(Long id) throws ProductNotFoundException {
         try{
             Product product = productRepository.findByProductId(id);
@@ -172,6 +180,27 @@ public class ProductServiceImpl implements IProductService {
             }
 
             Page<Product> products = productRepository.searchAllByUf(uf,pageable);
+
+            if (products == null) {
+                return null;
+            }
+
+            return products.map(x -> this.productModelMapper.map(x, ProductDto.class));
+
+        } catch (ProductNotFoundException exc) {
+            throw new ProductNotFoundException(exc.getMessage());
+        }
+    }
+
+    @Override
+    public Page<ProductDto> findProductsByUserId(Long userId, Pageable pageable) throws ProductNotFoundException {
+        try {
+
+            if (userId == null) {
+                throw new ProductNotFoundException("USERID CANNOT BE NULL!");
+            }
+
+            Page<Product> products = productRepository.searchAllByUserId(userId,pageable);
 
             if (products == null) {
                 return null;

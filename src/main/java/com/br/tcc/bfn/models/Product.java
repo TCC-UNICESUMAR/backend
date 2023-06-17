@@ -29,7 +29,8 @@ public class Product {
     private User user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductImageKey> productImageKey = new ArrayList<>();
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+    private List<ProductImageUrl> productImageUrls = new ArrayList<>();
     @OneToOne
     private Category category;
     private Boolean reserved;
@@ -146,5 +147,13 @@ public class Product {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<ProductImageUrl> getProductImageUrls() {
+        return productImageUrls;
+    }
+
+    public void setProductImageUrls(List<ProductImageUrl> productImageUrls) {
+        this.productImageUrls = productImageUrls;
     }
 }
