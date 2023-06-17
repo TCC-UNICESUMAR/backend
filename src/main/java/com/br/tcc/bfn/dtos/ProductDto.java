@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.dtos;
 
-import com.br.tcc.bfn.models.Category;
-import com.br.tcc.bfn.models.Product;
-import com.br.tcc.bfn.models.ProductImageKey;
-import com.br.tcc.bfn.models.User;
+import com.br.tcc.bfn.models.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
@@ -22,6 +19,7 @@ public class ProductDto {
     private Integer quantity;
     private UserDTO user;
     private List<ProductImageKeyDto> imageProductKey;
+    private List<ProductImageUrlDto> productImageUrls;
     private Boolean reserved;
     private Boolean active;
     private Date createdAt;
@@ -138,5 +136,13 @@ public class ProductDto {
 
     public void setAddress(AddressDto address) {
         this.address = address;
+    }
+
+    public List<ProductImageUrlDto> getProductImageUrls() {
+        return productImageUrls;
+    }
+
+    public void setProductImageUrls(List<ProductImageUrlDto> productImageUrls) {
+        this.productImageUrls = productImageUrls;
     }
 }

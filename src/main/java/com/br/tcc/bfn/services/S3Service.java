@@ -1,6 +1,8 @@
 package com.br.tcc.bfn.services;
 
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
+import com.br.tcc.bfn.models.Product;
+import com.br.tcc.bfn.models.ProductImageUrl;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,5 +19,5 @@ public interface S3Service {
     List<String> getObjectOnBucketProductImage(Long id) throws Exception;
 
     void uploadCustomerProfileImage(MultipartFile[] files, Long customerId) throws IOException;
-
+    List<Product> getImgOnBucketProductImage() throws Exception;
 }

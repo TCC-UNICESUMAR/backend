@@ -143,6 +143,20 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/byUser/{userId}")
+    public ResponseEntity<Response<Page<ProductDto>>> findProductsByUserId(@PathVariable Long userId, Pageable pageable){
+        Response<Page<ProductDto>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(productService.findProductsByUserId(userId,pageable));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.internalServerError().body(dtoResponse);
+        }
+    }
+
     @Operation(summary = "Update Product on Application")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Update Product on Application",

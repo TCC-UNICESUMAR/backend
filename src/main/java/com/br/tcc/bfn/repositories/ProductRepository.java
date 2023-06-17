@@ -23,4 +23,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT prod FROM Product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.deleteProductAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
     Page<Product> searchAllByCategory(@Param("category") String category, Pageable pageable);
+
+    @Query(value = "SELECT prod FROM Product prod JOIN prod.user us WHERE us.userId = :userId AND prod.deleteProductAt = null",
+            countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
+    Page<Product> searchAllByUserId(@Param("userId") Long userId, Pageable pageable);
 }
