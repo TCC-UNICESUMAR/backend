@@ -6,10 +6,10 @@ CREATE TABLE tb_users(
 	phone varchar(255) NULL,
 	profile_image_id varchar(100) NULL,
 	password varchar(255) NOT NULL,
-	created_at timestamp(6) NOT NULL,
-	update_at timestamp(6) NOT NULL,
-	delete_at timestamp(6) NULL,
-	active int NOT NULL,
+	created_user_at timestamp(6) NOT NULL,
+	update_user_at timestamp(6) NOT NULL,
+	delete_user_at timestamp(6) NULL,
+	user_active int NOT NULL,
 	isOng int NULL,
 	address_address_id bigint NULL
 );

@@ -125,7 +125,7 @@ public class UserFacadeImpl implements UserFacade {
         address.setStreetName(request.getStreetName());
         address.setStreetNumber(request.getStreetNumber());
         address.setZipCode(request.getZipCode());
-        address.setUpdateAt(new Date());
+        address.setUpdateAddressAt(new Date());
     }
 
     @Override

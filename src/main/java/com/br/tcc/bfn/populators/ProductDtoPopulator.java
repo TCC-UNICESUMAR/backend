@@ -25,10 +25,10 @@ public class ProductDtoPopulator implements Populator<ProductDto, Product>{
         productDto.setDescription(product.getDescription());
         productDto.setQuantity(product.getQuantity());
         productDto.setProductId(productDto.getProductId());
-        productDto.setCategories(product.getCategories().stream().map( x -> new CategoryDto(x.getCategoryId(), x.getCategoryName())).collect(Collectors.toList()));
-        productDto.setCreatedAt(product.getCreatedAt());
-        productDto.setUpdateAt(product.getUpdateAt());
-        productDto.setDeleteAt(product.getDeleteAt());
+        productDto.setCategory(this.modelMapper.map(product.getCategory(), CategoryDto.class));
+        productDto.setCreatedAt(product.getCreatedProductAt());
+        productDto.setUpdateAt(product.getUpdateProductAt());
+        productDto.setDeleteAt(product.getDeleteProductAt());
         productDto.setUser(this.modelMapper.map(product.getUser(), UserDTO.class));
     }
 }

@@ -46,12 +46,12 @@ public class ProductBuilder {
     }
 
     public ProductBuilder updateAt(Date updateAt){
-        this.product.setUpdateAt(updateAt);
+        this.product.setUpdateProductAt(updateAt);
         return this;
     }
 
     public ProductBuilder createdAt(Date createdAt){
-        this.product.setCreatedAt(createdAt);
+        this.product.setCreatedProductAt(createdAt);
         return this;
     }
 
@@ -60,13 +60,8 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder imageList(String value){
-        this.product.setImageProductKey(value);
-        return this;
-    }
-
-    public ProductBuilder category(List<Category> categoryList){
-        this.product.setCategories(categoryList);
+    public ProductBuilder category(Category category){
+        this.product.setCategory(category);
         return this;
     }
     public ProductBuilder address(Address address){

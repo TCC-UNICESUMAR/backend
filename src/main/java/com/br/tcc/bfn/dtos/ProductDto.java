@@ -2,6 +2,7 @@ package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Category;
 import com.br.tcc.bfn.models.Product;
+import com.br.tcc.bfn.models.ProductImageKey;
 import com.br.tcc.bfn.models.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -17,10 +18,10 @@ public class ProductDto {
     private Long productId;
     private String name;
     private String description;
-    private List<CategoryDto> categories = new ArrayList<>();
+    private CategoryDto category;
     private Integer quantity;
     private UserDTO user;
-    private String imageProductKey;
+    private List<ProductImageKeyDto> imageProductKey;
     private Boolean reserved;
     private Boolean active;
     private Date createdAt;
@@ -59,11 +60,11 @@ public class ProductDto {
         this.user = user;
     }
 
-    public String getImageProductKey() {
+    public List<ProductImageKeyDto> getImageProductKey() {
         return imageProductKey;
     }
 
-    public void setImageProductKey(String imageProductKey) {
+    public void setImageProductKey(List<ProductImageKeyDto> imageProductKey) {
         this.imageProductKey = imageProductKey;
     }
 
@@ -123,12 +124,12 @@ public class ProductDto {
         this.description = description;
     }
 
-    public List<CategoryDto> getCategories() {
-        return categories;
+    public CategoryDto getCategory() {
+        return category;
     }
 
-    public void setCategories(List<CategoryDto> categories) {
-        this.categories = categories;
+    public void setCategory(CategoryDto category) {
+        this.category = category;
     }
 
     public AddressDto getAddress() {

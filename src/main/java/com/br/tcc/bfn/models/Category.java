@@ -16,10 +16,9 @@ public class Category implements Serializable {
     private Long categoryId;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String categoryName;
-    private Boolean active;
-    private Date createdAt;
-    private Date updateAt;
-    private Date deleteAt;
+    private Date createdCategoryAt;
+    private Date updateCategoryAt;
+    private Date deleteCategoryAt;
 
     public Category() {
     }
@@ -40,34 +39,27 @@ public class Category implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Date getCreatedCategoryAt() {
+        return createdCategoryAt;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setCreatedCategoryAt(Date createdCategoryAt) {
+        this.createdCategoryAt = createdCategoryAt;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getUpdateCategoryAt() {
+        return updateCategoryAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setUpdateCategoryAt(Date updateCategoryAt) {
+        this.updateCategoryAt = updateCategoryAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getDeleteCategoryAt() {
+        return deleteCategoryAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Date getDeleteAt() {
-        return deleteAt;
-    }
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeleteCategoryAt(Date deleteCategoryAt) {
+        this.deleteCategoryAt = deleteCategoryAt;
     }
 }

@@ -37,16 +37,16 @@ public class UserBuilder {
         return this;
     }
     public UserBuilder active(Boolean active){
-        this.user.setActive(active);
+        this.user.setUserActive(active);
         return this;
     }
     public UserBuilder updateAt(Date updateAt){
-        this.user.setUpdateAt(updateAt);
+        this.user.setUpdateUserAt(updateAt);
         return this;
     }
 
     public UserBuilder createdAt(Date createdAt){
-        this.user.setCreatedAt(createdAt);
+        this.user.setCreatedUserAt(createdAt);
         return this;
     }
     public UserBuilder profileImageId(String profileImageId){

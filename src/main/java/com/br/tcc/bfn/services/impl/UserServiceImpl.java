@@ -103,8 +103,8 @@ public class UserServiceImpl implements IUserService {
     public void disableUser(Long id) throws UserException {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-            user.setActive(Boolean.FALSE);
-            user.setDeleteAt(new Date());
+            user.setUserActive(Boolean.FALSE);
+            user.setDeleteUserAt(new Date());
             repository.save(user);
 
         } catch (UserException e) {

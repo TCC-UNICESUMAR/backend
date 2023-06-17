@@ -34,10 +34,10 @@ public class User implements UserDetails, Serializable {
     private String password;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phone;
-    private Boolean active;
-    private Date createdAt;
-    private Date updateAt;
-    private Date deleteAt;
+    private Boolean userActive;
+    private Date createdUserAt;
+    private Date updateUserAt;
+    private Date deleteUserAt;
     private String profileImageId;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
@@ -137,36 +137,36 @@ public class User implements UserDetails, Serializable {
         this.cpfOrCnpj = cpfOrCnpj;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Boolean getUserActive() {
+        return userActive;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setUserActive(Boolean userActive) {
+        this.userActive = userActive;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedUserAt() {
+        return createdUserAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedUserAt(Date createdUserAt) {
+        this.createdUserAt = createdUserAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdateUserAt() {
+        return updateUserAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateUserAt(Date updateUserAt) {
+        this.updateUserAt = updateUserAt;
     }
 
-    public Date getDeleteAt() {
-        return deleteAt;
+    public Date getDeleteUserAt() {
+        return deleteUserAt;
     }
 
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeleteUserAt(Date deleteUserAt) {
+        this.deleteUserAt = deleteUserAt;
     }
 
     public List<Conversation> getUserConversation() {

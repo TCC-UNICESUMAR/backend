@@ -17,9 +17,9 @@ public class Address {
     private String uf;
     private String complement;
     private String zipCode;
-    private Date createdAt;
-    private Date updateAt;
-    private Date deleteAt;
+    private Date createdAddressAt;
+    private Date updateAddressAt;
+    private Date deleteAddressAt;
 
     public Address() {
     }
@@ -73,27 +73,27 @@ public class Address {
     }
 
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedAddressAt() {
+        return createdAddressAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAddressAt(Date createdAddressAt) {
+        this.createdAddressAt = createdAddressAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdateAddressAt() {
+        return updateAddressAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateAddressAt(Date updateAddressAt) {
+        this.updateAddressAt = updateAddressAt;
     }
 
-    public Date getDeleteAt() {
-        return deleteAt;
+    public Date getDeleteAddressAt() {
+        return deleteAddressAt;
     }
 
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeleteAddressAt(Date deleteAddressAt) {
+        this.deleteAddressAt = deleteAddressAt;
     }
 }

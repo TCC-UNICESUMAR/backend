@@ -27,18 +27,16 @@ public class Product {
     private String description;
     @ManyToOne
     private User user;
-    private String imageProductKey;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<Category> categories = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+    private List<ProductImageKey> productImageKey = new ArrayList<>();
+
+    @OneToOne
+    private Category category;
     private Boolean reserved;
     private Boolean active;
-    private Date createdAt;
-    private Date updateAt;
-    private Date deleteAt;
+    private Date createdProductAt;
+    private Date updateProductAt;
+    private Date deleteProductAt;
     @OneToOne
     private Address address;
 
@@ -102,44 +100,44 @@ public class Product {
         this.active = active;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedProductAt() {
+        return createdProductAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedProductAt(Date createdProductAt) {
+        this.createdProductAt = createdProductAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdateProductAt() {
+        return updateProductAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateProductAt(Date updateProductAt) {
+        this.updateProductAt = updateProductAt;
     }
 
-    public Date getDeleteAt() {
-        return deleteAt;
+    public Date getDeleteProductAt() {
+        return deleteProductAt;
     }
 
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeleteProductAt(Date deleteProductAt) {
+        this.deleteProductAt = deleteProductAt;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getImageProductKey() {
-        return imageProductKey;
+    public List<ProductImageKey> getProductImageKey() {
+        return productImageKey;
     }
 
-    public void setImageProductKey(String imageProductKey) {
-        this.imageProductKey = imageProductKey;
+    public void setProductImageKey(List<ProductImageKey> productImageKey) {
+        this.productImageKey = productImageKey;
     }
 
     public Address getAddress() {

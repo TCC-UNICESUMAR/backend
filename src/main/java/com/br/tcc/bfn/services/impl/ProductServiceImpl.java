@@ -78,7 +78,7 @@ public class ProductServiceImpl implements IProductService {
                     .active(Boolean.TRUE)
                     .createdAt(new Date())
                     .name(request.getName())
-                    .category(Arrays.asList(category))
+                    .category(category)
                     .user(userService.findAuth().get())
                     .updateAt(new Date())
                     .reserved(Boolean.FALSE)
@@ -106,8 +106,8 @@ public class ProductServiceImpl implements IProductService {
             Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
             product.setActive(Boolean.FALSE);
-            product.setUpdateAt(new Date());
-            product.setDeleteAt(new Date());
+            product.setUpdateProductAt(new Date());
+            product.setDeleteProductAt(new Date());
             productRepository.save(product);
 
         } catch (ProductNotFoundException e) {
@@ -127,7 +127,7 @@ public class ProductServiceImpl implements IProductService {
             Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
             Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
-            product.setCategories(Arrays.asList(category));
+            product.setCategory(category);
             this.productRequestPopulator.populate(product, request);
             productRepository.save(product);
             return productModelMapper.map(product, ProductDto.class);

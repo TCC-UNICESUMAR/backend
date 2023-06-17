@@ -6,15 +6,20 @@ import com.amazonaws.services.s3.model.*;
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Product;
+import com.br.tcc.bfn.models.ProductImageKey;
 import com.br.tcc.bfn.models.User;
+import com.br.tcc.bfn.repositories.ProductImageKeyRepository;
 import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.utils.BfnConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -25,13 +30,15 @@ public class S3ServiceImpl implements S3Service {
     private String bucketImageProfile;
     @Value("${aws.s3.buckets.product}")
     private String bucketImageProduct;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final ProductImageKeyRepository productImageKeyRepository;
 
-    public S3ServiceImpl(AmazonS3 amazonS3) {
+    public S3ServiceImpl(AmazonS3 amazonS3, UserRepository userRepository, ProductRepository productRepository, ProductImageKeyRepository productImageKeyRepository) {
         this.amazonS3 = amazonS3;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.productImageKeyRepository = productImageKeyRepository;
     }
 
     @Override
@@ -56,14 +63,21 @@ public class S3ServiceImpl implements S3Service {
     @Override
     public String generateUrlPreSignedToProductImage(final Long id) throws Exception {
         try {
-            final Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
+            final Product product = productRepository.findByProductId(id);
             final String productImageId = UUID.randomUUID().toString();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.MINUTE, 10);//validity of 10 minutes
-            final String key = "product-image/%s/%s".formatted(id, productImageId);
+            final String key = productImageId;
             final String url = amazonS3.generatePresignedUrl(bucketImageProduct, key, calendar.getTime(), HttpMethod.PUT).toString();
-            product.setImageProductKey(key);
+            List<ProductImageKey> listkeys = product.getProductImageKey() == null ? new ArrayList<>() : product.getProductImageKey();
+            ProductImageKey  productImageKey = new ProductImageKey();
+            productImageKey.setProduct(product);
+            productImageKey.setImageKey(key);
+            productImageKey.setCreatedImageKeyAt(new Date());
+            productImageKey.setUpdateImageKeyAt(new Date());
+            productImageKeyRepository.save(productImageKey);
+            listkeys.add(productImageKey);
             productRepository.save(product);
             return url;
         } catch (Exception e) {
@@ -93,10 +107,9 @@ public class S3ServiceImpl implements S3Service {
     public List<String> getObjectOnBucketProductImage(Long id) throws Exception {
         try {
             List<String> urlImgs = new ArrayList<>();
-            final Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
-            ObjectListing objectListing = amazonS3.listObjects(bucketImageProduct, "product-image/%s".formatted(product.getProductId()));
-            for (S3ObjectSummary s3ObjectSummary : objectListing.getObjectSummaries()) {
-                final S3Object object = amazonS3.getObject(bucketImageProduct, s3ObjectSummary.getKey());
+            final Product product = productRepository.findByProductId(id);
+            for (ProductImageKey key : product.getProductImageKey()) {
+                final S3Object object = amazonS3.getObject(bucketImageProduct, key.getImageKey());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
                 calendar.add(Calendar.HOUR, 10);//validity of 10 minutes
@@ -112,5 +125,15 @@ public class S3ServiceImpl implements S3Service {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @Override
+    public void uploadCustomerProfileImage(MultipartFile[] files, Long customerId) throws IOException {
+
+        for(MultipartFile multipartFile : files) {
+            String key = UUID.randomUUID().toString();
+            amazonS3.putObject(bucketImageProduct, key, multipartFile.getBytes().toString());
+        }
+
     }
 }

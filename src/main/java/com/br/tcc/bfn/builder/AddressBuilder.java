@@ -39,11 +39,11 @@ public class AddressBuilder {
     }
 
     public AddressBuilder createdAt(Date date){
-        this.address.setCreatedAt(date);
+        this.address.setCreatedAddressAt(date);
         return this;
     }
     public AddressBuilder updatedAt(Date date){
-        this.address.setUpdateAt(date);
+        this.address.setUpdateAddressAt(date);
         return this;
     }
 
