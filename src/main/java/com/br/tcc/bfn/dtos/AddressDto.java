@@ -9,6 +9,7 @@ public class AddressDto implements Serializable {
     private String complement;
     private String zipCode;
     private String phone;
+    private String city;
 
     public String getStreetName() {
         return streetName;
@@ -56,5 +57,13 @@ public class AddressDto implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

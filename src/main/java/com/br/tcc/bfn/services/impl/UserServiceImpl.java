@@ -11,6 +11,7 @@ import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IUserService;
+import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
 import com.br.tcc.bfn.strategies.impl.CnpjValidator;
 import com.br.tcc.bfn.strategies.impl.CpfValidator;
@@ -37,13 +38,15 @@ public class UserServiceImpl implements IUserService {
     private final UserFacade userFacade;
     private ValidatorDocumentStrategy validatorDocumentStrategy;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class.getName());
+    private final S3Service s3Service;
 
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper userModelMapper, UserFacade userFacade) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper userModelMapper, UserFacade userFacade, S3Service s3Service) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userModelMapper = userModelMapper;
         this.userFacade = userFacade;
+        this.s3Service = s3Service;
     }
 
     @Override
@@ -119,6 +122,8 @@ public class UserServiceImpl implements IUserService {
             return this.userModelMapper.map(user, UserDTO.class);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -12,6 +12,8 @@ public class AddressRequest {
     private String complement;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String zipCode;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String city;
 
     public AddressRequest() {
     }
@@ -56,4 +58,11 @@ public class AddressRequest {
         this.zipCode = zipCode;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }
