@@ -17,6 +17,7 @@ public class Address {
     private String uf;
     private String complement;
     private String zipCode;
+    private String city;
     private Date createdAddressAt;
     private Date updateAddressAt;
     private Date deleteAddressAt;
@@ -95,5 +96,13 @@ public class Address {
 
     public void setDeleteAddressAt(Date deleteAddressAt) {
         this.deleteAddressAt = deleteAddressAt;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

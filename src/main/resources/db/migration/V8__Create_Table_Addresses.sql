@@ -6,6 +6,7 @@ create table tb_addresses (
     street_name varchar(255),
     street_number varchar(255),
     uf varchar(2),
+    city varchar(255),
     update_address_at timestamp(6),
     zip_code varchar(10)
 );

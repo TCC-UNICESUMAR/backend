@@ -13,6 +13,7 @@ public class CpfValidator implements ValidatorDocumentStrategy {
     private final static Logger LOGGER = LoggerFactory.getLogger(CpfValidator.class);
     @Override
     public Boolean validateDocument(String document){
+        document.replaceAll("[^0-9]", "");
         if (document == null) {
             LOGGER.error("CPF IS NULL");
             return false;

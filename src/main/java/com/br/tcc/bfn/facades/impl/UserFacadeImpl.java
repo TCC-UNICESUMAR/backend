@@ -108,6 +108,7 @@ public class UserFacadeImpl implements UserFacade {
                     .complement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY)
                     .createdAt(new Date())
                     .updatedAt(new Date())
+                    .city(request.getCity())
                     .build();
 
             addressRepository.save(address);
@@ -126,6 +127,7 @@ public class UserFacadeImpl implements UserFacade {
         address.setStreetNumber(request.getStreetNumber());
         address.setZipCode(request.getZipCode());
         address.setUpdateAddressAt(new Date());
+        address.setCity(request.getCity());
     }
 
     @Override

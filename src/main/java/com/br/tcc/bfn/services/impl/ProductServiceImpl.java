@@ -71,6 +71,7 @@ public class ProductServiceImpl implements IProductService {
                     .complement(StringUtils.isNotBlank(request.getAddressDto().getComplement()) ? request.getAddressDto().getComplement() : StringUtils.EMPTY)
                     .createdAt(new Date())
                     .updatedAt(new Date())
+                    .city(request.getAddressDto().getCity())
                     .build();
 
             addressRepository.save(address);
