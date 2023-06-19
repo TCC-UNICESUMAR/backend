@@ -24,13 +24,13 @@ spring:
       time-to-live: 600000
 
 jwt:
-  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  key: ${$key-jwt}
 
 aws:
   region: us-east-1
-  accessKey: AKIAUT6UORFO76RHYDBP
-  secretKey: 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
+  accessKey: {$access-key}
+  secretKey: {$secret-key}
   s3:
     buckets:
-      user: user-images-profile-tcc
-      product: product-images-tcc
+      user: {$bucket-user}
+      product: {$bucket-product}

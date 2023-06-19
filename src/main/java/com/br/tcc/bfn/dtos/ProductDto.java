@@ -1,12 +1,6 @@
 package com.br.tcc.bfn.dtos;
 
-import com.br.tcc.bfn.models.*;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +24,6 @@ public class ProductDto {
 
     public ProductDto() {
     }
-
-    public ProductDto(Product product) {
-    }
-
     public Long getProductId() {
         return productId;
     }

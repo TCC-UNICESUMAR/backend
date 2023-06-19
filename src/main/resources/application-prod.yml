@@ -25,11 +25,14 @@
 ##           google:
 ##            clientId: ${CLIENT_ID}
 ##            clientSecret: ${CLIENT_SECRET}
-##jwt:
-##  key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#jwt:
+#  key: ${$key-jwt}
 #
 #aws:
-#  region: eu-west-1
+#  region: us-east-1
+#  accessKey: {$access-key}
+#  secretKey: {$secret-key}
 #  s3:
 #    buckets:
-#      customer: tcc-bfn-image-profile
+#      user: {$bucket-user}
+#      product: {$bucket-product}
