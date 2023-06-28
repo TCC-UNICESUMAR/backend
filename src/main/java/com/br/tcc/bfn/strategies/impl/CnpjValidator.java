@@ -13,11 +13,13 @@ public class CnpjValidator implements ValidatorDocumentStrategy {
     private final static Logger LOGGER = LoggerFactory.getLogger(CnpjValidator.class);
     @Override
     public Boolean validateDocument(String document) {
-        document.replaceAll("[^0-9]", "");
+
         if (document == null){
             LOGGER.error("CNPJ IS NULL");
             return false;
         }
+
+        document.replaceAll("[^0-9]", "");
 
         if (document.equals("00000000000000") || document.equals("11111111111111") ||
                 document.equals("22222222222222") || document.equals("33333333333333") ||

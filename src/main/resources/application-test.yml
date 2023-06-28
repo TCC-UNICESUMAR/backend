@@ -27,13 +27,13 @@ spring:
 
 
 jwt:
-  key: ${$key-jwt}
+  key: ${key-jwt}
 
 aws:
   region: us-east-1
-  accessKey: {$access-key}
-  secretKey: {$secret-key}
+  accessKey: ${access-key}
+  secretKey: ${secret-key}
   s3:
     buckets:
-      user: {$bucket-user}
-      product: {$bucket-product}
+      user: ${bucket-user}
+      product: ${bucket-product}

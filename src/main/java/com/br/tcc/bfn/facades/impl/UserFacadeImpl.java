@@ -137,7 +137,7 @@ public class UserFacadeImpl implements UserFacade {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
 
-            LOGGER.info(String.format("Verifying CPF Or CNPJ-> %s", request.getCnpjOrCpf()));
+            LOGGER.info(String.format("Verifying CPF Or CNPJ- > %s", request.getCnpjOrCpf()));
 
             validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
 
