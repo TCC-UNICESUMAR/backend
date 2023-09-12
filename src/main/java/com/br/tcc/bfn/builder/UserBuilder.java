@@ -41,7 +41,7 @@ public class UserBuilder {
         return this;
     }
     public UserBuilder updateAt(Date updateAt){
-        this.user.setUpdateUserAt(updateAt);
+        this.user.setUpdatedUserAt(updateAt);
         return this;
     }
 

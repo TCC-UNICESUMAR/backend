@@ -101,14 +101,13 @@ public class UserFacadeImpl implements UserFacade {
             final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
 
             Address address = AddressBuilder.builder()
-                    .uf(request.getUf())
                     .streetName(request.getStreetName())
                     .streetNumber(request.getStreetNumber())
                     .zipCode(request.getZipCode())
                     .complement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY)
                     .createdAt(new Date())
                     .updatedAt(new Date())
-                    .city(request.getCity())
+                    .city(null)
                     .build();
 
             addressRepository.save(address);
@@ -122,12 +121,12 @@ public class UserFacadeImpl implements UserFacade {
 
     private void populateAddressWithNewValues(AddressRequest request, Address address) {
         address.setComplement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY);
-        address.setUf(request.getUf());
+        address.setState(null);
         address.setStreetName(request.getStreetName());
         address.setStreetNumber(request.getStreetNumber());
         address.setZipCode(request.getZipCode());
-        address.setUpdateAddressAt(new Date());
-        address.setCity(request.getCity());
+        address.setUpdatedAddressAt(new Date());
+        address.setCity(null);
     }
 
     @Override

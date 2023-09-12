@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +28,8 @@ public class User implements UserDetails, Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String cpfOrCnpj;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String passportDocumentNumber;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String password;
@@ -36,8 +37,8 @@ public class User implements UserDetails, Serializable {
     private String phone;
     private Boolean userActive;
     private Date createdUserAt;
-    private Date updateUserAt;
-    private Date deleteUserAt;
+    private Date updatedUserAt;
+    private Date deletedUserAt;
     private String profileImageId;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
@@ -46,12 +47,6 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
-    @OneToMany( mappedBy = "userOne",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    private List<Conversation> userConversation;
     @OneToOne
     private Address address;
 
@@ -153,27 +148,28 @@ public class User implements UserDetails, Serializable {
         this.createdUserAt = createdUserAt;
     }
 
-    public Date getUpdateUserAt() {
-        return updateUserAt;
+    public String getPassportDocumentNumber() {
+        return passportDocumentNumber;
     }
 
-    public void setUpdateUserAt(Date updateUserAt) {
-        this.updateUserAt = updateUserAt;
+    public void setPassportDocumentNumber(String passportDocumentNumber) {
+        this.passportDocumentNumber = passportDocumentNumber;
     }
 
-    public Date getDeleteUserAt() {
-        return deleteUserAt;
+    public Date getUpdatedUserAt() {
+        return updatedUserAt;
     }
 
-    public void setDeleteUserAt(Date deleteUserAt) {
-        this.deleteUserAt = deleteUserAt;
+    public void setUpdatedUserAt(Date updatedUserAt) {
+        this.updatedUserAt = updatedUserAt;
     }
 
-    public List<Conversation> getUserConversation() {
-        return userConversation;
+    public Date getDeletedUserAt() {
+        return deletedUserAt;
     }
-    public void setUserConversation(List<Conversation> userConversation) {
-        this.userConversation = userConversation;
+
+    public void setDeletedUserAt(Date deletedUserAt) {
+        this.deletedUserAt = deletedUserAt;
     }
 
     public String getProfileImageId() {
