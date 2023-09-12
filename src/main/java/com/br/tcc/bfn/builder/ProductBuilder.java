@@ -46,7 +46,7 @@ public class ProductBuilder {
     }
 
     public ProductBuilder updateAt(Date updateAt){
-        this.product.setUpdateProductAt(updateAt);
+        this.product.setUpdatedProductAt(updateAt);
         return this;
     }
 
@@ -55,17 +55,8 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder user(User user){
-        this.product.setUser(user);
-        return this;
-    }
-
     public ProductBuilder category(Category category){
         this.product.setCategory(category);
-        return this;
-    }
-    public ProductBuilder address(Address address){
-        this.product.setAddress(address);
         return this;
     }
 

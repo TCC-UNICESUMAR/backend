@@ -25,19 +25,13 @@ public class Product {
     private Integer quantity;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
-    @ManyToOne
-    private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
-    private List<ProductImageKey> productImageKey = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
-    private List<ProductImageUrl> productImageUrls = new ArrayList<>();
     @OneToOne
     private Category category;
     private Boolean reserved;
     private Boolean active;
     private Date createdProductAt;
-    private Date updateProductAt;
-    private Date deleteProductAt;
+    private Date updatedProductAt;
+    private Date deletedProductAt;
     @OneToOne
     private Address address;
 
@@ -77,14 +71,6 @@ public class Product {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Boolean getReserved() {
         return reserved;
     }
@@ -109,20 +95,20 @@ public class Product {
         this.createdProductAt = createdProductAt;
     }
 
-    public Date getUpdateProductAt() {
-        return updateProductAt;
+    public Date getUpdatedProductAt() {
+        return updatedProductAt;
     }
 
-    public void setUpdateProductAt(Date updateProductAt) {
-        this.updateProductAt = updateProductAt;
+    public void setUpdatedProductAt(Date updatedProductAt) {
+        this.updatedProductAt = updatedProductAt;
     }
 
-    public Date getDeleteProductAt() {
-        return deleteProductAt;
+    public Date getDeletedProductAt() {
+        return deletedProductAt;
     }
 
-    public void setDeleteProductAt(Date deleteProductAt) {
-        this.deleteProductAt = deleteProductAt;
+    public void setDeletedProductAt(Date deletedProductAt) {
+        this.deletedProductAt = deletedProductAt;
     }
 
     public Category getCategory() {
@@ -131,29 +117,5 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public List<ProductImageKey> getProductImageKey() {
-        return productImageKey;
-    }
-
-    public void setProductImageKey(List<ProductImageKey> productImageKey) {
-        this.productImageKey = productImageKey;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public List<ProductImageUrl> getProductImageUrls() {
-        return productImageUrls;
-    }
-
-    public void setProductImageUrls(List<ProductImageUrl> productImageUrls) {
-        this.productImageUrls = productImageUrls;
     }
 }

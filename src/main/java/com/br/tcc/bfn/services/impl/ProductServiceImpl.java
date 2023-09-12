@@ -64,14 +64,13 @@ public class ProductServiceImpl implements IProductService {
             }
 
             Address address = AddressBuilder.builder()
-                    .uf(request.getAddressDto().getUf())
                     .streetName(request.getAddressDto().getStreetName())
                     .streetNumber(request.getAddressDto().getStreetNumber())
                     .zipCode(request.getAddressDto().getZipCode())
                     .complement(StringUtils.isNotBlank(request.getAddressDto().getComplement()) ? request.getAddressDto().getComplement() : StringUtils.EMPTY)
                     .createdAt(new Date())
                     .updatedAt(new Date())
-                    .city(request.getAddressDto().getCity())
+                    .city(null)
                     .build();
 
             addressRepository.save(address);
@@ -82,12 +81,10 @@ public class ProductServiceImpl implements IProductService {
                     .createdAt(new Date())
                     .name(request.getName())
                     .category(category)
-                    .user(userService.findAuth().get())
                     .updateAt(new Date())
                     .reserved(Boolean.FALSE)
                     .quantity(request.getQuantity())
                     .description(request.getDescription())
-                    .address(address)
                     .build();
 
             productRepository.save(product);
@@ -109,8 +106,8 @@ public class ProductServiceImpl implements IProductService {
             Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
             product.setActive(Boolean.FALSE);
-            product.setUpdateProductAt(new Date());
-            product.setDeleteProductAt(new Date());
+            product.setUpdatedProductAt(new Date());
+            product.setDeletedProductAt(new Date());
             productRepository.save(product);
 
         } catch (ProductNotFoundException e) {

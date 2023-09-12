@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_categories")
@@ -17,8 +15,8 @@ public class Category implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String categoryName;
     private Date createdCategoryAt;
-    private Date updateCategoryAt;
-    private Date deleteCategoryAt;
+    private Date updatedCategoryAt;
+    private Date deletedCategoryAt;
 
     public Category() {
     }
@@ -47,19 +45,19 @@ public class Category implements Serializable {
         this.createdCategoryAt = createdCategoryAt;
     }
 
-    public Date getUpdateCategoryAt() {
-        return updateCategoryAt;
+    public Date getUpdatedCategoryAt() {
+        return updatedCategoryAt;
     }
 
-    public void setUpdateCategoryAt(Date updateCategoryAt) {
-        this.updateCategoryAt = updateCategoryAt;
+    public void setUpdatedCategoryAt(Date updatedCategoryAt) {
+        this.updatedCategoryAt = updatedCategoryAt;
     }
 
-    public Date getDeleteCategoryAt() {
-        return deleteCategoryAt;
+    public Date getDeletedCategoryAt() {
+        return deletedCategoryAt;
     }
 
-    public void setDeleteCategoryAt(Date deleteCategoryAt) {
-        this.deleteCategoryAt = deleteCategoryAt;
+    public void setDeletedCategoryAt(Date deletedCategoryAt) {
+        this.deletedCategoryAt = deletedCategoryAt;
     }
 }

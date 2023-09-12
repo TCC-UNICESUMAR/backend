@@ -2,7 +2,6 @@ package com.br.tcc.bfn.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,13 +13,15 @@ public class Address {
     private Long addressId;
     private String streetName;
     private String streetNumber;
-    private String uf;
     private String complement;
     private String zipCode;
-    private String city;
+    @OneToOne
+    private City city;
+    @OneToOne
+    private State state;
     private Date createdAddressAt;
-    private Date updateAddressAt;
-    private Date deleteAddressAt;
+    private Date updatedAddressAt;
+    private Date deletedAddressAt;
 
     public Address() {
     }
@@ -49,14 +50,6 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
     public String getComplement() {
         return complement;
     }
@@ -73,6 +66,21 @@ public class Address {
         this.zipCode = zipCode;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
 
     public Date getCreatedAddressAt() {
         return createdAddressAt;
@@ -82,27 +90,19 @@ public class Address {
         this.createdAddressAt = createdAddressAt;
     }
 
-    public Date getUpdateAddressAt() {
-        return updateAddressAt;
+    public Date getUpdatedAddressAt() {
+        return updatedAddressAt;
     }
 
-    public void setUpdateAddressAt(Date updateAddressAt) {
-        this.updateAddressAt = updateAddressAt;
+    public void setUpdatedAddressAt(Date updatedAddressAt) {
+        this.updatedAddressAt = updatedAddressAt;
     }
 
-    public Date getDeleteAddressAt() {
-        return deleteAddressAt;
+    public Date getDeletedAddressAt() {
+        return deletedAddressAt;
     }
 
-    public void setDeleteAddressAt(Date deleteAddressAt) {
-        this.deleteAddressAt = deleteAddressAt;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setDeletedAddressAt(Date deletedAddressAt) {
+        this.deletedAddressAt = deletedAddressAt;
     }
 }

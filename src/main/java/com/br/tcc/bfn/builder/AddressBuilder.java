@@ -1,6 +1,8 @@
 package com.br.tcc.bfn.builder;
 
 import com.br.tcc.bfn.models.Address;
+import com.br.tcc.bfn.models.City;
+import com.br.tcc.bfn.models.State;
 import com.br.tcc.bfn.models.User;
 
 import java.time.LocalDateTime;
@@ -25,10 +27,6 @@ public class AddressBuilder {
         this.address.setStreetNumber(name);
         return this;
     }
-    public AddressBuilder uf(String name){
-        this.address.setUf(name);
-        return this;
-    }
     public AddressBuilder zipCode(String name){
         this.address.setZipCode(name);
         return this;
@@ -37,8 +35,13 @@ public class AddressBuilder {
         this.address.setComplement(name);
         return this;
     }
-    public AddressBuilder city(String city){
+    public AddressBuilder city(City city){
         this.address.setCity(city);
+        return this;
+    }
+
+    public AddressBuilder state(State state){
+        this.address.setState(state);
         return this;
     }
 
@@ -47,7 +50,7 @@ public class AddressBuilder {
         return this;
     }
     public AddressBuilder updatedAt(Date date){
-        this.address.setUpdateAddressAt(date);
+        this.address.setUpdatedAddressAt(date);
         return this;
     }
 

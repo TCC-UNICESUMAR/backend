@@ -107,7 +107,7 @@ public class UserServiceImpl implements IUserService {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
             user.setUserActive(Boolean.FALSE);
-            user.setDeleteUserAt(new Date());
+            user.setDeletedUserAt(new Date());
             repository.save(user);
 
         } catch (UserException e) {

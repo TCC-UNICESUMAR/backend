@@ -158,7 +158,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/db_tcc</url>
                     <user>root</user>
-                    <password>Mat123456</password>
+                    <password>Mat@0902@@</password>
                 </configuration>
                 <dependencies>
                     <dependency>
