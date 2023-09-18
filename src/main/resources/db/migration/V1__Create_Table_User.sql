@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS tb_users(
 	updated_user_at timestamp(6) NOT NULL,
 	deleted_user_at timestamp(6) NULL,
 	user_active int NOT NULL,
-	address_address_id bigint NULL
+	address_address_id bigint NULL,
+	date_date_id bigint NOT NULL
 );
 
 alter table tb_users add constraint UK_pcg68g34ilhfgv3j5sy0oc2mr unique (cpf_or_cnpj);

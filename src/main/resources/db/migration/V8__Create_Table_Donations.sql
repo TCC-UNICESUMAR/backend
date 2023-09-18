@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS tb_donations(
 	donation_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	created_donation_at timestamp(6) NOT NULL,
-    updated_donation_at timestamp(6) NOT NULL,
-    deleted_donation_at timestamp(6) NULL,
+    date_date_id bigint NOT NULL,
     address_address_id bigint NOT NULL,
     user_by bigint NOT NULL
 );
