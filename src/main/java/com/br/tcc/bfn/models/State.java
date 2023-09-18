@@ -3,7 +3,6 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "tb_states")
@@ -13,8 +12,9 @@ public class State implements Serializable{
     private Long stateId;
     private String stateName;
     private String uf;
-    private Date createdStateAt;
-    private Date deletedStateAt;
+    @OneToOne
+    private Date date;
+
 
     public State() {
     }
@@ -43,19 +43,11 @@ public class State implements Serializable{
         this.uf = uf;
     }
 
-    public Date getCreatedStateAt() {
-        return createdStateAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedStateAt(Date createdStateAt) {
-        this.createdStateAt = createdStateAt;
-    }
-
-    public Date getDeletedStateAt() {
-        return deletedStateAt;
-    }
-
-    public void setDeletedStateAt(Date deletedStateAt) {
-        this.deletedStateAt = deletedStateAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

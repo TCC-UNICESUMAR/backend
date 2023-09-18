@@ -2,8 +2,6 @@ package com.br.tcc.bfn.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 @Table(name = "tb_addresses")
 public class Address {
@@ -19,9 +17,8 @@ public class Address {
     private City city;
     @OneToOne
     private State state;
-    private Date createdAddressAt;
-    private Date updatedAddressAt;
-    private Date deletedAddressAt;
+    @OneToOne
+    private Date date;
 
     public Address() {
     }
@@ -82,27 +79,11 @@ public class Address {
         this.state = state;
     }
 
-    public Date getCreatedAddressAt() {
-        return createdAddressAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedAddressAt(Date createdAddressAt) {
-        this.createdAddressAt = createdAddressAt;
-    }
-
-    public Date getUpdatedAddressAt() {
-        return updatedAddressAt;
-    }
-
-    public void setUpdatedAddressAt(Date updatedAddressAt) {
-        this.updatedAddressAt = updatedAddressAt;
-    }
-
-    public Date getDeletedAddressAt() {
-        return deletedAddressAt;
-    }
-
-    public void setDeletedAddressAt(Date deletedAddressAt) {
-        this.deletedAddressAt = deletedAddressAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

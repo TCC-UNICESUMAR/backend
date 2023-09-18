@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS tb_donations_orders(
 	donation_order_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	created_donation_order_at timestamp(6) NOT NULL,
-    updated_donation_order_at timestamp(6) NOT NULL,
-    deleted_donation_order_at timestamp(6) NULL,
+    date_date_id bigint NOT NULL,
     donor bigint NOT NULL,
     received bigint NOT NULL,
     intermediary bigint NOT NULL,

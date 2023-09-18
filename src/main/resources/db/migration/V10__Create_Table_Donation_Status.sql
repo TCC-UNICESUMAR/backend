@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS tb_donations_status(
 	donation_status_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	created_donation_status_at timestamp(6) NOT NULL,
-    updated_donation_status_at timestamp(6) NOT NULL,
-    deleted_donation_status_at timestamp(6) NULL,
+    date_date_id bigint NOT NULL,
     status_description varchar(255) NOT NULL,
     approved int NOT NULL,
     available_for_pickup int NOT NULL,

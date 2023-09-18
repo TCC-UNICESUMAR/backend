@@ -10,7 +10,6 @@ import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,11 +28,8 @@ public class Product {
     private Category category;
     private Boolean reserved;
     private Boolean active;
-    private Date createdProductAt;
-    private Date updatedProductAt;
-    private Date deletedProductAt;
     @OneToOne
-    private Address address;
+    private Date date;
 
     public Product() {
     }
@@ -87,28 +83,12 @@ public class Product {
         this.active = active;
     }
 
-    public Date getCreatedProductAt() {
-        return createdProductAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedProductAt(Date createdProductAt) {
-        this.createdProductAt = createdProductAt;
-    }
-
-    public Date getUpdatedProductAt() {
-        return updatedProductAt;
-    }
-
-    public void setUpdatedProductAt(Date updatedProductAt) {
-        this.updatedProductAt = updatedProductAt;
-    }
-
-    public Date getDeletedProductAt() {
-        return deletedProductAt;
-    }
-
-    public void setDeletedProductAt(Date deletedProductAt) {
-        this.deletedProductAt = deletedProductAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Category getCategory() {

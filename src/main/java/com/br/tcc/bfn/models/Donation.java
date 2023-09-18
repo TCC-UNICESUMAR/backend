@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 @Entity
 @Table(name = "tb_donations")
@@ -12,9 +11,8 @@ public class Donation implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
-    private Date createdDonationAt;
-    private Date updatedDonationAt;
-    private Date deletedDonationAt;
+    @OneToOne
+    private Date date;
     @OneToOne
     private Address address;
     @ManyToOne
@@ -37,28 +35,12 @@ public class Donation implements Serializable{
         this.donationId = donationId;
     }
 
-    public Date getCreatedDonationAt() {
-        return createdDonationAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedDonationAt(Date createdDonationAt) {
-        this.createdDonationAt = createdDonationAt;
-    }
-
-    public Date getUpdatedDonationAt() {
-        return updatedDonationAt;
-    }
-
-    public void setUpdatedDonationAt(Date updatedDonationAt) {
-        this.updatedDonationAt = updatedDonationAt;
-    }
-
-    public Date getDeletedDonationAt() {
-        return deletedDonationAt;
-    }
-
-    public void setDeletedDonationAt(Date deletedDonationAt) {
-        this.deletedDonationAt = deletedDonationAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Address getAddress() {

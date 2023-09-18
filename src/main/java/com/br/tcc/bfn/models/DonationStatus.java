@@ -3,9 +3,6 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_donations_status")
@@ -13,9 +10,8 @@ public class DonationStatus implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationStatusId;
-    private Date createdDonationStatusAt;
-    private Date updatedDonationStatusAt;
-    private Date deletedDonationStatusAt;
+    @OneToOne
+    private Date date;
     private String statusDescription;
     private Boolean approved;
     private Boolean waitingOngApprove;
@@ -34,28 +30,12 @@ public class DonationStatus implements Serializable{
         this.donationStatusId = donationStatusId;
     }
 
-    public Date getCreatedDonationStatusAt() {
-        return createdDonationStatusAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedDonationStatusAt(Date createdDonationStatusAt) {
-        this.createdDonationStatusAt = createdDonationStatusAt;
-    }
-
-    public Date getUpdatedDonationStatusAt() {
-        return updatedDonationStatusAt;
-    }
-
-    public void setUpdatedDonationStatusAt(Date updatedDonationStatusAt) {
-        this.updatedDonationStatusAt = updatedDonationStatusAt;
-    }
-
-    public Date getDeletedDonationStatusAt() {
-        return deletedDonationStatusAt;
-    }
-
-    public void setDeletedDonationStatusAt(Date deletedDonationStatusAt) {
-        this.deletedDonationStatusAt = deletedDonationStatusAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getStatusDescription() {

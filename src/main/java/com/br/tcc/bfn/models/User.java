@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +35,6 @@ public class User implements UserDetails, Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phone;
     private Boolean userActive;
-    private Date createdUserAt;
-    private Date updatedUserAt;
-    private Date deletedUserAt;
     private String profileImageId;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
@@ -49,6 +45,9 @@ public class User implements UserDetails, Serializable {
     private List<Role> roles = new ArrayList<>();
     @OneToOne
     private Address address;
+    @OneToOne
+    private Date date;
+
 
     public User() {
     }
@@ -140,36 +139,12 @@ public class User implements UserDetails, Serializable {
         this.userActive = userActive;
     }
 
-    public Date getCreatedUserAt() {
-        return createdUserAt;
-    }
-
-    public void setCreatedUserAt(Date createdUserAt) {
-        this.createdUserAt = createdUserAt;
-    }
-
     public String getPassportDocumentNumber() {
         return passportDocumentNumber;
     }
 
     public void setPassportDocumentNumber(String passportDocumentNumber) {
         this.passportDocumentNumber = passportDocumentNumber;
-    }
-
-    public Date getUpdatedUserAt() {
-        return updatedUserAt;
-    }
-
-    public void setUpdatedUserAt(Date updatedUserAt) {
-        this.updatedUserAt = updatedUserAt;
-    }
-
-    public Date getDeletedUserAt() {
-        return deletedUserAt;
-    }
-
-    public void setDeletedUserAt(Date deletedUserAt) {
-        this.deletedUserAt = deletedUserAt;
     }
 
     public String getProfileImageId() {
@@ -194,5 +169,13 @@ public class User implements UserDetails, Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,9 +12,8 @@ public class DonationOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationOrderId;
-    private Date createdDonationOrderAt;
-    private Date updatedDonationOrderAt;
-    private Date deletedDonationOrderAt;
+    @OneToOne
+    private Date date;
     @ManyToOne
     private User donor;
     @ManyToOne
@@ -39,28 +37,12 @@ public class DonationOrder implements Serializable{
         this.donationOrderId = donationOrderId;
     }
 
-    public Date getCreatedDonationOrderAt() {
-        return createdDonationOrderAt;
+    public Date getDate() {
+        return date;
     }
 
-    public void setCreatedDonationOrderAt(Date createdDonationOrderAt) {
-        this.createdDonationOrderAt = createdDonationOrderAt;
-    }
-
-    public Date getUpdatedDonationOrderAt() {
-        return updatedDonationOrderAt;
-    }
-
-    public void setUpdatedDonationOrderAt(Date updatedDonationOrderAt) {
-        this.updatedDonationOrderAt = updatedDonationOrderAt;
-    }
-
-    public Date getDeletedDonationOrderAt() {
-        return deletedDonationOrderAt;
-    }
-
-    public void setDeletedDonationOrderAt(Date deletedDonationOrderAt) {
-        this.deletedDonationOrderAt = deletedDonationOrderAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public User getDonor() {
