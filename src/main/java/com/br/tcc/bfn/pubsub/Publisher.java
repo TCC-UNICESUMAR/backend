@@ -19,13 +19,11 @@ public class Publisher {
     private final static Logger LOGGER = Logger.getLogger(Publisher.class.getName());
     private UserRepository userRepository;
     private ReactiveStringRedisTemplate redisTemplate;
-    private final IChatService iChatService;
     private final UserDTOPopulator userDTOPopulator;
 
-    public Publisher(UserRepository userRepository, ReactiveStringRedisTemplate redisTemplate, IChatService iChatService, UserDTOPopulator userDTOPopulator) {
+    public Publisher(UserRepository userRepository, ReactiveStringRedisTemplate redisTemplate, UserDTOPopulator userDTOPopulator) {
         this.userRepository = userRepository;
         this.redisTemplate = redisTemplate;
-        this.iChatService = iChatService;
         this.userDTOPopulator = userDTOPopulator;
     }
 
@@ -43,7 +41,5 @@ public class Publisher {
                 .convertAndSend(RedisConfig.CHAT_MESSAGES_CHANNEL, chatMessageSerialized)
                 .subscribe();
         LOGGER.info("chat message was published");
-
-        iChatService.saveChatOnSender(from, to, text);
     }
 }

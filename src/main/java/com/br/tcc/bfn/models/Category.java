@@ -13,8 +13,6 @@ public class Category implements Serializable {
     private Long categoryId;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String categoryName;
-    @OneToOne
-    private Date date;
 
     public Category() {
     }
@@ -33,13 +31,5 @@ public class Category implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

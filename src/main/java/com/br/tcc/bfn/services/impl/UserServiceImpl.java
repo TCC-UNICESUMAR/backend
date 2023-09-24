@@ -80,8 +80,6 @@ public class UserServiceImpl implements IUserService {
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .active(Boolean.TRUE)
-                    .createdAt(new Date())
-                    .updateAt(new Date())
                     .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_ADMIN).get()))
                     .build();
 
@@ -107,7 +105,6 @@ public class UserServiceImpl implements IUserService {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
             user.setUserActive(Boolean.FALSE);
-            user.setDeletedUserAt(new Date());
             repository.save(user);
 
         } catch (UserException e) {

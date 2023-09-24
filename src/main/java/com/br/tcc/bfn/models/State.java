@@ -12,8 +12,6 @@ public class State implements Serializable{
     private Long stateId;
     private String stateName;
     private String uf;
-    @OneToOne
-    private Date date;
 
 
     public State() {
@@ -41,13 +39,5 @@ public class State implements Serializable{
 
     public void setUf(String uf) {
         this.uf = uf;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

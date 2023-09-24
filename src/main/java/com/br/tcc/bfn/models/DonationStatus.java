@@ -11,7 +11,7 @@ public class DonationStatus implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationStatusId;
     @OneToOne
-    private Date date;
+    private DateCustom date;
     private String statusDescription;
     private Boolean approved;
     private Boolean waitingOngApprove;
@@ -30,11 +30,11 @@ public class DonationStatus implements Serializable{
         this.donationStatusId = donationStatusId;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 

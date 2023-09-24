@@ -1,9 +1,12 @@
 package com.br.tcc.bfn.services.impl;
 
 import com.br.tcc.bfn.dtos.*;
+import com.br.tcc.bfn.facades.impl.UserFacadeImpl;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.utils.BfnConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +26,8 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class.getName());
 
     public AuthenticationService(UserRepository repository, JwtService jwtService, AuthenticationManager authenticationManager) {
         super();
@@ -46,6 +51,7 @@ public class AuthenticationService {
             response.setStatusCode(HttpStatus.OK.value());
             return response;
         } catch (UsernameNotFoundException e) {
+            LOGGER.error("Error on method authenticate -> " + e.getMessage());
             response.setStatusCode(HttpStatus.UNAUTHORIZED.value());
             response.setError(e.getMessage());
             return response;

@@ -46,7 +46,7 @@ public class User implements UserDetails, Serializable {
     @OneToOne
     private Address address;
     @OneToOne
-    private Date date;
+    private DateCustom date;
 
 
     public User() {
@@ -171,11 +171,11 @@ public class User implements UserDetails, Serializable {
         this.phone = phone;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 }

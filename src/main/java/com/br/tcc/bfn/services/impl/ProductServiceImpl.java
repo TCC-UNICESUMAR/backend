@@ -68,8 +68,6 @@ public class ProductServiceImpl implements IProductService {
                     .streetNumber(request.getAddressDto().getStreetNumber())
                     .zipCode(request.getAddressDto().getZipCode())
                     .complement(StringUtils.isNotBlank(request.getAddressDto().getComplement()) ? request.getAddressDto().getComplement() : StringUtils.EMPTY)
-                    .createdAt(new Date())
-                    .updatedAt(new Date())
                     .city(null)
                     .build();
 
@@ -78,10 +76,8 @@ public class ProductServiceImpl implements IProductService {
             Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
             Product product = ProductBuilder.builder()
                     .active(Boolean.TRUE)
-                    .createdAt(new Date())
                     .name(request.getName())
                     .category(category)
-                    .updateAt(new Date())
                     .reserved(Boolean.FALSE)
                     .quantity(request.getQuantity())
                     .description(request.getDescription())
@@ -106,8 +102,6 @@ public class ProductServiceImpl implements IProductService {
             Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
 
             product.setActive(Boolean.FALSE);
-            product.setUpdatedProductAt(new Date());
-            product.setDeletedProductAt(new Date());
             productRepository.save(product);
 
         } catch (ProductNotFoundException e) {

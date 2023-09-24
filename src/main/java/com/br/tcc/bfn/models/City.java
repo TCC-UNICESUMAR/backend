@@ -11,8 +11,6 @@ public class City implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cityId;
     private String cityName;
-    @OneToOne
-    private Date date;
 
     public City() {
     }
@@ -31,13 +29,5 @@ public class City implements Serializable{
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

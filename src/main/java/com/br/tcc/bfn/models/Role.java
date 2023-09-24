@@ -14,10 +14,13 @@ public class Role implements Serializable {
     private Long roleId;
     private String roleName;
     @OneToOne
-    private Date date;
-
-
+    private DateCustom date;
     public Role() {
+    }
+
+    public Role(String roleName, DateCustom date) {
+        this.roleName = roleName;
+        this.date = date;
     }
 
     public Long getRoleId() {
@@ -36,11 +39,11 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 

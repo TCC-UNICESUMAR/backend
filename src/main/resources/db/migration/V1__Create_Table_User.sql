@@ -7,9 +7,6 @@ CREATE TABLE IF NOT EXISTS tb_users(
 	phone varchar(255) NULL,
 	profile_image_id varchar(100) NULL,
 	password varchar(255) NOT NULL,
-	created_user_at timestamp(6) NOT NULL,
-	updated_user_at timestamp(6) NOT NULL,
-	deleted_user_at timestamp(6) NULL,
 	user_active int NOT NULL,
 	address_address_id bigint NULL,
 	date_date_id bigint NOT NULL

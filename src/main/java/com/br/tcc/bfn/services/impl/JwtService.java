@@ -5,7 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ import java.util.logging.Logger;
 @Service
 public class JwtService {
 
-    @Value("${jwt.key}")
-    private String secretKey;
+    @Autowired
+    private Environment environment;
 
     private final static Logger LOGGER = Logger.getLogger(JwtService.class.getName());
 
@@ -87,7 +89,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(environment.getProperty("jwt.key"));
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

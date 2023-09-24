@@ -1,6 +1,7 @@
 package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Address;
+import com.br.tcc.bfn.models.DateCustom;
 import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,9 +21,7 @@ public class UserDTO {
     private List<Role> roles;
     private Address address;
     private Boolean active;
-    private Date createdAt;
-    private Date updateAt;
-    private Date deleteAt;
+    private DateCustom date;
 
     public Long getId() {
         return id;
@@ -80,30 +79,6 @@ public class UserDTO {
         this.active = active;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Date getDeleteAt() {
-        return deleteAt;
-    }
-
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -118,5 +93,13 @@ public class UserDTO {
 
     public void setCpfOrCnpj(String cpfOrCnpj) {
         this.cpfOrCnpj = cpfOrCnpj;
+    }
+
+    public DateCustom getDate() {
+        return date;
+    }
+
+    public void setDate(DateCustom date) {
+        this.date = date;
     }
 }

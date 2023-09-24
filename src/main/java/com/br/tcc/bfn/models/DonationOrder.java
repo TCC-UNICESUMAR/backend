@@ -13,7 +13,7 @@ public class DonationOrder implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationOrderId;
     @OneToOne
-    private Date date;
+    private DateCustom date;
     @ManyToOne
     private User donor;
     @ManyToOne
@@ -37,11 +37,11 @@ public class DonationOrder implements Serializable{
         this.donationOrderId = donationOrderId;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 

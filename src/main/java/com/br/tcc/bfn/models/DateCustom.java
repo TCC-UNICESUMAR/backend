@@ -3,18 +3,19 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_dates")
-public class Date implements Serializable {
+public class DateCustom implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dateId;
-    private Date createdAt;
-    private Date updatedAt;
+    private Date createdAt = new Date();
+    private Date updatedAt = new Date();
     private Date deletedAt;
 
-    public Date() {
+    public DateCustom() {
     }
 
     public Long getDateId() {
