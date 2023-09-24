@@ -2,11 +2,8 @@ package com.br.tcc.bfn.builder;
 
 import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.City;
+import com.br.tcc.bfn.models.DateCustom;
 import com.br.tcc.bfn.models.State;
-import com.br.tcc.bfn.models.User;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public class AddressBuilder {
 
@@ -45,12 +42,8 @@ public class AddressBuilder {
         return this;
     }
 
-    public AddressBuilder createdAt(Date date){
-        this.address.setCreatedAddressAt(date);
-        return this;
-    }
-    public AddressBuilder updatedAt(Date date){
-        this.address.setUpdatedAddressAt(date);
+    public AddressBuilder createdDate(DateCustom date){
+        this.address.setDate(date);
         return this;
     }
 

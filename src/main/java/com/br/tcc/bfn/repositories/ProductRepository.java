@@ -10,21 +10,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "SELECT obj FROM Product obj WHERE obj.deleteProductAt = null",
-            countQuery = "SELECT COUNT(obj) FROM Product obj JOIN obj.productImageKey")
+    @Query(value = "SELECT obj FROM Product obj WHERE obj.date.deletedAt = null",
+            countQuery = "SELECT COUNT(obj) FROM Product obj")
     Page<Product> searchAll(Pageable pageable);
 
-    @Query(value = "SELECT obj FROM Product obj WHERE obj.productId = :productId AND obj.deleteProductAt = null")
+    @Query(value = "SELECT obj FROM Product obj WHERE obj.productId = :productId AND obj.date.deletedAt = null")
     Product findByProductId(@Param("productId") Long productId);
 
-    @Query(value = "SELECT prod FROM Product prod JOIN prod.address adr WHERE adr.uf = :uf AND prod.deleteProductAt = null",
-            countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.address")
+    @Query(value = "SELECT prod FROM Product prod WHERE prod.date.deletedAt = null",
+            countQuery = "SELECT COUNT(prod) FROM Product prod")
     Page<Product> searchAllByUf(@Param("uf") String uf, Pageable pageable);
-    @Query(value = "SELECT prod FROM Product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.deleteProductAt = null",
+    @Query(value = "SELECT prod FROM Product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.date.deletedAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
     Page<Product> searchAllByCategory(@Param("category") String category, Pageable pageable);
 
-    @Query(value = "SELECT prod FROM Product prod JOIN prod.user us WHERE us.userId = :userId AND prod.deleteProductAt = null",
+    @Query(value = "SELECT prod FROM Product prod WHERE prod.date.deletedAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
     Page<Product> searchAllByUserId(@Param("userId") Long userId, Pageable pageable);
 }

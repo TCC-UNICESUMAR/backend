@@ -10,7 +10,7 @@ import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.utils.BfnConstants;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,15 +21,13 @@ import java.util.*;
 @Service
 public class S3ServiceImpl implements S3Service {
     private final AmazonS3 amazonS3;
-    @Value("${aws.s3.buckets.user}")
-    private String bucketImageProfile;
-    @Value("${aws.s3.buckets.product}")
-    private String bucketImageProduct;
+    private final Environment environment;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public S3ServiceImpl(AmazonS3 amazonS3, UserRepository userRepository, ProductRepository productRepository) {
+    public S3ServiceImpl(AmazonS3 amazonS3, Environment environment, UserRepository userRepository, ProductRepository productRepository) {
         this.amazonS3 = amazonS3;
+        this.environment = environment;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
@@ -43,7 +41,7 @@ public class S3ServiceImpl implements S3Service {
             calendar.setTime(new Date());
             calendar.add(Calendar.MINUTE, 10);
             final String key = "profile-image/%s/%s".formatted(id, profileImageId);//validity of 10 minutes
-            final String url = amazonS3.generatePresignedUrl(bucketImageProfile, key, calendar.getTime(), HttpMethod.PUT).toString();
+            final String url = amazonS3.generatePresignedUrl(environment.getProperty("aws.s3.buckets.user"), key, calendar.getTime(), HttpMethod.PUT).toString();
             user.setProfileImageId(key);
             userRepository.save(user);
             return url;
@@ -62,7 +60,7 @@ public class S3ServiceImpl implements S3Service {
             calendar.setTime(new Date());
             calendar.add(Calendar.MINUTE, 10);//validity of 10 minutes
             final String key = productImageId;
-            final String url = amazonS3.generatePresignedUrl(bucketImageProduct, key, calendar.getTime(), HttpMethod.PUT).toString();
+            final String url = amazonS3.generatePresignedUrl(environment.getProperty("aws.s3.buckets.product"), key, calendar.getTime(), HttpMethod.PUT).toString();
             productRepository.save(product);
             return url;
         } catch (Exception e) {
@@ -78,7 +76,7 @@ public class S3ServiceImpl implements S3Service {
             calendar.setTime(new Date());
             calendar.add(Calendar.HOUR, 10);//
             GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                    new GeneratePresignedUrlRequest(bucketImageProfile, user.getProfileImageId())
+                    new GeneratePresignedUrlRequest(environment.getProperty("aws.s3.buckets.user"), user.getProfileImageId())
                             .withMethod(HttpMethod.GET)
                             .withExpiration(calendar.getTime());
             URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
@@ -116,7 +114,7 @@ public class S3ServiceImpl implements S3Service {
 
         for (MultipartFile multipartFile : files) {
             String key = UUID.randomUUID().toString();
-            amazonS3.putObject(bucketImageProduct, key, multipartFile.getBytes().toString());
+            amazonS3.putObject(environment.getProperty("aws.s3.buckets.product"), key, multipartFile.getBytes().toString());
         }
 
     }

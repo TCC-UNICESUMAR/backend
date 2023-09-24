@@ -29,7 +29,7 @@ public class Product {
     private Boolean reserved;
     private Boolean active;
     @OneToOne
-    private Date date;
+    private DateCustom date;
 
     public Product() {
     }
@@ -83,11 +83,11 @@ public class Product {
         this.active = active;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 

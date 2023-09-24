@@ -45,16 +45,6 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder updateAt(Date updateAt){
-        this.product.setUpdatedProductAt(updateAt);
-        return this;
-    }
-
-    public ProductBuilder createdAt(Date createdAt){
-        this.product.setCreatedProductAt(createdAt);
-        return this;
-    }
-
     public ProductBuilder category(Category category){
         this.product.setCategory(category);
         return this;

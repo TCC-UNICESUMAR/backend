@@ -18,7 +18,7 @@ public class Address {
     @OneToOne
     private State state;
     @OneToOne
-    private Date date;
+    private DateCustom date;
 
     public Address() {
     }
@@ -79,11 +79,11 @@ public class Address {
         this.state = state;
     }
 
-    public Date getDate() {
+    public DateCustom getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateCustom date) {
         this.date = date;
     }
 }
