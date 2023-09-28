@@ -13,13 +13,12 @@ public class Address {
     private String streetNumber;
     private String complement;
     private String zipCode;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_city_id")
     private City city;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_state_id")
     private State state;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
-
     public Address() {
     }
 

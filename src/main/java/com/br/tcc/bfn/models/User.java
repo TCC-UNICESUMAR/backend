@@ -43,9 +43,9 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_address_id")
     private Address address;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
 
 

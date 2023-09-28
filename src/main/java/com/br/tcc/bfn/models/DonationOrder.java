@@ -12,17 +12,17 @@ public class DonationOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationOrderId;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "fk_user_donor")
     private User donor;
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "fk_user_intermediary")
     private User intermediary;
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "fk_user_received")
     private User received;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_donation_status_id")
     private DonationStatus donationStatus;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_donation_id")
     private Donation donation;
 
 
