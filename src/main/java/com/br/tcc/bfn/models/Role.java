@@ -13,7 +13,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
     private String roleName;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
     public Role() {
     }

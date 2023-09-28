@@ -11,11 +11,11 @@ public class Donation implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_address_id")
     private Address address;
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "fk_user_by")
     private User userBy;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_donation_products",

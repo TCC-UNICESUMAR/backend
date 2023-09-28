@@ -32,7 +32,7 @@ public class UserController{
 
     private final ModelMapper modelMapper;
 
-    private final static Logger LOGGER = Logger.getLogger(TicketController.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     public UserController(IUserService userService, UserRepository repository, ModelMapper modelMapper) {
         this.userService = userService;

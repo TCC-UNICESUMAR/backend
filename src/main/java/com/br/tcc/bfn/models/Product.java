@@ -24,11 +24,11 @@ public class Product {
     private Integer quantity;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_category_id")
     private Category category;
     private Boolean reserved;
     private Boolean active;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
 
     public Product() {

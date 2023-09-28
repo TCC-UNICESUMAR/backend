@@ -10,13 +10,13 @@ public class DonationStatus implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationStatusId;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_date_id")
     private DateCustom date;
     private String statusDescription;
     private Boolean approved;
     private Boolean waitingOngApprove;
     private Boolean availableForPickup;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "fk_user_approved_by")
     private User approvedBy;
 
     public DonationStatus() {

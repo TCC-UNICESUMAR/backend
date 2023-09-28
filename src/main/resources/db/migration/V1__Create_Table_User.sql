@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS tb_users(
 	profile_image_id varchar(100) NULL,
 	password varchar(255) NOT NULL,
 	user_active int NOT NULL,
-	address_address_id bigint NULL,
-	date_date_id bigint NOT NULL
+	fk_address_id bigint NULL,
+	fk_date_id bigint NOT NULL
 );
 
 alter table tb_users add constraint UK_pcg68g34ilhfgv3j5sy0oc2mr unique (cpf_or_cnpj);
