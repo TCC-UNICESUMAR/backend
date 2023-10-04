@@ -1,16 +1,16 @@
 CREATE TABLE IF NOT EXISTS tb_states(
-    state_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
     state_name varchar(255) NOT NULL,
     uf varchar(3) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tb_cities(
-    city_id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
     city_name varchar(255) NOT NULL
 );
 
 
-INSERT INTO tb_states (state_id, state_name, uf) VALUES
+INSERT INTO tb_states (id, state_name, uf) VALUES
 (1, 'Acre', 'AC'),
 (2, 'Alagoas', 'AL'),
 (3, 'Amazonas', 'AM'),
@@ -39,7 +39,7 @@ INSERT INTO tb_states (state_id, state_name, uf) VALUES
 (26, 'São Paulo', 'SP'),
 (27, 'Tocantins', 'TO');
 
-INSERT INTO tb_cities (city_id, city_name) VALUES
+INSERT INTO tb_cities (id, city_name) VALUES
 (1, 'Afonso Cláudio'),
 (2, 'Água Doce do Norte'),
 (3, 'Águia Branca'),

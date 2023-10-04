@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +24,9 @@ import java.util.logging.Logger;
 @RequestMapping("api/v1/ticket")
 public class TicketController {
 
+    @Autowired
     private ITicketService ticketService;
-
     private final static Logger LOGGER = Logger.getLogger(TicketController.class.getName());
-
-    public TicketController(ITicketService ticketService) {
-        this.ticketService = ticketService;
-    }
 
     @Operation(summary = "Build Ticket To Connect On Chat")
     @ApiResponses(value = {

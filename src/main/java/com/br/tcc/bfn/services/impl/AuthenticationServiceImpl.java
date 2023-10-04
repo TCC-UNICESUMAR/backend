@@ -5,6 +5,7 @@ import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IAuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,17 +16,14 @@ import java.util.logging.Logger;
 
 @Service
 public class AuthenticationServiceImpl implements IAuthenticationService {
-    private final UserRepository repository;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private final static Logger LOGGER = Logger.getLogger(AuthenticationServiceImpl.class.getName());
-    public AuthenticationServiceImpl(UserRepository repository, JwtService jwtService, AuthenticationManager authenticationManager) {
-        super();
-        this.repository = repository;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
 
     @Override
     public Response<String> authenticate(AuthenticationRequest request) {

@@ -8,6 +8,7 @@ import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.IChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -17,15 +18,12 @@ import java.util.logging.Logger;
 public class Publisher {
 
     private final static Logger LOGGER = Logger.getLogger(Publisher.class.getName());
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private ReactiveStringRedisTemplate redisTemplate;
-    private final UserDTOPopulator userDTOPopulator;
-
-    public Publisher(UserRepository userRepository, ReactiveStringRedisTemplate redisTemplate, UserDTOPopulator userDTOPopulator) {
-        this.userRepository = userRepository;
-        this.redisTemplate = redisTemplate;
-        this.userDTOPopulator = userDTOPopulator;
-    }
+    @Autowired
+    private UserDTOPopulator userDTOPopulator;
 
     public void publishChatMessage(String userIdFrom, String userIdTo, String text, Long id) throws Exception {
         User from = userRepository.findByEmail(userIdFrom).orElseThrow();

@@ -1,13 +1,9 @@
 package com.br.tcc.bfn.builder;
 
 import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.DateCustom;
 import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
-import com.br.tcc.bfn.repositories.DateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 public class UserBuilder {
@@ -41,10 +37,6 @@ public class UserBuilder {
     }
     public UserBuilder active(Boolean active){
         this.user.setUserActive(active);
-        return this;
-    }
-    public UserBuilder createdDate(DateCustom date){
-        this.user.setDate(date);
         return this;
     }
     public UserBuilder profileImageId(String profileImageId){

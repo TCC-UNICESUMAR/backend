@@ -7,6 +7,7 @@ import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,18 +24,13 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationService {
-    private final UserRepository repository;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class.getName());
-
-    public AuthenticationService(UserRepository repository, JwtService jwtService, AuthenticationManager authenticationManager) {
-        super();
-        this.repository = repository;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
 
     public Response<AuthenticationResponse> authenticate(AuthenticationRequest request) {
         Response<AuthenticationResponse> response = new Response<>();

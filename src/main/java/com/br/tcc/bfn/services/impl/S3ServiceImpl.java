@@ -10,6 +10,7 @@ import com.br.tcc.bfn.repositories.ProductRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.utils.BfnConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,17 +21,15 @@ import java.util.*;
 
 @Service
 public class S3ServiceImpl implements S3Service {
-    private final AmazonS3 amazonS3;
-    private final Environment environment;
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
 
-    public S3ServiceImpl(AmazonS3 amazonS3, Environment environment, UserRepository userRepository, ProductRepository productRepository) {
-        this.amazonS3 = amazonS3;
-        this.environment = environment;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    private AmazonS3 amazonS3;
+    @Autowired
+    private Environment environment;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public String generateUrlPreSignedToProfileImage(final Long id) throws Exception {

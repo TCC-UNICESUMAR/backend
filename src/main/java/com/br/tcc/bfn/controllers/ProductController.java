@@ -27,11 +27,8 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-    private final IProductService productService;
-
-    public ProductController(IProductService productService) {
-        this.productService = productService;
-    }
+    @Autowired
+    private IProductService productService;
 
     @Operation(summary = "Register new Product on Application")
     @ApiResponses(value = {

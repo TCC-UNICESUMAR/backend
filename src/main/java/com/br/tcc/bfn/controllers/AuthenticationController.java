@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,11 @@ import java.util.logging.Logger;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
-	private final AuthenticationService service;
-
-	private final UserRepository repository;
-
+	@Autowired
+	private AuthenticationService service;
+	@Autowired
+	private UserRepository repository;
 	private final static Logger LOGGER = Logger.getLogger(AuthenticationController.class.getName());
-
-
-	public AuthenticationController(AuthenticationService service, UserRepository repository) {
-		super();
-		this.service = service;
-		this.repository = repository;
-	}
 
 
 	@Operation(summary = "Authenticate User on Application")

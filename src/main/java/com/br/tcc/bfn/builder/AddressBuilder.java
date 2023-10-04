@@ -2,7 +2,6 @@ package com.br.tcc.bfn.builder;
 
 import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.City;
-import com.br.tcc.bfn.models.DateCustom;
 import com.br.tcc.bfn.models.State;
 
 public class AddressBuilder {
@@ -39,11 +38,6 @@ public class AddressBuilder {
 
     public AddressBuilder state(State state){
         this.address.setState(state);
-        return this;
-    }
-
-    public AddressBuilder createdDate(DateCustom date){
-        this.address.setDate(date);
         return this;
     }
 

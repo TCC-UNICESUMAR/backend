@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -26,19 +27,13 @@ import java.util.logging.Logger;
 @RequestMapping("/api/v1/user")
 public class UserController{
 
-    private final IUserService userService;
-
-    private final UserRepository repository;
-
-    private final ModelMapper modelMapper;
-
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
     private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());
-
-    public UserController(IUserService userService, UserRepository repository, ModelMapper modelMapper) {
-        this.userService = userService;
-        this.repository = repository;
-        this.modelMapper = modelMapper;
-    }
 
     @Operation(summary = "Register new User on Application")
     @ApiResponses(value = {

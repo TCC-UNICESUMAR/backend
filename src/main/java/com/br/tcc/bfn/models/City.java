@@ -9,18 +9,18 @@ import java.io.Serializable;
 public class City implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cityId;
+    private Long id;
     private String cityName;
 
     public City() {
     }
 
-    public Long getCityId() {
-        return cityId;
+    public Long getId() {
+        return id;
     }
 
-    public void setCityId(Long cityId) {
-        this.cityId = cityId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCityName() {

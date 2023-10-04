@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class State implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stateId;
+    private Long id;
     private String stateName;
     private String uf;
 
@@ -17,12 +17,12 @@ public class State implements Serializable{
     public State() {
     }
 
-    public Long getStateId() {
-        return stateId;
+    public Long getId() {
+        return id;
     }
 
-    public void setStateId(Long stateId) {
-        this.stateId = stateId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStateName() {

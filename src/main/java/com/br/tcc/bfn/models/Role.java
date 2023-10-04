@@ -3,6 +3,7 @@ package com.br.tcc.bfn.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_roles")
@@ -11,24 +12,20 @@ public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
+    private Long id;
     private String roleName;
-    @OneToOne @JoinColumn(name = "fk_date_id")
-    private DateCustom date;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
     public Role() {
     }
 
-    public Role(String roleName, DateCustom date) {
-        this.roleName = roleName;
-        this.date = date;
+    public Long getId() {
+        return id;
     }
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRoleName() {
@@ -39,12 +36,28 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    public DateCustom getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDate(DateCustom date) {
-        this.date = date;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override
