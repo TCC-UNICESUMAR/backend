@@ -9,7 +9,6 @@ public class UserDTOPopulator implements Populator<UserDTO, User>{
     @Override
     public void populate(UserDTO userDTO, User user) {
         userDTO.setEmail(user.getEmail());
-        userDTO.setId(user.getUserId());
         userDTO.setProfileImageId(user.getProfileImageId());
         userDTO.setRoles(user.getRoles());
         userDTO.setName(user.getName());

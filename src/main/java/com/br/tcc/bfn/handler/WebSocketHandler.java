@@ -9,6 +9,7 @@ import com.br.tcc.bfn.pubsub.Publisher;
 import com.br.tcc.bfn.services.ITicketService;
 import com.br.tcc.bfn.services.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -27,20 +28,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private final static Logger LOGGER = Logger.getLogger(WebSocketHandler.class.getName());
     private static final String TICKET = "ticket";
-    private final ITicketService ticketService;
-    private final Publisher publisher;
-    private final IUserService userService;
+    @Autowired
+    private ITicketService ticketService;
+    @Autowired
+    private Publisher publisher;
+    @Autowired
+    private IUserService userService;
     private final Map<String, WebSocketSession> sessions;
     private final Map<String, String> userIds;
 
     public WebSocketHandler(
-            ITicketService ticketService,
-            Publisher publisher,
-            IUserService userService
     ) {
-        this.ticketService = ticketService;
-        this.publisher = publisher;
-        this.userService = userService;
         sessions = new ConcurrentHashMap<>();
         userIds = new ConcurrentHashMap<>();
     }

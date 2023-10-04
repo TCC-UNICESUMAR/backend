@@ -10,6 +10,7 @@ import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,30 +18,54 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String name;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer quantity;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
-    @OneToOne @JoinColumn(name = "fk_category_id")
+    @OneToOne @JoinColumn(name = "fk_category")
     private Category category;
     private Boolean reserved;
     private Boolean active;
-    @OneToOne @JoinColumn(name = "fk_date_id")
-    private DateCustom date;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
 
     public Product() {
     }
 
-
-    public Long getProductId() {
-        return productId;
+    public Long getId() {
+        return id;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public String getName() {
@@ -81,14 +106,6 @@ public class Product {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public DateCustom getDate() {
-        return date;
-    }
-
-    public void setDate(DateCustom date) {
-        this.date = date;
     }
 
     public Category getCategory() {

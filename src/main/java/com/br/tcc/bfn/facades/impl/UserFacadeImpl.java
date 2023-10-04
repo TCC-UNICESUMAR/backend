@@ -9,12 +9,10 @@ import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
 import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.DateCustom;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.populators.UserPopulator;
 import com.br.tcc.bfn.repositories.AddressRepository;
-import com.br.tcc.bfn.repositories.DateRepository;
 import com.br.tcc.bfn.repositories.RoleRepository;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
@@ -25,37 +23,32 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 @Component
 public class UserFacadeImpl implements UserFacade {
 
-    private final UserRepository repository;
-    private final UserPopulator userPopulator;
-    private final UserDTOPopulator userDTOPopulator;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final AddressRepository addressRepository;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private UserPopulator userPopulator;
+    @Autowired
+    private UserDTOPopulator userDTOPopulator;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private ModelMapper modelMapper;
     private ValidatorDocumentStrategy validatorDocumentStrategy;
-    private final DateRepository dateRepository;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserFacadeImpl.class.getName());
-
-    public UserFacadeImpl(UserRepository repository, UserPopulator userPopulator, UserDTOPopulator userDTOPopulator, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AddressRepository addressRepository, ModelMapper modelMapper, DateRepository dateRepository) {
-        this.repository = repository;
-        this.userPopulator = userPopulator;
-        this.userDTOPopulator = userDTOPopulator;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.addressRepository = addressRepository;
-        this.modelMapper = modelMapper;
-        this.dateRepository = dateRepository;
-    }
 
     @Override
     public UserDTO updateUser(Long id, RegisterRequest request) throws UserException {
@@ -110,7 +103,6 @@ public class UserFacadeImpl implements UserFacade {
                     .streetNumber(request.getStreetNumber())
                     .zipCode(request.getZipCode())
                     .complement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY)
-                    .createdDate(new DateCustom())
                     .city(null)
                     .build();
 
@@ -129,7 +121,6 @@ public class UserFacadeImpl implements UserFacade {
         address.setStreetName(request.getStreetName());
         address.setStreetNumber(request.getStreetNumber());
         address.setZipCode(request.getZipCode());
-        address.setDate(new DateCustom());
         address.setCity(null);
     }
 
@@ -148,17 +139,12 @@ public class UserFacadeImpl implements UserFacade {
                 throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
             }
 
-            DateCustom date = new DateCustom();
-            date.setCreatedAt(new Date());
-            date.setUpdatedAt(new Date());
-            dateRepository.save(date);
             User user = UserBuilder.builder()
                     .name(request.getName())
                     .email(request.getEmail())
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .active(Boolean.TRUE)
-                    .createdDate(date)
                     .phone(request.getPhone())
                     .roles(validatorDocumentStrategy instanceof CnpjValidator ?
                             Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT_ONG).get())

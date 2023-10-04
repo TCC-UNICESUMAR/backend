@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,38 +12,31 @@ import java.util.List;
 public class DonationOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long donationOrderId;
-    @OneToOne @JoinColumn(name = "fk_date_id")
-    private DateCustom date;
+    private Long id;
     @ManyToOne @JoinColumn(name = "fk_user_donor")
     private User donor;
     @ManyToOne @JoinColumn(name = "fk_user_intermediary")
     private User intermediary;
     @ManyToOne @JoinColumn(name = "fk_user_received")
     private User received;
-    @OneToOne @JoinColumn(name = "fk_donation_status_id")
+    @OneToOne @JoinColumn(name = "fk_donation_status")
     private DonationStatus donationStatus;
-    @OneToOne @JoinColumn(name = "fk_donation_id")
+    @OneToOne @JoinColumn(name = "fk_donation")
     private Donation donation;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
 
 
     public DonationOrder() {
     }
 
-    public Long getDonationOrderId() {
-        return donationOrderId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDonationOrderId(Long donationOrderId) {
-        this.donationOrderId = donationOrderId;
-    }
-
-    public DateCustom getDate() {
-        return date;
-    }
-
-    public void setDate(DateCustom date) {
-        this.date = date;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getDonor() {
@@ -83,5 +77,29 @@ public class DonationOrder implements Serializable{
 
     public void setDonation(Donation donation) {
         this.donation = donation;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,24 +36,22 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    private final ProductRequestPopulator productRequestPopulator;
-    private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
-    private final IUserService userService;
-    private final ModelMapper productModelMapper;
-    private final AddressRepository addressRepository;
+    @Autowired
+    private ProductRequestPopulator productRequestPopulator;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private ModelMapper productModelMapper;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
-    private final S3Service s3Service;
-
-    public ProductServiceImpl(ProductRequestPopulator productRequestPopulator, CategoryRepository categoryRepository, ProductRepository productRepository, IUserService userService, ModelMapper productModelMapper, AddressRepository addressRepository, S3Service s3Service) {
-        this.productRequestPopulator = productRequestPopulator;
-        this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
-        this.userService = userService;
-        this.productModelMapper = productModelMapper;
-        this.addressRepository = addressRepository;
-        this.s3Service = s3Service;
-    }
+    @Autowired
+    private S3Service s3Service;
 
 
     @Override

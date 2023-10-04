@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,8 @@ import java.util.List;
 @RequestMapping("/api/v1/s3")
 public class S3Controller {
 
-    private final S3Service s3Service;
-
-    public S3Controller(S3Service s3Service) {
-        this.s3Service = s3Service;
-    }
+    @Autowired
+    private S3Service s3Service;
 
     @Operation(summary = "Get Pre Signed Url on AWS S3 To Upload User Profile Image")
     @ApiResponses(value = {

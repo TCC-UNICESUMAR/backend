@@ -19,6 +19,7 @@ import com.br.tcc.bfn.utils.BfnConstants;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -31,23 +32,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final ModelMapper userModelMapper;
-    private final UserFacade userFacade;
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private ModelMapper userModelMapper;
+    @Autowired
+    private UserFacade userFacade;
     private ValidatorDocumentStrategy validatorDocumentStrategy;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class.getName());
-    private final S3Service s3Service;
-
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper userModelMapper, UserFacade userFacade, S3Service s3Service) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.userModelMapper = userModelMapper;
-        this.userFacade = userFacade;
-        this.s3Service = s3Service;
-    }
+    @Autowired
+    private S3Service s3Service;
 
     @Override
     public UserDTO register(RegisterRequest request) throws UserException {

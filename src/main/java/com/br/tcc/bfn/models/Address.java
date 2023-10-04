@@ -2,32 +2,35 @@ package com.br.tcc.bfn.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "tb_addresses")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long addressId;
+    private Long id;
     private String streetName;
     private String streetNumber;
     private String complement;
     private String zipCode;
-    @OneToOne @JoinColumn(name = "fk_city_id")
+    @OneToOne @JoinColumn(name = "fk_city")
     private City city;
-    @OneToOne @JoinColumn(name = "fk_state_id")
+    @OneToOne @JoinColumn(name = "fk_state")
     private State state;
-    @OneToOne @JoinColumn(name = "fk_date_id")
-    private DateCustom date;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
     public Address() {
     }
 
-    public Long getAddressId() {
-        return addressId;
+    public Long getId() {
+        return id;
     }
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreetName() {
@@ -78,11 +81,27 @@ public class Address {
         this.state = state;
     }
 
-    public DateCustom getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDate(DateCustom date) {
-        this.date = date;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }
