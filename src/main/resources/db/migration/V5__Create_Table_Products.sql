@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS tb_products(
 	id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name varchar(255) NULL,
+	name varchar(100) NULL,
 	quantity int NOT NULL,
-	description varchar(255) NULL,
+	description varchar(150) NULL,
 	active int NOT NULL,
 	reserved int NOT NULL,
 	fk_category bigint NOT NULL,

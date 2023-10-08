@@ -1,21 +1,23 @@
 package com.br.tcc.bfn.services.impl;
 
+import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.UserBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
-import com.br.tcc.bfn.facades.UserFacade;
+import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.User;
-import com.br.tcc.bfn.repositories.RoleRepository;
-import com.br.tcc.bfn.repositories.UserRepository;
+import com.br.tcc.bfn.populators.UserDTOPopulator;
+import com.br.tcc.bfn.populators.UserPopulator;
+import com.br.tcc.bfn.repositories.*;
 import com.br.tcc.bfn.services.IUserService;
-import com.br.tcc.bfn.services.S3Service;
 import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
 import com.br.tcc.bfn.strategies.impl.CnpjValidator;
 import com.br.tcc.bfn.strategies.impl.CpfValidator;
 import com.br.tcc.bfn.utils.BfnConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,22 +40,80 @@ public class UserServiceImpl implements IUserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private ModelMapper userModelMapper;
-    @Autowired
-    private UserFacade userFacade;
     private ValidatorDocumentStrategy validatorDocumentStrategy;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class.getName());
     @Autowired
-    private S3Service s3Service;
+    private UserPopulator userPopulator;
+    @Autowired
+    private UserDTOPopulator userDTOPopulator;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private StateRepository stateRepository;
+
+    @Override
+    public UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException {
+        try {
+            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
+            final Address address = user.getAddress() != null ? user.getAddress() : null;
+
+            if (address == null) {
+                throw new UserException(BfnConstants.ADDRESS_NOT_FOUND);
+            }
+
+            populateAddressWithNewValues(request, address);
+            addressRepository.save(address);
+
+            return this.modelMapper.map(user, UserDTO.class);
+        } catch (UserException exc) {
+            throw new UserException(exc.getMessage());
+        }
+    }
+
+    private void populateAddressWithNewValues(AddressRequest request, Address address) {
+        address.setComplement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY);
+        address.setState(null);
+        address.setStreetName(request.getStreetName());
+        address.setStreetNumber(request.getStreetNumber());
+        address.setZipCode(request.getZipCode());
+        address.setCity(null);
+    }
+
 
     @Override
     public UserDTO register(RegisterRequest request) throws UserException {
         try {
-            return userFacade.saveUser(request);
-        } catch (UserException e) {
-            LOGGER.error(BfnConstants.ERRO_SAVE_USER, e);
-            throw new UserException(e.getMessage());
+            if (Objects.isNull(request)) {
+                throw new UserException(BfnConstants.REQUEST_IS_NULL);
+            }
+
+            LOGGER.info(String.format("Verifying CPF Or CNPJ-> %s", request.getCnpjOrCpf()));
+
+            validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
+
+            if (Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(request.getCnpjOrCpf()))) {
+                throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
+            }
+            User user = UserBuilder.builder()
+                    .name(request.getName())
+                    .email(request.getEmail())
+                    .cpfOrCnpj(request.getCnpjOrCpf())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .active(Boolean.TRUE)
+                    .create(new Date())
+                    .update(new Date())
+                    .roles(Arrays.asList(validatorDocumentStrategy instanceof CpfValidator ?
+                            roleRepository.findByRoleName("ROLE_USER")
+                            : roleRepository.findByRoleName("ROLE_ONG")))
+                    .build();
+
+            return modelMapper.map(repository.save(user), new UserDTO().getClass());
+        } catch (UserException | DocumentException e) {
+            throw new UserException(BfnConstants.ERRO_SAVE_USER);
         }
     }
 
@@ -78,12 +138,14 @@ public class UserServiceImpl implements IUserService {
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .active(Boolean.TRUE)
-                    .roles(Arrays.asList(roleRepository.findById(BfnConstants.ROLE_ADMIN).get()))
+                    .create(new Date())
+                    .update(new Date())
+                    .roles(Arrays.asList(roleRepository.findByRoleName("ROLE_ADMIN")))
                     .build();
 
             repository.save(user);
 
-            return userModelMapper.map(user, new UserDTO().getClass());
+            return modelMapper.map(user, new UserDTO().getClass());
         } catch (UserException e) {
             throw new UserException(BfnConstants.ERRO_SAVE_USER);
         } catch (DocumentException e) {
@@ -103,6 +165,7 @@ public class UserServiceImpl implements IUserService {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
             user.setUserActive(Boolean.FALSE);
+            user.setDeletedAt(new Date());
             repository.save(user);
 
         } catch (UserException e) {
@@ -114,37 +177,34 @@ public class UserServiceImpl implements IUserService {
     public UserDTO findById(Long id) throws UserException {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-            return this.userModelMapper.map(user, UserDTO.class);
+            return this.modelMapper.map(user, UserDTO.class);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
     public Page<UserDTO> findAllWithPageable(Pageable pageable) {
-        return repository.findAll(pageable).map(x -> this.userModelMapper.map(x, UserDTO.class));
+        return repository.findAll(pageable).map(x -> this.modelMapper.map(x, UserDTO.class));
     }
 
     @Override
     public List<UserDTO> findAll() {
-        return repository.findAll().stream().map(x -> this.userModelMapper.map(x, UserDTO.class)).collect(Collectors.toList());
+        return repository.findAll().stream().map(x -> this.modelMapper.map(x, UserDTO.class)).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO update(Long id, RegisterRequest request) throws UserException {
         try {
-            return userFacade.updateUser(id, request);
-        } catch (UserException e) {
-            throw new UserException(e.getMessage());
-        }
-    }
 
-    @Override
-    public UserDTO updateAddress(Long id, AddressRequest request) throws UserException {
-        try {
-            return userFacade.updateUserAddress(id, request);
+            User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
+
+            userPopulator.populate(user, request);
+
+            repository.save(user);
+
+            return modelMapper.map(user, UserDTO.class);
+
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }
@@ -153,23 +213,41 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO saveUserAddress(Long id, AddressRequest request) throws UserException {
         try {
-            return userFacade.saveUserAddress(id, request);
-        } catch (UserException e) {
-            throw new UserException(e.getMessage());
+            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
+
+            final Address address = AddressBuilder.builder()
+                    .city(cityRepository.findByCityName(request.getCity()))
+                    .complement(request.getComplement())
+                    .streetNumber(request.getStreetNumber())
+                    .zipCode(request.getZipCode())
+                    .streetName(request.getStreetName())
+                    .state(stateRepository.findStateByUf(request.getUf()))
+                    .create(new Date())
+                    .update(new Date())
+                    .build();
+
+            addressRepository.save(address);
+            user.setAddress(address);
+            repository.save(user);
+
+            return this.modelMapper.map(user, UserDTO.class);
+        } catch (UserException exc) {
+            throw new UserException(exc.getMessage());
         }
     }
 
     @Override
-    public Optional<User> findAuth() throws UserException {
+    public User findAuth() throws UserException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> usuario = this.repository.findByEmail(auth.getName());
+        Optional<User> user = this.repository.findByEmail(auth.getName());
 
-        if (usuario.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserException(BfnConstants.USER_NOT_FOUND);
         }
 
-        return usuario;
+        return user.get();
     }
+
     private boolean isCpf(String value) {
         if(value.length() == 11){
             return true;

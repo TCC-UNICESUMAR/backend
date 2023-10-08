@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS tb_states(
     id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    state_name varchar(255) NOT NULL,
+    state_name varchar(50) NOT NULL,
     uf varchar(3) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tb_cities(
     id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    city_name varchar(255) NOT NULL
+    city_name varchar(90) NOT NULL
 );
 
 

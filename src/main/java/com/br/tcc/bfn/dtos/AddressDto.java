@@ -1,5 +1,8 @@
 package com.br.tcc.bfn.dtos;
 
+import com.br.tcc.bfn.models.City;
+import com.br.tcc.bfn.models.State;
+
 import java.io.Serializable;
 
 public class AddressDto implements Serializable {
@@ -9,7 +12,8 @@ public class AddressDto implements Serializable {
     private String complement;
     private String zipCode;
     private String phone;
-    private String city;
+    private City city;
+    private State state;
 
     public String getStreetName() {
         return streetName;
@@ -59,11 +63,19 @@ public class AddressDto implements Serializable {
         this.phone = phone;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

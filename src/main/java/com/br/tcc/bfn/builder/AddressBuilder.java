@@ -4,6 +4,8 @@ import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.City;
 import com.br.tcc.bfn.models.State;
 
+import java.util.Date;
+
 public class AddressBuilder {
 
     private Address address;
@@ -38,6 +40,21 @@ public class AddressBuilder {
 
     public AddressBuilder state(State state){
         this.address.setState(state);
+        return this;
+    }
+
+    public AddressBuilder create(Date create){
+        this.address.setCreatedAt(create);
+        return this;
+    }
+
+    public AddressBuilder update(Date update){
+        this.address.setUpdatedAt(update);
+        return this;
+    }
+
+    public AddressBuilder delete(Date delete){
+        this.address.setDeletedAt(delete);
         return this;
     }
 

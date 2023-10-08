@@ -1,18 +1,16 @@
 package com.br.tcc.bfn.populators;
 
-import com.br.tcc.bfn.dtos.RegisterProductDto;
+import com.br.tcc.bfn.dtos.RegisterDonationDto;
 import com.br.tcc.bfn.models.Product;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
-public class ProductRequestPopulator implements Populator<Product, RegisterProductDto>{
+public class ProductRequestPopulator implements Populator<Product, RegisterDonationDto>{
     @Override
-    public void populate(Product product, RegisterProductDto registerProductDto) {
+    public void populate(Product product, RegisterDonationDto registerDonationDto) {
         product.setActive(Boolean.TRUE);
-        product.setName(registerProductDto.getName());
-        product.setDescription(registerProductDto.getDescription());
-        product.setQuantity(registerProductDto.getQuantity());
+        product.setName(registerDonationDto.getName());
+        product.setDescription(registerDonationDto.getDescription());
+        product.setQuantity(registerDonationDto.getQuantity());
     }
 }

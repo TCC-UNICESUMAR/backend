@@ -10,21 +10,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "SELECT obj FROM Product obj WHERE obj.date.deletedAt = null",
+    @Query(value = "SELECT obj FROM Product obj WHERE obj.deletedAt = null",
             countQuery = "SELECT COUNT(obj) FROM Product obj")
     Page<Product> searchAll(Pageable pageable);
 
-    @Query(value = "SELECT obj FROM Product obj WHERE obj.productId = :productId AND obj.date.deletedAt = null")
+    @Query(value = "SELECT obj FROM Product obj WHERE obj.id = :productId AND obj.deletedAt = null")
     Product findByProductId(@Param("productId") Long productId);
 
-    @Query(value = "SELECT prod FROM Product prod WHERE prod.date.deletedAt = null",
+    @Query(value = "SELECT prod FROM Product prod WHERE prod.deletedAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod")
     Page<Product> searchAllByUf(@Param("uf") String uf, Pageable pageable);
-    @Query(value = "SELECT prod FROM Product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.date.deletedAt = null",
+    @Query(value = "SELECT prod FROM Product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.deletedAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
     Page<Product> searchAllByCategory(@Param("category") String category, Pageable pageable);
 
-    @Query(value = "SELECT prod FROM Product prod WHERE prod.date.deletedAt = null",
+    @Query(value = "SELECT prod FROM Product prod WHERE prod.deletedAt = null",
             countQuery = "SELECT COUNT(prod) FROM Product prod JOIN prod.category")
     Page<Product> searchAllByUserId(@Param("userId") Long userId, Pageable pageable);
 }

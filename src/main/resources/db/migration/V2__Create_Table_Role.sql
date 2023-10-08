@@ -5,3 +5,7 @@ CREATE TABLE IF NOT EXISTS tb_roles(
     updated_at timestamp(6) NOT NULL,
     deleted_at timestamp(6) NULL
 );
+
+insert into tb_roles values(1, 'ROLE_ADMIN', CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL);
+insert into tb_roles values(2, 'ROLE_USER', CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL);
+insert into tb_roles values(3, 'ROLE_ONG', CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL);

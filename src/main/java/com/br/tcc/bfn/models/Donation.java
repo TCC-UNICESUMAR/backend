@@ -12,7 +12,7 @@ public class Donation implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne @JoinColumn(name = "fk_address_id")
+    @OneToOne @JoinColumn(name = "fk_address")
     private Address address;
     @ManyToOne @JoinColumn(name = "fk_user_by")
     private User userBy;

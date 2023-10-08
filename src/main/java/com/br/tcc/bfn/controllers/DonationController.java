@@ -8,39 +8,32 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product")
-public class ProductController {
+public class DonationController {
 
     @Autowired
     private IProductService productService;
 
-    @Operation(summary = "Register new Product on Application")
+    @Operation(summary = "Register new Donation on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Register new Product on Application",
+            @ApiResponse(responseCode = "201", description = "Register new Donation on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProductDto.class)) }),
             @ApiResponse(responseCode = "500", description = "Error Register new Product on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @PostMapping()
-    public ResponseEntity<Response<ProductDto>> register(@RequestBody RegisterProductDto request) {
-        Response<ProductDto> dtoResponse = new Response<>();
+    public ResponseEntity<Response<DonationDto>> register(@RequestBody RegisterDonationDto request) {
+        Response<DonationDto> dtoResponse = new Response<>();
 
         try{
             dtoResponse.setData(productService.register(request));
@@ -53,9 +46,9 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "Disable Product on Application")
+    @Operation(summary = "Disable Donation on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Disable Product on Application",
+            @ApiResponse(responseCode = "201", description = "Disable Donation on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProductDto.class)) }),
             @ApiResponse(responseCode = "500", description = "Error Disable Product on Application",
@@ -73,7 +66,6 @@ public class ProductController {
             dtoResponse.setError(e.getMessage());
             return ResponseEntity.internalServerError().body(dtoResponse);
         }
-
     }
 
     @Operation(summary = "Find Product By Id on Application")
@@ -168,7 +160,7 @@ public class ProductController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @PutMapping("/{id}")
-    public ResponseEntity<Response<ProductDto>> updateProduct(@PathVariable Long id, @RequestBody RegisterProductDto request){
+    public ResponseEntity<Response<ProductDto>> updateProduct(@PathVariable Long id, @RequestBody RegisterDonationDto request){
         Response<ProductDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
