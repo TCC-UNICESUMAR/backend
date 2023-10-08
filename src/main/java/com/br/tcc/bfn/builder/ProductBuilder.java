@@ -30,6 +30,21 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder create(Date create){
+        this.product.setCreatedAt(create);
+        return this;
+    }
+
+    public ProductBuilder update(Date update){
+        this.product.setUpdatedAt(update);
+        return this;
+    }
+
+    public ProductBuilder delete(Date delete){
+        this.product.setDeletedAt(delete);
+        return this;
+    }
+
     public ProductBuilder quantity(Integer value){
         this.product.setQuantity(value);
         return this;

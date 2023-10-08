@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS tb_donations_status(
 	id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	status_description varchar(255) NOT NULL,
+	status_description varchar(120) NOT NULL,
     approved int NOT NULL,
     available_for_pickup int NOT NULL,
     waiting_ong_approve int NOT NULL,

@@ -3,15 +3,15 @@ package com.br.tcc.bfn.dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterProductDto {
+public class RegisterDonationDto {
 
     private String name;
     private String description;
     private Integer quantity;
     private String category;
-    private AddressDto addressDto;
+    private AddressRequest address;
 
-    public RegisterProductDto() {
+    public RegisterDonationDto() {
     }
 
     public String getName() {
@@ -46,11 +46,11 @@ public class RegisterProductDto {
         this.category = category;
     }
 
-    public AddressDto getAddressDto() {
-        return addressDto;
+    public AddressRequest getAddress() {
+        return address;
     }
 
-    public void setAddressDto(AddressDto addressDto) {
-        this.addressDto = addressDto;
+    public void setAddress(AddressRequest address) {
+        this.address = address;
     }
 }

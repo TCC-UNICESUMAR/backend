@@ -4,6 +4,7 @@ import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Role;
 import com.br.tcc.bfn.models.User;
 
+import java.util.Date;
 import java.util.List;
 
 public class UserBuilder {
@@ -48,6 +49,22 @@ public class UserBuilder {
         this.user.setPhone(phone);
         return this;
     }
+
+    public UserBuilder create(Date create){
+        this.user.setCreatedAt(create);
+        return this;
+    }
+
+    public UserBuilder update(Date update){
+        this.user.setUpdatedAt(update);
+        return this;
+    }
+
+    public UserBuilder delete(Date delete){
+        this.user.setDeletedAt(delete);
+        return this;
+    }
+
     public UserBuilder roles(List<Role> roles){
         this.user.setRoles(roles);
         return this;

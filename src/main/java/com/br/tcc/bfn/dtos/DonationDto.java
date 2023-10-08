@@ -1,23 +1,26 @@
 package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.Role;
+import com.br.tcc.bfn.models.Product;
+import com.br.tcc.bfn.models.User;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserDTO {
-
+public class DonationDto implements Serializable {
     private Long id;
-    private String email;
-    private String profileImageId;
-    private String name;
-    private List<Role> roles;
     private AddressDto address;
-    private Boolean active;
+    private UserDTO userBy;
+    private List<ProductDto> products = new ArrayList<>();
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+
+    public DonationDto() {
+    }
 
     public Long getId() {
         return id;
@@ -25,38 +28,6 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getProfileImageId() {
-        return profileImageId;
-    }
-
-    public void setProfileImageId(String profileImageId) {
-        this.profileImageId = profileImageId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public AddressDto getAddress() {
@@ -67,12 +38,20 @@ public class UserDTO {
         this.address = address;
     }
 
-    public Boolean getActive() {
-        return active;
+    public UserDTO getUserBy() {
+        return userBy;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setUserBy(UserDTO userBy) {
+        this.userBy = userBy;
+    }
+
+    public List<ProductDto> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductDto> products) {
+        this.products = products;
     }
 
     public Date getCreatedAt() {

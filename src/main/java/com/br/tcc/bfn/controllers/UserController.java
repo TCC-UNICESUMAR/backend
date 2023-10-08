@@ -4,8 +4,7 @@ import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.dtos.UserDTO;
-import com.br.tcc.bfn.repositories.UserRepository;
-import com.br.tcc.bfn.services.IUserService;
+import com.br.tcc.bfn.facades.UserFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,9 +27,8 @@ import java.util.logging.Logger;
 public class UserController{
 
     @Autowired
-    private IUserService userService;
-    @Autowired
-    private UserRepository repository;
+    private UserFacade userFacade;
+
     @Autowired
     private ModelMapper modelMapper;
     private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());
@@ -49,7 +47,7 @@ public class UserController{
 
         try{
             LOGGER.info("Method Register User Default");
-            dtoResponse.setData(userService.register(request));
+            dtoResponse.setData(userFacade.saveUser(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -72,7 +70,7 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method Register Admin");
-            dtoResponse.setData(userService.registerAdmin(request));
+            dtoResponse.setData(userFacade.saveUser(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -99,7 +97,7 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method Disable User");
-            userService.disableUser(id);
+            userFacade.disableUser(id);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -126,7 +124,7 @@ public class UserController{
         LOGGER.info("Method Find All Users");
         Response<Page<UserDTO>> dtoResponse = new Response<>();
         dtoResponse.setStatusCode(HttpStatus.OK.value());
-        dtoResponse.setData(userService.findAllWithPageable(pageable));
+        dtoResponse.setData(userFacade.findAllWithPageable(pageable));
         return ResponseEntity.ok().body(dtoResponse);
 
     }
@@ -148,7 +146,7 @@ public class UserController{
         try {
             LOGGER.info("Method Find User By Id");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userService.findById(id));
+            dtoResponse.setData(userFacade.findById(id));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(id, new RegisterRequest())).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
@@ -165,7 +163,7 @@ public class UserController{
         try {
             LOGGER.info("Method Get User By Session");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(modelMapper.map(userService.findAuth().get(), UserDTO.class));
+            dtoResponse.setData(userFacade.findAuth());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -191,7 +189,7 @@ public class UserController{
         try{
             LOGGER.info("Method Update User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userService.update(id,request));
+            dtoResponse.setData(userFacade.updateUser(id,request));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
@@ -221,7 +219,7 @@ public class UserController{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
-            dtoResponse.setData(userService.updateAddress(id,request));
+            dtoResponse.setData(userFacade.updateUserAddress(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -247,7 +245,7 @@ public class UserController{
         try{
             LOGGER.info("Method Register Address In User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userService.saveUserAddress(id,request));
+            dtoResponse.setData(userFacade.saveUserAddress(id,request));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);

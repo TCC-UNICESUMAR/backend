@@ -1,8 +1,8 @@
 create table tb_addresses (
     id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    complement varchar(255),
-    street_name varchar(255),
-    street_number varchar(35),
+    complement varchar(100),
+    street_name varchar(100),
+    street_number varchar(20),
     zip_code varchar(10),
     fk_state bigint NOT NULL,
     fk_city bigint NOT NULL,

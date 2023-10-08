@@ -1,176 +1,63 @@
 package com.br.tcc.bfn.facades.impl;
 
-import com.br.tcc.bfn.builder.AddressBuilder;
-import com.br.tcc.bfn.builder.UserBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
-import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
-import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.User;
-import com.br.tcc.bfn.populators.UserDTOPopulator;
-import com.br.tcc.bfn.populators.UserPopulator;
-import com.br.tcc.bfn.repositories.AddressRepository;
-import com.br.tcc.bfn.repositories.RoleRepository;
-import com.br.tcc.bfn.repositories.UserRepository;
-import com.br.tcc.bfn.strategies.ValidatorDocumentStrategy;
-import com.br.tcc.bfn.strategies.impl.CnpjValidator;
-import com.br.tcc.bfn.strategies.impl.CpfValidator;
-import com.br.tcc.bfn.utils.BfnConstants;
-import org.apache.commons.lang3.StringUtils;
+import com.br.tcc.bfn.services.IUserService;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 @Component
 public class UserFacadeImpl implements UserFacade {
 
     @Autowired
-    private UserRepository repository;
-    @Autowired
-    private UserPopulator userPopulator;
-    @Autowired
-    private UserDTOPopulator userDTOPopulator;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private AddressRepository addressRepository;
+    private IUserService userService;
+
     @Autowired
     private ModelMapper modelMapper;
-    private ValidatorDocumentStrategy validatorDocumentStrategy;
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserFacadeImpl.class.getName());
 
     @Override
     public UserDTO updateUser(Long id, RegisterRequest request) throws UserException {
-        try {
-            User user = repository.findById(id).orElseThrow();
+        return userService.update(id, request);
+    }
 
-            if (Objects.nonNull(user) && !(user.getEmail() == request.getEmail())) {
-                if (repository.findByEmail(request.getEmail()).isPresent()) {
-                    throw new UserException(BfnConstants.USER_EXIST_BY_EMAIL);
-                }
-            }
-
-            if (user == null) {
-                throw new UserException(BfnConstants.USER_NOT_FOUND);
-            }
-
-            userPopulator.populate(user, request);
-            repository.save(user);
-
-            return this.modelMapper.map(user, UserDTO.class);
-        } catch (UserException exc) {
-            throw new UserException(exc.getMessage());
-        }
+    @Override
+    public UserDTO saveUser(RegisterRequest request) throws Exception {
+        return userService.register(request);
     }
 
     @Override
     public UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException {
-        try {
-            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-            final Address address = user.getAddress() != null ? user.getAddress() : null;
-
-            if (address == null) {
-                throw new UserException(BfnConstants.ADDRESS_NOT_FOUND);
-            }
-
-            populateAddressWithNewValues(request, address);
-            addressRepository.save(address);
-
-            return this.modelMapper.map(user, UserDTO.class);
-        } catch (UserException exc) {
-            throw new UserException(exc.getMessage());
-        }
+        return userService.updateUserAddress(id, request);
     }
 
     @Override
     public UserDTO saveUserAddress(Long id, AddressRequest request) throws UserException {
-        try {
-            final User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-
-            Address address = AddressBuilder.builder()
-                    .streetName(request.getStreetName())
-                    .streetNumber(request.getStreetNumber())
-                    .zipCode(request.getZipCode())
-                    .complement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY)
-                    .city(null)
-                    .build();
-
-            addressRepository.save(address);
-            user.setAddress(address);
-            repository.save(user);
-            return this.modelMapper.map(user, UserDTO.class);
-        } catch (UserException exc) {
-            throw new UserException(exc.getMessage());
-        }
-    }
-
-    private void populateAddressWithNewValues(AddressRequest request, Address address) {
-        address.setComplement(StringUtils.isNotBlank(request.getComplement()) ? request.getComplement() : StringUtils.EMPTY);
-        address.setState(null);
-        address.setStreetName(request.getStreetName());
-        address.setStreetNumber(request.getStreetNumber());
-        address.setZipCode(request.getZipCode());
-        address.setCity(null);
+        return userService.saveUserAddress(id, request);
     }
 
     @Override
-    public UserDTO saveUser(RegisterRequest request) throws UserException {
-        try {
-            if (Objects.isNull(request)) {
-                throw new UserException(BfnConstants.REQUEST_IS_NULL);
-            }
-
-            LOGGER.info(String.format("Verifying CPF Or CNPJ- > %s", request.getCnpjOrCpf()));
-
-            validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
-
-            if (Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(request.getCnpjOrCpf()))) {
-                throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
-            }
-
-            User user = UserBuilder.builder()
-                    .name(request.getName())
-                    .email(request.getEmail())
-                    .cpfOrCnpj(request.getCnpjOrCpf())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .active(Boolean.TRUE)
-                    .phone(request.getPhone())
-                    .roles(validatorDocumentStrategy instanceof CnpjValidator ?
-                            Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT_ONG).get())
-                            : Arrays.asList(roleRepository.findById(BfnConstants.ROLE_DEFAULT).get()))
-                    .build();
-
-            repository.save(user);
-
-            return modelMapper.map(user, UserDTO.class);
-        } catch (UserException | DocumentException e) {
-            throw new UserException(e.getMessage());
-        }
+    public UserDTO findAuth() throws UserException {
+        return modelMapper.map(userService.findAuth(), UserDTO.class);
     }
 
-    private ValidatorDocumentStrategy getValidator(String value) {
-        if (isCpf(value)) {
-            return new CpfValidator();
-        }
-        return new CnpjValidator();
+    @Override
+    public UserDTO findById(Long id) throws UserException {
+        return userService.findById(id);
     }
 
-    private boolean isCpf(String value) {
-        if (value.length() == 11) {
-            return true;
-        }
+    @Override
+    public Page<UserDTO> findAllWithPageable(Pageable pageable) {
+        return userService.findAllWithPageable(pageable);
+    }
 
-        return false;
+    @Override
+    public void disableUser(Long id) throws UserException {
+        userService.disableUser(id);
     }
 }
