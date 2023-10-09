@@ -14,7 +14,7 @@ public class DonationDto implements Serializable {
     private Long id;
     private AddressDto address;
     private UserDTO userBy;
-    private List<ProductDto> products = new ArrayList<>();
+    private ProductDto product;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
@@ -46,12 +46,12 @@ public class DonationDto implements Serializable {
         this.userBy = userBy;
     }
 
-    public List<ProductDto> getProducts() {
-        return products;
+    public ProductDto getProduct() {
+        return product;
     }
 
-    public void setProducts(List<ProductDto> products) {
-        this.products = products;
+    public void setProduct(ProductDto product) {
+        this.product = product;
     }
 
     public Date getCreatedAt() {

@@ -1,17 +1,13 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.ProductBuilder;
 import com.br.tcc.bfn.dtos.CategoryDto;
-import com.br.tcc.bfn.dtos.DonationDto;
 import com.br.tcc.bfn.dtos.ProductDto;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
 import com.br.tcc.bfn.exceptions.CategoryException;
 import com.br.tcc.bfn.exceptions.ProductException;
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
-import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Category;
-import com.br.tcc.bfn.models.Donation;
 import com.br.tcc.bfn.models.Product;
 import com.br.tcc.bfn.populators.ProductRequestPopulator;
 import com.br.tcc.bfn.repositories.*;
@@ -27,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +43,6 @@ public class ProductServiceImpl implements IProductService {
     private ModelMapper productModelMapper;
     @Autowired
     private AddressRepository addressRepository;
-    @Autowired
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     private S3Service s3Service;
@@ -60,27 +54,14 @@ public class ProductServiceImpl implements IProductService {
     private DonationRepository donationRepository;
 
     @Override
-    public DonationDto register(RegisterDonationDto request) throws Exception {
+    public Product register(RegisterDonationDto request) throws Exception {
         try {
             if (Objects.isNull(request)) {
                 LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
                 throw new Exception(BfnConstants.REQUEST_IS_NULL);
             }
 
-            final Address address = AddressBuilder.builder()
-                    .city(cityRepository.findByCityName(request.getAddress().getCity()))
-                    .complement(request.getAddress().getComplement())
-                    .streetNumber(request.getAddress().getStreetNumber())
-                    .zipCode(request.getAddress().getZipCode())
-                    .streetName(request.getAddress().getStreetName())
-                    .state(stateRepository.findStateByUf(request.getAddress().getUf()))
-                    .create(new Date())
-                    .update(new Date())
-                    .build();
-
-            addressRepository.save(address);
-
-            Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
+            final Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
 
             Product product = ProductBuilder.builder()
                     .active(Boolean.TRUE)
@@ -95,15 +76,7 @@ public class ProductServiceImpl implements IProductService {
 
             productRepository.save(product);
 
-            Donation donation = new Donation();
-            donation.setProducts(Arrays.asList(product));
-            donation.setAddress(address);
-            donation.setCreatedAt(new Date());
-            donation.setUpdatedAt(new Date());
-            donation.setUserBy(userService.findAuth());
-            donationRepository.save(donation);
-
-            return productModelMapper.map(donation, DonationDto.class);
+            return product;
 
         } catch (ProductException e) {
             LOGGER.info(String.format(BfnConstants.ERRO_SAVE_PRODUCT));
@@ -121,7 +94,7 @@ public class ProductServiceImpl implements IProductService {
     public void disableProduct(Long id) throws ProductNotFoundException {
         try {
             Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(BfnConstants.PRODUCT_NOT_FOUND));
-
+            product.setDeletedAt(new Date());
             product.setActive(Boolean.FALSE);
             productRepository.save(product);
 
@@ -132,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDto update(Long id, RegisterDonationDto request) throws ProductException, ProductNotFoundException, CategoryException {
+    public Product update(Long id, RegisterDonationDto request) throws ProductException, ProductNotFoundException, CategoryException {
         try {
             if (Objects.isNull(request)) {
                 LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
@@ -145,7 +118,7 @@ public class ProductServiceImpl implements IProductService {
             product.setCategory(category);
             this.productRequestPopulator.populate(product, request);
             productRepository.save(product);
-            return productModelMapper.map(product, ProductDto.class);
+            return product;
         } catch (ProductException e) {
             LOGGER.error(String.format(BfnConstants.ERRO_GENERIC));
             throw new ProductException(e.getMessage());

@@ -1,6 +1,8 @@
 package com.br.tcc.bfn.controllers;
 
 import com.br.tcc.bfn.dtos.*;
+import com.br.tcc.bfn.exceptions.DonationException;
+import com.br.tcc.bfn.facades.DonationFacade;
 import com.br.tcc.bfn.services.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,11 +19,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/donation")
 public class DonationController {
 
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private DonationFacade donationFacade;
 
     @Operation(summary = "Register new Donation on Application")
     @ApiResponses(value = {
@@ -36,7 +41,7 @@ public class DonationController {
         Response<DonationDto> dtoResponse = new Response<>();
 
         try{
-            dtoResponse.setData(productService.register(request));
+            dtoResponse.setData(donationFacade.save(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         }catch (Exception e){
@@ -55,10 +60,10 @@ public class DonationController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Void>> disableProduct(@PathVariable Long id){
+    public ResponseEntity<Response<Void>> disableDonation(@PathVariable Long id){
         Response<Void> dtoResponse = new Response<>();
         try{
-            productService.disableProduct(id);
+            donationFacade.disable(id);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -68,20 +73,20 @@ public class DonationController {
         }
     }
 
-    @Operation(summary = "Find Product By Id on Application")
+    @Operation(summary = "Find Donation By Id on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Find Product By Id on Application",
+            @ApiResponse(responseCode = "201", description = "Find Donation By Id on Application",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
-            @ApiResponse(responseCode = "500", description = "Error Find Product By Id on Applicationn",
+                            schema = @Schema(implementation = DonationException.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find Donation By Id on Applicationn",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/{id}")
-    public ResponseEntity<Response<ProductDto>> findById(@PathVariable Long id){
-        Response<ProductDto> dtoResponse = new Response<>();
+    public ResponseEntity<Response<DonationDto>> findById(@PathVariable Long id){
+        Response<DonationDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.findById(id));
+            dtoResponse.setData(donationFacade.findById(id));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -92,20 +97,20 @@ public class DonationController {
     }
 
 
-    @Operation(summary = "Find All Products on Application")
+    @Operation(summary = "Find All Donations on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Find All Products on Application",
+            @ApiResponse(responseCode = "201", description = "Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
-            @ApiResponse(responseCode = "500", description = "Error Find All Products on Application",
+                            schema = @Schema(implementation = DonationException.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @GetMapping
-    public Response<Page<ProductDto>> findAll(Pageable pageable){
-        Response<Page<ProductDto>> dtoResponse = new Response<>();
+    public Response<Page<DonationDto>> findAll(Pageable pageable){
+        Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.findAll(pageable));
+            dtoResponse.setData(donationFacade.findAll(pageable));
             return dtoResponse;
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -115,12 +120,12 @@ public class DonationController {
 
     }
 
-    @Operation(summary = "Find Product By UF on Application")
+    @Operation(summary = "Find Donations By UF on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Find Product By UF on Application",
+            @ApiResponse(responseCode = "201", description = "Find Donations By UF on Application",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
-            @ApiResponse(responseCode = "500", description = "Error Find Product UF Id on Applicationn",
+                            schema = @Schema(implementation = DonationException.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find Donations UF Id on Applicationn",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/region/{uf}")
@@ -137,12 +142,20 @@ public class DonationController {
         }
     }
 
+    @Operation(summary = "Find Donations By User on Application")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Find Donations By User on Application",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DonationException.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find Donations User Id on Applicationn",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/byUser/{userId}")
-    public ResponseEntity<Response<Page<ProductDto>>> findProductsByUserId(@PathVariable Long userId, Pageable pageable){
-        Response<Page<ProductDto>> dtoResponse = new Response<>();
+    public ResponseEntity<Response<Page<DonationDto>>> findDonationsByUserId(@PathVariable Long userId, Pageable pageable){
+        Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.findProductsByUserId(userId,pageable));
+            dtoResponse.setData(donationFacade.findDonationsByUserId(userId,pageable));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -151,20 +164,20 @@ public class DonationController {
         }
     }
 
-    @Operation(summary = "Update Product on Application")
+    @Operation(summary = "Update Donation on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Update Product on Application",
+            @ApiResponse(responseCode = "201", description = "Update Donation on Application",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
-            @ApiResponse(responseCode = "500", description = "Error Update Product on Application",
+                            schema = @Schema(implementation = DonationException.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Update Donation on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @PutMapping("/{id}")
-    public ResponseEntity<Response<ProductDto>> updateProduct(@PathVariable Long id, @RequestBody RegisterDonationDto request){
-        Response<ProductDto> dtoResponse = new Response<>();
+    public ResponseEntity<Response<DonationDto>> updateDonation(@PathVariable Long id, @RequestBody RegisterDonationDto request){
+        Response<DonationDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.update(id,request));
+            dtoResponse.setData(donationFacade.update(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -173,20 +186,20 @@ public class DonationController {
         }
     }
 
-    @Operation(summary = "Find Product By Category on Application")
+    @Operation(summary = "Find Donations By Category on Application")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Find Product By Category on Application",
+            @ApiResponse(responseCode = "201", description = "Find Product By Donations on Application",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
+                            schema = @Schema(implementation = DonationException.class)) }),
             @ApiResponse(responseCode = "500", description = "Error Find Product Category on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/category/{category}")
-    public ResponseEntity<Response<Page<ProductDto>>> getByCategory(@PathVariable String category, Pageable pageable){
-        Response<Page<ProductDto>> dtoResponse = new Response<>();
+    public ResponseEntity<Response<Page<DonationDto>>> getByCategory(@PathVariable String category, Pageable pageable){
+        Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.findByCategory(category, pageable));
+            dtoResponse.setData(donationFacade.findByCategory(category, pageable));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
