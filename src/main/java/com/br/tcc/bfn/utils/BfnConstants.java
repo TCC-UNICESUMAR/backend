@@ -16,4 +16,5 @@ public class BfnConstants {
     public final static String INVALID_DOCUMENT = "THE DOCUMENT IS INVALID.";
     public final static Long ROLE_DEFAULT_ONG = 3L;
     public final static Long ROLE_ADMIN = 2L;
+    public static final String DONATION_NOT_FOUND = "DONATION NOT FOUND!";
 }

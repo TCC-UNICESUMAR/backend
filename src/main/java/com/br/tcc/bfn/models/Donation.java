@@ -16,12 +16,8 @@ public class Donation implements Serializable{
     private Address address;
     @ManyToOne @JoinColumn(name = "fk_user_by")
     private User userBy;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_donation_products",
-            joinColumns = @JoinColumn(name = "donation_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products = new ArrayList<>();
+    @OneToOne @JoinColumn(name = "fk_product")
+    private Product product;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
@@ -53,12 +49,12 @@ public class Donation implements Serializable{
         this.userBy = userBy;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Date getCreatedAt() {
