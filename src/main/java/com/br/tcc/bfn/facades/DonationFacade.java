@@ -23,6 +23,7 @@ public interface DonationFacade {
     void approvedDonationOder(Long id) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
     void finishedDonation(Long id) throws DonationException;
-    Map<String, Long> findByAllByQuery(String status, Integer year) throws DonationException;
+    Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
+    Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException;
 
 }

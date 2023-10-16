@@ -266,12 +266,26 @@ public class DonationController {
         }
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/findAllDonationsOrder")
     public ResponseEntity<Response<Map<String,Long>>> findAll(@RequestParam(value = "status", defaultValue = "") String status,
                                                               @RequestParam(value = "year", defaultValue = "") Integer year){
         Response<Map<String,Long>> dtoResponse = new Response<>();
         try{
-            dtoResponse.setData(donationFacade.findByAllByQuery(status, year));
+            dtoResponse.setData(donationFacade.findAllDonationsOrderByQuery(status, year));
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @GetMapping("/findAllDonations")
+    public ResponseEntity<Response<Map<String,Long>>> findAll(@RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<Map<String,Long>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setData(donationFacade.findAllDonationsByQuery(year));
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

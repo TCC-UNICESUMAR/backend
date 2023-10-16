@@ -83,7 +83,12 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public Map<String, Long> findByAllByQuery(String status, Integer year) throws DonationException {
-        return donationService.findByAllByQuery(status,year);
+    public Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
+        return donationService.findAllDonationsOrderByQuery(status,year);
+    }
+
+    @Override
+    public Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException {
+        return donationService.findAllDonationsByQuery(year);
     }
 }

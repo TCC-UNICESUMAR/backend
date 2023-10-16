@@ -16,6 +16,6 @@ import java.util.List;
 public interface DonationOrderRepository extends JpaRepository<DonationOrder, Long> {
 
     @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.donationStatus dnst WHERE dnst.status = :status AND YEAR(donation.createdAt) = :year")
-    List<Donation> findAllDonationByQuery(DonationOrderStatusEnum status, Integer year);
+    List<DonationOrder> findAllDonationOrderByQuery(DonationOrderStatusEnum status, Integer year);
 
 }
