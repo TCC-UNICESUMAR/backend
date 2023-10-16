@@ -43,13 +43,13 @@ public class AddressBuilder {
         return this;
     }
 
-    public AddressBuilder create(Date create){
-        this.address.setCreatedAt(create);
+    public AddressBuilder create(){
+        this.address.setCreatedAt(new Date());
         return this;
     }
 
-    public AddressBuilder update(Date update){
-        this.address.setUpdatedAt(update);
+    public AddressBuilder update(){
+        this.address.setUpdatedAt(new Date());
         return this;
     }
 

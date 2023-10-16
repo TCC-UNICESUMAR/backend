@@ -1,6 +1,8 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dtos.*;
+import com.br.tcc.bfn.dtos.AuthenticationRequest;
+import com.br.tcc.bfn.dtos.AuthenticationResponse;
+import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.services.impl.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,9 +39,9 @@ public class AuthenticationController {
 					content = { @Content(mediaType = "application/json",
 							schema = @Schema(implementation = Response.class)) })})
 	@PostMapping("/authenticate")
-	public ResponseEntity authenticate(@RequestBody AuthenticationRequest request) {
+	public ResponseEntity authenticate(@RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest) {
 		try {
-			return ResponseEntity.ok(service.authenticate(request));
+			return ResponseEntity.ok(service.authenticate(request, httpServletRequest));
 		}catch (Exception e){
 			return ResponseEntity.notFound().build();
 		}

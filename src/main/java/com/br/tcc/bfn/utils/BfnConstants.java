@@ -16,5 +16,12 @@ public class BfnConstants {
     public final static String INVALID_DOCUMENT = "THE DOCUMENT IS INVALID.";
     public final static Long ROLE_DEFAULT_ONG = 3L;
     public final static Long ROLE_ADMIN = 2L;
+    public final static String ROLE_DEFAULT_USER = "ROLE_USER";
     public static final String DONATION_NOT_FOUND = "DONATION NOT FOUND!";
+    public static final String TEMPLATE_CREATE_ORDER_DONATION = "DONATION_ORDER_CREATED";
+    public static final String TEMPLATE_NOTIFICATE_INTERMEDIARY = "NOTIFICATE_INTERMEDIARY";
+    public static final String TEMPLATE_NOTIFICATE_DONOR = "NOTIFICATE_DONOR";
+    public static final String TEMPLATE_NOTIFICATE_DONOR_ONG = "NOTIFICATE_DONOR_ONG";
+    public static final String TEMPLATE_NOTIFICATE_RECEIVED_TO_GET_DONATION = "NOTIFICATE_RECEIVED_TO_GET_DONATION";
+    public static final String TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_DONOR = "NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_DONOR";
 }

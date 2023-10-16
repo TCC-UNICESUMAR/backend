@@ -5,6 +5,7 @@ import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.facades.UserFacade;
+import com.br.tcc.bfn.models.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,6 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -248,6 +252,23 @@ public class UserController{
             dtoResponse.setData(userFacade.saveUserAddress(id,request));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Response<Map<String, Long>>> usersActives(@RequestParam(value = "status", defaultValue = "") Boolean status,
+                                                                    @RequestParam(value = "roleName", defaultValue = "") String roleName,
+                                                                    @RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<Map<String, Long>> dtoResponse = new Response<>();
+        try{
+            LOGGER.info("Method usersActives");
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setData(userFacade.findAllUserActives(status,roleName,year));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());

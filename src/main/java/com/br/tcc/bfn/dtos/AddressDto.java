@@ -8,10 +8,8 @@ import java.io.Serializable;
 public class AddressDto implements Serializable {
     private String streetName;
     private String streetNumber;
-    private String uf;
     private String complement;
     private String zipCode;
-    private String phone;
     private City city;
     private State state;
 
@@ -31,14 +29,6 @@ public class AddressDto implements Serializable {
         this.streetNumber = streetNumber;
     }
 
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
     public String getComplement() {
         return complement;
     }
@@ -53,14 +43,6 @@ public class AddressDto implements Serializable {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public City getCity() {

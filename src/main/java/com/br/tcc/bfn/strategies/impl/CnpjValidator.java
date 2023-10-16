@@ -19,7 +19,7 @@ public class CnpjValidator implements ValidatorDocumentStrategy {
             return false;
         }
 
-        document.replaceAll("[^0-9]", "");
+        document.replaceAll("[^0-9]", "").trim();
 
         if (document.equals("00000000000000") || document.equals("11111111111111") ||
                 document.equals("22222222222222") || document.equals("33333333333333") ||

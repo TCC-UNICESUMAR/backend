@@ -24,6 +24,11 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder phone(String phone) {
+        this.user.setPhone(phone.replaceAll("[^0-9]", "").trim());
+        return this;
+    }
+
     public UserBuilder cpfOrCnpj(String cpfOrCnpj){
         this.user.setCpfOrCnpj(cpfOrCnpj);
         return this;
@@ -42,11 +47,6 @@ public class UserBuilder {
     }
     public UserBuilder profileImageId(String profileImageId){
         this.user.setProfileImageId(profileImageId);
-        return this;
-    }
-
-    public UserBuilder phone(String phone){
-        this.user.setPhone(phone);
         return this;
     }
 

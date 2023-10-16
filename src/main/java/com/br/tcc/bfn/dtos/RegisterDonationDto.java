@@ -1,8 +1,5 @@
 package com.br.tcc.bfn.dtos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RegisterDonationDto {
 
     private String name;

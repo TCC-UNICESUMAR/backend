@@ -5,6 +5,7 @@ import com.br.tcc.bfn.facades.impl.UserFacadeImpl;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.utils.BfnConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class.getName());
 
-    public Response<AuthenticationResponse> authenticate(AuthenticationRequest request) {
+    public Response<AuthenticationResponse> authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest) {
         Response<AuthenticationResponse> response = new Response<>();
         try {
             User user = repository.findByEmail(request.getEmail()).get();
@@ -42,6 +43,7 @@ public class AuthenticationService {
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
+            httpServletRequest.getSession().setAttribute(user.getUsername(), user);
             AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user), jwtService.refreshToken(user));
             response.setData(authenticationResponse);
             response.setStatusCode(HttpStatus.OK.value());

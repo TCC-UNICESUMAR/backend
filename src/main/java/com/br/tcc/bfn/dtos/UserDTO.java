@@ -12,7 +12,6 @@ public class UserDTO {
     private String email;
     private String profileImageId;
     private String name;
-    private List<Role> roles;
     private AddressDto address;
     private Boolean active;
     private Date createdAt;
@@ -49,14 +48,6 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public AddressDto getAddress() {

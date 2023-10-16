@@ -32,10 +32,6 @@ public class UserDtoBuilder {
         this.user.setProfileImageId(profileImageId);
         return this;
     }
-    public UserDtoBuilder roles(List<Role> roles){
-        this.user.setRoles(roles);
-        return this;
-    }
     
     public UserDTO build(){
         return this.user;

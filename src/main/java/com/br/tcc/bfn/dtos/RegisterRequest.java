@@ -7,13 +7,9 @@ public class RegisterRequest {
 	private String password;
 	private String phone;
 	private String cnpjOrCpf;
-
-
-	public RegisterRequest(String firstname, String lastname, String email, String password, String cnpjOrCpf) {
-	}
+	private AddressRequest address;
 
 	public RegisterRequest() {
-		super();
 	}
 
 	public String getName() {
@@ -54,5 +50,13 @@ public class RegisterRequest {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public AddressRequest getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressRequest address) {
+		this.address = address;
 	}
 }

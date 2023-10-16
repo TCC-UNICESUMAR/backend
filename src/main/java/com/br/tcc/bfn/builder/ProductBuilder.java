@@ -55,11 +55,6 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder reserved(Boolean reserved){
-        this.product.setReserved(reserved);
-        return this;
-    }
-
     public ProductBuilder category(Category category){
         this.product.setCategory(category);
         return this;
