@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS tb_products(
 	quantity int NOT NULL,
 	description varchar(150) NULL,
 	active int NOT NULL,
-	reserved int NOT NULL,
 	fk_category bigint NOT NULL,
     created_at timestamp(6) NOT NULL,
     updated_at timestamp(6) NOT NULL,

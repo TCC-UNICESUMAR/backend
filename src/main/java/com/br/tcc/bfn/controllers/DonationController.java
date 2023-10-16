@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/donation")
@@ -97,7 +99,7 @@ public class DonationController {
     }
 
 
-    @Operation(summary = "Find All Donations on Application")
+    @Operation(summary = "Find All Donations By Zipcode on Application")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
@@ -105,12 +107,12 @@ public class DonationController {
             @ApiResponse(responseCode = "500", description = "Error Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
-    @GetMapping
-    public Response<Page<DonationDto>> findAll(Pageable pageable){
+    @GetMapping("/feed/{zipCode}")
+    public Response<Page<DonationDto>> findAllByZipCode(Pageable pageable, @PathVariable String zipCode){
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.findAll(pageable));
+            dtoResponse.setData(donationFacade.findAllByZipCode(pageable, zipCode));
             return dtoResponse;
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -208,20 +210,69 @@ public class DonationController {
         }
     }
 
-    @Operation(summary = "Find All Category on Application")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Find All Category on Application",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProductDto.class)) }),
-            @ApiResponse(responseCode = "500", description = "Error Find All Category on Application",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Response.class)) })})
-    @GetMapping("/findAllCategories")
-    public ResponseEntity<Response<List<CategoryDto>>> getAllCategories(){
-        Response<List<CategoryDto>> dtoResponse = new Response<>();
+    @PostMapping("/createOrderDonation/{donationId}")
+    public ResponseEntity<Response<Void>> createOrderDonation(@PathVariable Long donationId, @RequestBody DonationOrderRegisterRequest request){
+        Response<Void> dtoResponse = new Response<>();
         try{
+            donationFacade.createDonationOrder(donationId,request);
+            dtoResponse.setStatusCode(HttpStatus.CREATED.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @PutMapping("/approveDonation/{donationId}")
+    public ResponseEntity<Response<Void>> approveDonation(@PathVariable Long donationId){
+        Response<Void> dtoResponse = new Response<>();
+        try{
+            donationFacade.approvedDonationOder(donationId);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.getAllCategories());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @PutMapping("/deliveryByDonor/{donationId}")
+    public ResponseEntity<Response<Void>> saveDelivered(@PathVariable Long donationId){
+        Response<Void> dtoResponse = new Response<>();
+        try{
+            donationFacade.saveDeliveredByDonor(donationId);
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @PutMapping("/finishedDonation/{donationId}")
+    public ResponseEntity<Response<Void>> finishedDonation(@PathVariable Long donationId){
+        Response<Void> dtoResponse = new Response<>();
+        try{
+            donationFacade.saveDeliveredByDonor(donationId);
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<Response<Map<String,Long>>> findAll(@RequestParam(value = "status", defaultValue = "") String status,
+                                                              @RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<Map<String,Long>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setData(donationFacade.findByAllByQuery(status, year));
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());

@@ -27,7 +27,6 @@ public class Product {
     private String description;
     @OneToOne @JoinColumn(name = "fk_category")
     private Category category;
-    private Boolean reserved;
     private Boolean active;
     private Date createdAt;
     private Date updatedAt;
@@ -90,14 +89,6 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Boolean getReserved() {
-        return reserved;
-    }
-
-    public void setReserved(Boolean reserved) {
-        this.reserved = reserved;
     }
 
     public Boolean getActive() {

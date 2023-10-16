@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS tb_donations_orders(
 	id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
     fk_user_donor bigint NOT NULL,
     fk_user_received bigint NOT NULL,
-    fk_user_intermediary bigint NOT NULL,
+    fk_user_intermediary bigint NULL,
     fk_donation_status bigint NOT NULL,
     fk_donation bigint NOT NULL,
     created_at timestamp(6) NOT NULL,

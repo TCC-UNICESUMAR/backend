@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +70,6 @@ public class ProductServiceImpl implements IProductService {
                     .category(category)
                     .create(new Date())
                     .update(new Date())
-                    .reserved(Boolean.FALSE)
                     .quantity(request.getQuantity())
                     .description(request.getDescription())
                     .build();
@@ -137,7 +137,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductDto> findAllProductWithImage() throws Exception {
-        final List<Product> imgOnBucketProductImage = s3Service.getImgOnBucketProductImage();
+        final List<Product> imgOnBucketProductImage = new ArrayList<>();
         return imgOnBucketProductImage.stream().map(x -> productModelMapper.map(x, ProductDto.class)).collect(Collectors.toList());
     }
 

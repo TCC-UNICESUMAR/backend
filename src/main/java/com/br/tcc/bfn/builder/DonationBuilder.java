@@ -35,6 +35,11 @@ public class DonationBuilder {
         return this;
     }
 
+    public DonationBuilder reserved(){
+        this.donation.setReserved(false);
+        return this;
+    }
+
     public DonationBuilder delete(){
         this.donation.setDeletedAt(new Date());
         return this;

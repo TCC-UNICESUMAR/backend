@@ -18,6 +18,7 @@ import com.br.tcc.bfn.strategies.impl.CnpjValidator;
 import com.br.tcc.bfn.strategies.impl.CpfValidator;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDateTime;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -91,29 +93,47 @@ public class UserServiceImpl implements IUserService {
                 throw new UserException(BfnConstants.REQUEST_IS_NULL);
             }
 
+            String sanitizeDocument = sanitizeDocument(request.getCnpjOrCpf());
+
             LOGGER.info(String.format("Verifying CPF Or CNPJ-> %s", request.getCnpjOrCpf()));
 
-            validatorDocumentStrategy = getValidator(request.getCnpjOrCpf());
+            validatorDocumentStrategy = getValidator(sanitizeDocument);
 
-            if (Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(request.getCnpjOrCpf()))) {
+            if (Boolean.FALSE.equals(validatorDocumentStrategy.validateDocument(sanitizeDocument))) {
                 throw new DocumentException(BfnConstants.INVALID_DOCUMENT);
             }
+
+            Address address = AddressBuilder.builder()
+                    .state(stateRepository.findStateByUf(request.getAddress().getUf()))
+                    .city(cityRepository.findByCityName(request.getAddress().getCity()))
+                    .zipCode(request.getAddress().getZipCode())
+                    .complement(request.getAddress().getComplement())
+                    .streetNumber(request.getAddress().getZipCode())
+                    .streetName(request.getAddress().getStreetName())
+                    .update()
+                    .create()
+                    .build();
+
+            addressRepository.save(address);
+
             User user = UserBuilder.builder()
                     .name(request.getName())
                     .email(request.getEmail())
                     .cpfOrCnpj(request.getCnpjOrCpf())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .phone(request.getPhone())
                     .active(Boolean.TRUE)
                     .create(new Date())
                     .update(new Date())
                     .roles(Arrays.asList(validatorDocumentStrategy instanceof CpfValidator ?
                             roleRepository.findByRoleName("ROLE_USER")
                             : roleRepository.findByRoleName("ROLE_ONG")))
+                    .address(address)
                     .build();
 
             return modelMapper.map(repository.save(user), new UserDTO().getClass());
         } catch (UserException | DocumentException e) {
-            throw new UserException(BfnConstants.ERRO_SAVE_USER);
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -174,10 +194,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO findById(Long id) throws UserException {
+    public User findById(Long id) throws UserException {
         try {
             User user = repository.findById(id).orElseThrow(() -> new UserException(BfnConstants.USER_NOT_FOUND));
-            return this.modelMapper.map(user, UserDTO.class);
+            return user;
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }
@@ -191,6 +211,35 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserDTO> findAll() {
         return repository.findAll().stream().map(x -> this.modelMapper.map(x, UserDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Long> findAllUserActives(Boolean status, String roleName, Integer year) {
+
+        status = status == null ? true : status;
+        roleName = roleName.equals(StringUtils.EMPTY) ? BfnConstants.ROLE_DEFAULT_USER : roleName;
+        year = year == null ? new LocalDateTime().getYear() : year;
+
+        List<User> allUserActives = repository.findAllUserActives(status,roleName, year);
+        return validateData(allUserActives);
+
+    }
+
+    private Map<String, Long> validateData(List<User> allUserActives) {
+        Map<String, Long> users = new HashMap<>();
+        users.put(Month.JANUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
+        users.put(Month.FEBRUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
+        users.put(Month.MARCH.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
+        users.put(Month.APRIL.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count());
+        users.put(Month.MAY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count());
+        users.put(Month.JUNE.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count());
+        users.put(Month.JULY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count());
+        users.put(Month.AUGUST.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count());
+        users.put(Month.SEPTEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count());
+        users.put(Month.OCTOBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count());
+        users.put(Month.NOVEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count());
+        users.put(Month.DECEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count());
+        return users;
     }
 
     @Override
@@ -222,8 +271,8 @@ public class UserServiceImpl implements IUserService {
                     .zipCode(request.getZipCode())
                     .streetName(request.getStreetName())
                     .state(stateRepository.findStateByUf(request.getUf()))
-                    .create(new Date())
-                    .update(new Date())
+                    .create()
+                    .update()
                     .build();
 
             addressRepository.save(address);
@@ -254,5 +303,9 @@ public class UserServiceImpl implements IUserService {
         }
 
         return false;
+    }
+
+    private String sanitizeDocument(String value) {
+        return value.replaceAll("[^0-9]", "");
     }
 }

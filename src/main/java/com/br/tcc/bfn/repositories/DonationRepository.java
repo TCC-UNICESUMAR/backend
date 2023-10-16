@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long> {
 
@@ -20,8 +22,8 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
             countQuery = "SELECT COUNT(donation) FROM Donation donation JOIN donation.userBy")
     Page<Donation> searchAllByUserId(@Param("userId") Long userId, Pageable pageable);
 
-    @Query(value = "SELECT donation FROM Donation donation WHERE donation.deletedAt = null",
-            countQuery = "SELECT COUNT(donation) FROM Donation donation")
-    Page<Donation> searchAll(Pageable pageable);
+    @Query(value = "SELECT donation FROM Donation donation JOIN donation.address dnt WHERE donation.deletedAt = null AND dnt.zipCode = :zipCode AND donation.reserved = 0",
+            countQuery = "SELECT COUNT(donation) FROM Donation donation JOIN donation.address")
+    Page<Donation> searchAllByZipCode(Pageable pageable, @Param("zipCode") String zipCode);
 
 }

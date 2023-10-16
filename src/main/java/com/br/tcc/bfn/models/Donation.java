@@ -21,6 +21,7 @@ public class Donation implements Serializable{
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    private Boolean reserved;
 
     public Donation() {
     }
@@ -79,5 +80,13 @@ public class Donation implements Serializable{
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class UserFacadeImpl implements UserFacade {
 
@@ -48,7 +50,7 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDTO findById(Long id) throws UserException {
-        return userService.findById(id);
+        return modelMapper.map(userService.findById(id), UserDTO.class);
     }
 
     @Override
@@ -59,5 +61,10 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void disableUser(Long id) throws UserException {
         userService.disableUser(id);
+    }
+
+    @Override
+    public Map<String, Long> findAllUserActives(Boolean status, String roleName, Integer year) {
+        return userService.findAllUserActives(status,roleName,year);
     }
 }

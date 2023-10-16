@@ -1,8 +1,10 @@
 package com.br.tcc.bfn.facades.impl;
 
 import com.br.tcc.bfn.dtos.DonationDto;
+import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
 import com.br.tcc.bfn.exceptions.DonationException;
+import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.DonationFacade;
 import com.br.tcc.bfn.models.Donation;
 import com.br.tcc.bfn.services.IDonationService;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class DonationFacadeImpl implements DonationFacade {
@@ -48,13 +52,38 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public Page<DonationDto> findAll(Pageable pageable) {
-        Page<Donation> donations = donationService.findAll(pageable);
+    public Page<DonationDto> findAllByZipCode(Pageable pageable, String zipCode) {
+        Page<Donation> donations = donationService.findAllByZipCode(pageable, zipCode);
         return donations.map(x -> modelMapper.map(x, DonationDto.class));
     }
 
     @Override
     public void disable(Long donationId) throws DonationException {
         donationService.disable(donationId);
+    }
+
+    @Override
+    public void createDonationOrder(Long id, DonationOrderRegisterRequest request) throws Exception {
+        donationService.createDonationOrder(id, request);
+    }
+
+    @Override
+    public void approvedDonationOder(Long id) throws DonationException, UserException {
+        donationService.approvedDonationOder(id);
+    }
+
+    @Override
+    public void saveDeliveredByDonor(Long id) throws DonationException {
+        donationService.saveDeliveredByDonor(id);
+    }
+
+    @Override
+    public void finishedDonation(Long id) throws DonationException {
+        donationService.finishedDonation(id);
+    }
+
+    @Override
+    public Map<String, Long> findByAllByQuery(String status, Integer year) throws DonationException {
+        return donationService.findByAllByQuery(status,year);
     }
 }

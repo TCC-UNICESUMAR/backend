@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS tb_donations(
     fk_address bigint NOT NULL,
     fk_user_by bigint NOT NULL,
     fk_product bigint NOT NULL,
+    reserved int NOT NULL,
     created_at timestamp(6) NOT NULL,
     updated_at timestamp(6) NOT NULL,
     deleted_at timestamp(6) NULL

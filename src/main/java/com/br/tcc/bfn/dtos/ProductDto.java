@@ -11,15 +11,12 @@ public class ProductDto {
     private String description;
     private CategoryDto category;
     private Integer quantity;
-    private UserDTO user;
-    private List<ProductImageKeyDto> imageProductKey;
     private List<ProductImageUrlDto> productImageUrls;
     private Boolean reserved;
     private Boolean active;
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
-
     private AddressDto address;
 
     public ProductDto() {
@@ -38,22 +35,6 @@ public class ProductDto {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
-    public List<ProductImageKeyDto> getImageProductKey() {
-        return imageProductKey;
-    }
-
-    public void setImageProductKey(List<ProductImageKeyDto> imageProductKey) {
-        this.imageProductKey = imageProductKey;
     }
 
     public Boolean getReserved() {

@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS tb_donations_status(
 	id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	status_description varchar(120) NOT NULL,
-    approved int NOT NULL,
+	status ENUM('CREATED', 'SUCCESS', 'CANCELED', 'WAITING_ONG_APPROVED', 'WAITING_DONOR_SEND', 'WAITING_RECEIVED_PICKUP') NOT NULL,
+    approved int NULL,
     available_for_pickup int NOT NULL,
     waiting_ong_approve int NOT NULL,
-    fk_user_approved_by bigint NOT NULL,
+    fk_user_approved_by bigint NULL,
     created_at timestamp(6) NOT NULL,
     updated_at timestamp(6) NOT NULL,
     deleted_at timestamp(6) NULL

@@ -1,29 +1,22 @@
-package com.br.tcc.bfn.models;
+package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.enums.DonationOrderStatusEnum;
-import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name = "tb_donations_status")
-public class DonationStatus implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DonationStatusDto {
+
     private Long id;
-    @Enumerated(EnumType.STRING)
     private DonationOrderStatusEnum status;
     private Boolean approved;
     private Boolean waitingOngApprove;
     private Boolean availableForPickup;
-    @OneToOne @JoinColumn(name = "fk_user_approved_by")
-    private User approvedBy;
+    private UserDTO approvedBy;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
 
-    public DonationStatus() {
+    public DonationStatusDto() {
     }
 
     public Long getId() {
@@ -32,30 +25,6 @@ public class DonationStatus implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
     public DonationOrderStatusEnum getStatus() {
@@ -90,11 +59,35 @@ public class DonationStatus implements Serializable{
         this.availableForPickup = availableForPickup;
     }
 
-    public User getApprovedBy() {
+    public UserDTO getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(User approvedBy) {
+    public void setApprovedBy(UserDTO approvedBy) {
         this.approvedBy = approvedBy;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

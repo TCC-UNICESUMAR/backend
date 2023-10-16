@@ -100,7 +100,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return getUserActive();
     }
 
     @Override

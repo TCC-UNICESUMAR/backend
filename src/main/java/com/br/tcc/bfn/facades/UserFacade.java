@@ -4,7 +4,6 @@ import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
-import com.br.tcc.bfn.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +19,5 @@ public interface UserFacade{
     UserDTO findById(Long id) throws UserException;
     Page<UserDTO> findAllWithPageable(Pageable pageable);
     void disableUser(Long id) throws UserException;
+    Map<String, Long> findAllUserActives(Boolean status, String roleName, Integer year);
 }
