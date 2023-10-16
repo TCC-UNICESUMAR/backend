@@ -106,13 +106,14 @@ public class DonationServiceImpl implements IDonationService {
         }
     }
 
-    public Map<String, Long> findByAllByQuery(String status, Integer year) throws DonationException {
+    @Override
+    public Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
         try {
 
             DonationOrderStatusEnum statusEnum = status.equals(StringUtils.EMPTY) ? DonationOrderStatusEnum.SUCCESS : DonationOrderStatusEnum.valueOf(status);
             year = year == null ? new LocalDateTime().getYear() : year;
             Map<String, Long> donationsCount = new HashMap<>();
-            List<Donation> donations = donationOrderRepository.findAllDonationByQuery(statusEnum,year);
+            List<DonationOrder> donations = donationOrderRepository.findAllDonationOrderByQuery(statusEnum,year);
             donationsCount.put(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
             donationsCount.put(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
             donationsCount.put(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
@@ -133,6 +134,32 @@ public class DonationServiceImpl implements IDonationService {
         }
     }
 
+    @Override
+    public Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException {
+        try {
+
+            year = year == null ? new LocalDateTime().getYear() : year;
+            Map<String, Long> donationsCount = new HashMap<>();
+            List<Donation> donations = donationRepository.findAllDonationByQuery(year);
+            donationsCount.put(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
+            donationsCount.put(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
+            donationsCount.put(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
+            donationsCount.put(Month.APRIL.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count());
+            donationsCount.put(Month.MAY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count());
+            donationsCount.put(Month.JUNE.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count());
+            donationsCount.put(Month.JULY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count());
+            donationsCount.put(Month.AUGUST.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count());
+            donationsCount.put(Month.SEPTEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count());
+            donationsCount.put(Month.OCTOBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count());
+            donationsCount.put(Month.NOVEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count());
+            donationsCount.put(Month.DECEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count());
+            return donationsCount;
+
+        } catch (Exception exc) {
+            LOGGER.error(exc.getMessage());
+            throw new DonationException(exc.getMessage());
+        }
+    }
     @Override
     public Donation update(Long donationId, RegisterDonationDto registerDonationDto) throws Exception {
         try {
