@@ -39,7 +39,7 @@ public class CategoryController {
         Response<List<CategoryDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.getAllCategories());
+            dtoResponse.setBody(productService.getAllCategories());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());

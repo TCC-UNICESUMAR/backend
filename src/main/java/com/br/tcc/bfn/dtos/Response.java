@@ -8,7 +8,7 @@ public class Response<T> extends RepresentationModel<Response<T>> implements Ser
 
     private int statusCode;
 
-    private T data;
+    private T body;
 
     private Long timeStamp;
 
@@ -26,12 +26,12 @@ public class Response<T> extends RepresentationModel<Response<T>> implements Ser
         this.statusCode = statusCode;
     }
 
-    public T getData() {
-        return data;
+    public T getBody() {
+        return body;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setBody(T body) {
+        this.body = body;
     }
 
     public Long getTimeStamp() {

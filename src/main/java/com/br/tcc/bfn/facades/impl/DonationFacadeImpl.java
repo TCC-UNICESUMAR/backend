@@ -3,6 +3,7 @@ package com.br.tcc.bfn.facades.impl;
 import com.br.tcc.bfn.dtos.DonationDto;
 import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
+import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.DonationFacade;
@@ -14,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.List;
 
 @Component
 public class DonationFacadeImpl implements DonationFacade {
@@ -52,8 +53,8 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public Page<DonationDto> findAllByZipCode(Pageable pageable, String zipCode) {
-        Page<Donation> donations = donationService.findAllByZipCode(pageable, zipCode);
+    public Page<DonationDto> findAllByZipCode(Pageable pageable, String city) {
+        Page<Donation> donations = donationService.findAllByZipCode(pageable, city);
         return donations.map(x -> modelMapper.map(x, DonationDto.class));
     }
 
@@ -83,12 +84,17 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
+    public List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
         return donationService.findAllDonationsOrderByQuery(status,year);
     }
 
     @Override
-    public Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException {
+    public List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException {
         return donationService.findAllDonationsByQuery(year);
+    }
+
+    @Override
+    public Page<DonationDto> findAllByUF(Pageable pageable, String uf) {
+        return donationService.findAllByUF(pageable, uf).map(x -> modelMapper.map(x, DonationDto.class));
     }
 }

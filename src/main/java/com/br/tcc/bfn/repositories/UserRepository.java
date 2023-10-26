@@ -19,6 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query(value = "SELECT user FROM User user JOIN user.roles roles WHERE user.userActive = :status AND roles.roleName = :roleName AND YEAR(user.createdAt) = :year")
   List<User> findAllUserActives(Boolean status, String roleName, int year);
-
+  @Query(value = "SELECT user FROM User user JOIN user.roles roles WHERE roles.roleName = :roleName AND YEAR(user.createdAt) = :year")
+  List<User> findAllUsers(String roleName, int year);
 
 }

@@ -5,5 +5,5 @@ import com.br.tcc.bfn.dtos.Response;
 
 public interface IAuthenticationService {
 
-    public Response<String> authenticate(AuthenticationRequest request);
+    Response<String> authenticate(AuthenticationRequest request);
 }

@@ -27,16 +27,12 @@ public class S3Controller {
     private S3Service s3Service;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadCustomerProfileImage(@RequestParam(defaultValue = "files") MultipartFile[] files) throws IOException {
-        for (MultipartFile multipartFile:
-                files) {
-            try {
-                return this.s3Service.saveImageToS3(multipartFile);
-            } catch (IOException e) {
-                return e.getMessage();
-            }
+    public void uploadCustomerProfileImage(@RequestParam(defaultValue = "files") MultipartFile[] files) throws IOException {
+        try {
+            this.s3Service.saveImageToS3(files);
+        }catch (IOException exc){
+            throw new IOException();
         }
-        return null;
     }
 
 

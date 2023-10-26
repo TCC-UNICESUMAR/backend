@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dtos.AddressRequest;
-import com.br.tcc.bfn.dtos.RegisterRequest;
-import com.br.tcc.bfn.dtos.Response;
-import com.br.tcc.bfn.dtos.UserDTO;
+import com.br.tcc.bfn.dtos.*;
 import com.br.tcc.bfn.facades.UserFacade;
 import com.br.tcc.bfn.models.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,7 +48,7 @@ public class UserController{
 
         try{
             LOGGER.info("Method Register User Default");
-            dtoResponse.setData(userFacade.saveUser(request));
+            dtoResponse.setBody(userFacade.saveUser(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -74,7 +71,7 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method Register Admin");
-            dtoResponse.setData(userFacade.saveUser(request));
+            dtoResponse.setBody(userFacade.saveUser(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -128,7 +125,7 @@ public class UserController{
         LOGGER.info("Method Find All Users");
         Response<Page<UserDTO>> dtoResponse = new Response<>();
         dtoResponse.setStatusCode(HttpStatus.OK.value());
-        dtoResponse.setData(userFacade.findAllWithPageable(pageable));
+        dtoResponse.setBody(userFacade.findAllWithPageable(pageable));
         return ResponseEntity.ok().body(dtoResponse);
 
     }
@@ -150,7 +147,7 @@ public class UserController{
         try {
             LOGGER.info("Method Find User By Id");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userFacade.findById(id));
+            dtoResponse.setBody(userFacade.findById(id));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(id, new RegisterRequest())).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
@@ -167,7 +164,7 @@ public class UserController{
         try {
             LOGGER.info("Method Get User By Session");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userFacade.findAuth());
+            dtoResponse.setBody(userFacade.findAuth());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -193,7 +190,7 @@ public class UserController{
         try{
             LOGGER.info("Method Update User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userFacade.updateUser(id,request));
+            dtoResponse.setBody(userFacade.updateUser(id,request));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
@@ -223,7 +220,7 @@ public class UserController{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
-            dtoResponse.setData(userFacade.updateUserAddress(id,request));
+            dtoResponse.setBody(userFacade.updateUserAddress(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -249,7 +246,7 @@ public class UserController{
         try{
             LOGGER.info("Method Register Address In User");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userFacade.saveUserAddress(id,request));
+            dtoResponse.setBody(userFacade.saveUserAddress(id,request));
             dtoResponse.add(WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).findById(id)).withSelfRel());
             return ResponseEntity.ok().body(dtoResponse);
@@ -261,14 +258,14 @@ public class UserController{
     }
 
     @GetMapping("/status")
-    public ResponseEntity<Response<Map<String, Long>>> usersActives(@RequestParam(value = "status", defaultValue = "") Boolean status,
-                                                                    @RequestParam(value = "roleName", defaultValue = "") String roleName,
-                                                                    @RequestParam(value = "year", defaultValue = "") Integer year){
-        Response<Map<String, Long>> dtoResponse = new Response<>();
+    public ResponseEntity<Response<List<ResponseDashBoard>>> usersActives(@RequestParam(value = "status", defaultValue = "") Boolean status,
+                                                                          @RequestParam(value = "roleName", defaultValue = "") String roleName,
+                                                                          @RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<List<ResponseDashBoard>> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method usersActives");
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(userFacade.findAllUserActives(status,roleName,year));
+            dtoResponse.setBody(userFacade.findAllUserActives(status,roleName,year));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -277,6 +274,20 @@ public class UserController{
         }
     }
 
-
+    @GetMapping("/findAllUsers")
+    public ResponseEntity<Response<List<ResponseDashBoard>>> allUsers(@RequestParam(value = "roleName", defaultValue = "") String roleName,
+                                                                      @RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<List<ResponseDashBoard>> dtoResponse = new Response<>();
+        try{
+            LOGGER.info("Method findAllUsers");
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setBody(userFacade.findAllUser(roleName,year));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
 
 }

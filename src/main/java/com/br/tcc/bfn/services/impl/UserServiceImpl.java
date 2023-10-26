@@ -4,6 +4,7 @@ import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.UserBuilder;
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
+import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.DocumentException;
 import com.br.tcc.bfn.exceptions.UserException;
@@ -214,7 +215,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Map<String, Long> findAllUserActives(Boolean status, String roleName, Integer year) {
+    public List<ResponseDashBoard> findAllUserActives(Boolean status, String roleName, Integer year) {
 
         status = status == null ? true : status;
         roleName = roleName.equals(StringUtils.EMPTY) ? BfnConstants.ROLE_DEFAULT_USER : roleName;
@@ -225,21 +226,32 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-    private Map<String, Long> validateData(List<User> allUserActives) {
-        Map<String, Long> users = new HashMap<>();
-        users.put(Month.JANUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
-        users.put(Month.FEBRUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
-        users.put(Month.MARCH.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
-        users.put(Month.APRIL.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count());
-        users.put(Month.MAY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count());
-        users.put(Month.JUNE.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count());
-        users.put(Month.JULY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count());
-        users.put(Month.AUGUST.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count());
-        users.put(Month.SEPTEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count());
-        users.put(Month.OCTOBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count());
-        users.put(Month.NOVEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count());
-        users.put(Month.DECEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count());
-        return users;
+    @Override
+    public List<ResponseDashBoard> findAllUsers(String roleName, Integer year) {
+
+        roleName = roleName.equals(StringUtils.EMPTY) ? BfnConstants.ROLE_DEFAULT_USER : roleName;
+        year = year == null ? new LocalDateTime().getYear() : year;
+
+        List<User> allUserActives = repository.findAllUsers(roleName, year);
+        return validateData(allUserActives);
+
+    }
+
+    private List<ResponseDashBoard> validateData(List<User> allUserActives) {
+        List<ResponseDashBoard> responseDashBoardList = new ArrayList<>();
+        responseDashBoardList.add(new ResponseDashBoard(Month.JANUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.FEBRUARY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.MARCH.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.APRIL.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.MAY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.JUNE.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.JULY.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.AUGUST.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.SEPTEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.OCTOBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.NOVEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count()));
+        responseDashBoardList.add(new ResponseDashBoard(Month.DECEMBER.name(), allUserActives.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count()));
+        return responseDashBoardList;
     }
 
     @Override

@@ -31,12 +31,13 @@ public class S3ServiceImpl implements S3Service {
     private final static Logger LOGGER = LoggerFactory.getLogger(S3ServiceImpl.class);
 
     @Override
-    public String saveImageToS3(MultipartFile file) throws IOException {
-        File fileObj = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        amazon.getAmazonS3Client().putObject(new PutObjectRequest(environment.getProperty("aws.s3.buckets.product"), fileName, fileObj));
-        fileObj.delete();
-        return "File uploaded : " + fileName;
+    public void saveImageToS3(MultipartFile[] files) throws IOException {
+        for(MultipartFile file : files){
+            File fileObj = convertMultiPartFileToFile(file);
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            amazon.getAmazonS3Client().putObject(new PutObjectRequest(environment.getProperty("aws.s3.buckets.product"), fileName, fileObj));
+            fileObj.delete();
+        }
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) {

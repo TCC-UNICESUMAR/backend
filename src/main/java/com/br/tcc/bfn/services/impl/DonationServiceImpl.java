@@ -4,6 +4,7 @@ import com.br.tcc.bfn.builder.AddressBuilder;
 import com.br.tcc.bfn.builder.DonationBuilder;
 import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
+import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.enums.DonationOrderStatusEnum;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
@@ -107,26 +108,26 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
-    public Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
+    public List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException {
         try {
 
             DonationOrderStatusEnum statusEnum = status.equals(StringUtils.EMPTY) ? DonationOrderStatusEnum.SUCCESS : DonationOrderStatusEnum.valueOf(status);
             year = year == null ? new LocalDateTime().getYear() : year;
-            Map<String, Long> donationsCount = new HashMap<>();
-            List<DonationOrder> donations = donationOrderRepository.findAllDonationOrderByQuery(statusEnum,year);
-            donationsCount.put(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
-            donationsCount.put(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
-            donationsCount.put(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
-            donationsCount.put(Month.APRIL.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count());
-            donationsCount.put(Month.MAY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count());
-            donationsCount.put(Month.JUNE.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count());
-            donationsCount.put(Month.JULY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count());
-            donationsCount.put(Month.AUGUST.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count());
-            donationsCount.put(Month.SEPTEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count());
-            donationsCount.put(Month.OCTOBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count());
-            donationsCount.put(Month.NOVEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count());
-            donationsCount.put(Month.DECEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count());
-            return donationsCount;
+            List<DonationOrder> donations = donationOrderRepository.findAllDonationOrderByQuery(statusEnum, year);
+            List<ResponseDashBoard> listResp = new ArrayList<>();
+            listResp.add(new ResponseDashBoard(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count()));
+            listResp.add(new ResponseDashBoard(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count()));
+            listResp.add(new ResponseDashBoard(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count()));
+            listResp.add(new ResponseDashBoard(Month.APRIL.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count()));
+            listResp.add(new ResponseDashBoard(Month.MAY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count()));
+            listResp.add(new ResponseDashBoard(Month.JUNE.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count()));
+            listResp.add(new ResponseDashBoard(Month.JULY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count()));
+            listResp.add(new ResponseDashBoard(Month.AUGUST.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count()));
+            listResp.add(new ResponseDashBoard(Month.SEPTEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count()));
+            listResp.add(new ResponseDashBoard(Month.OCTOBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count()));
+            listResp.add(new ResponseDashBoard(Month.NOVEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count()));
+            listResp.add(new ResponseDashBoard(Month.DECEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count()));
+            return listResp;
 
         } catch (Exception exc) {
             LOGGER.error(exc.getMessage());
@@ -135,31 +136,33 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
-    public Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException {
+    public List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException {
         try {
 
             year = year == null ? new LocalDateTime().getYear() : year;
-            Map<String, Long> donationsCount = new HashMap<>();
             List<Donation> donations = donationRepository.findAllDonationByQuery(year);
-            donationsCount.put(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count());
-            donationsCount.put(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count());
-            donationsCount.put(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count());
-            donationsCount.put(Month.APRIL.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count());
-            donationsCount.put(Month.MAY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count());
-            donationsCount.put(Month.JUNE.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count());
-            donationsCount.put(Month.JULY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count());
-            donationsCount.put(Month.AUGUST.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count());
-            donationsCount.put(Month.SEPTEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count());
-            donationsCount.put(Month.OCTOBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count());
-            donationsCount.put(Month.NOVEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count());
-            donationsCount.put(Month.DECEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count());
-            return donationsCount;
+            List<ResponseDashBoard> listResp = new ArrayList<>();
+
+            listResp.add(new ResponseDashBoard(Month.JANUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 1).count()));
+            listResp.add(new ResponseDashBoard(Month.FEBRUARY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 2).count()));
+            listResp.add(new ResponseDashBoard(Month.MARCH.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 3).count()));
+            listResp.add(new ResponseDashBoard(Month.APRIL.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 4).count()));
+            listResp.add(new ResponseDashBoard(Month.MAY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 5).count()));
+            listResp.add(new ResponseDashBoard(Month.JUNE.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 6).count()));
+            listResp.add(new ResponseDashBoard(Month.JULY.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 7).count()));
+            listResp.add(new ResponseDashBoard(Month.AUGUST.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 8).count()));
+            listResp.add(new ResponseDashBoard(Month.SEPTEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 9).count()));
+            listResp.add(new ResponseDashBoard(Month.OCTOBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 10).count()));
+            listResp.add(new ResponseDashBoard(Month.NOVEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 11).count()));
+            listResp.add(new ResponseDashBoard(Month.DECEMBER.name(), donations.stream().filter(x -> x.getCreatedAt().getMonth() == 12).count()));
+            return listResp;
 
         } catch (Exception exc) {
             LOGGER.error(exc.getMessage());
             throw new DonationException(exc.getMessage());
         }
     }
+
     @Override
     public Donation update(Long donationId, RegisterDonationDto registerDonationDto) throws Exception {
         try {
@@ -255,8 +258,14 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
-    public Page<Donation> findAllByZipCode(Pageable pageable, String zipCode) {
-        Page<Donation> donations = donationRepository.searchAllByZipCode(pageable, zipCode);
+    public Page<Donation> findAllByZipCode(Pageable pageable, String city) {
+        Page<Donation> donations = donationRepository.searchAllByZipCode(pageable, city);
+        return donations;
+    }
+
+    @Override
+    public Page<Donation> findAllByUF(Pageable pageable, String uf) {
+        Page<Donation> donations = donationRepository.searchAllByUf(pageable, uf);
         return donations;
     }
 
@@ -289,22 +298,21 @@ public class DonationServiceImpl implements IDonationService {
                 throw new DonationException("Donor and Received are equals!");
             }
 
-            final Optional<Boolean> roleUser = userService.findAuth().getRoles().stream().map(x -> BfnConstants.ROLE_DEFAULT_USER.equalsIgnoreCase(x.getRoleName())).findFirst();
+            final Boolean roleOng = userService.findAuth().getRoles().stream().map(x -> BfnConstants.ROLE_ONG.equalsIgnoreCase(x.getRoleName())).findFirst().get();
 
-            if (roleUser.isPresent() && roleUser.get()) {
+            if (roleOng) {
+
+                donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_SEND);
+                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_ONG), donationOrder.getId());
+            } else {
                 if (request.getIntermediary() == null) {
                     throw new DonationException("Intermediary can not be null!");
                 }
                 donationOrder.setIntermediary(userService.findById(request.getIntermediary()));
                 donationStatus.setStatus(DonationOrderStatusEnum.WAITING_ONG_APPROVED);
-            }else{
-                donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_SEND);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_ONG), donationOrder.getId());
             }
-
             donationStatusRepository.save(donationStatus);
             donationOrderRepository.save(donationOrder);
-
 
             sendNotification.send(CODE_BRAZIL.concat(userService.findAuth().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_CREATE_ORDER_DONATION), donationOrder.getId());
 
@@ -352,9 +360,9 @@ public class DonationServiceImpl implements IDonationService {
 
             DonationStatus donationStatus = donationOrder.getDonationStatus();
             donationStatus.setUpdatedAt(new Date());
-            if(donationOrder.getIntermediary() != null){
+            if (donationOrder.getIntermediary() != null) {
                 donationStatus.setStatus(DonationOrderStatusEnum.WAITING_RECEIVED_PICKUP);
-            }else{
+            } else {
                 donationStatus.setStatus(DonationOrderStatusEnum.SUCCESS);
             }
 

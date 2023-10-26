@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface S3Service {
 
-    String saveImageToS3(MultipartFile file) throws IOException;
+    void saveImageToS3(MultipartFile[] files) throws IOException;
 }

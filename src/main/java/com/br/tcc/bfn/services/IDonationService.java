@@ -2,13 +2,14 @@ package com.br.tcc.bfn.services;
 
 import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
+import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Donation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Map;
+import java.util.List;
 
 public interface IDonationService {
 
@@ -24,6 +25,7 @@ public interface IDonationService {
     void approvedDonationOder(Long id) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
     void finishedDonation(Long id) throws DonationException;
-    Map<String, Long> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
-    Map<String, Long> findAllDonationsByQuery(Integer year) throws DonationException;
+    List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
+    List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException;
+    Page<Donation> findAllByUF(Pageable pageable, String uf);
 }

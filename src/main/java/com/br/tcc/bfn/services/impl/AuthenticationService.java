@@ -1,7 +1,8 @@
 package com.br.tcc.bfn.services.impl;
 
-import com.br.tcc.bfn.dtos.*;
-import com.br.tcc.bfn.facades.impl.UserFacadeImpl;
+import com.br.tcc.bfn.dtos.AuthenticationRequest;
+import com.br.tcc.bfn.dtos.AuthenticationResponse;
+import com.br.tcc.bfn.dtos.Response;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.repositories.UserRepository;
 import com.br.tcc.bfn.utils.BfnConstants;
@@ -9,15 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,8 +42,11 @@ public class AuthenticationService {
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
             httpServletRequest.getSession().setAttribute(user.getUsername(), user);
-            AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user), jwtService.refreshToken(user));
-            response.setData(authenticationResponse);
+            Map<String, Object> extraClaims = new HashMap<>();
+            extraClaims.put("roles", user.getAuthorities());
+            extraClaims.put("UF", user.getAddress().getState().getUf());
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user,extraClaims), jwtService.refreshToken(user));
+            response.setBody(authenticationResponse);
             response.setStatusCode(HttpStatus.OK.value());
             return response;
         } catch (UsernameNotFoundException e) {
@@ -69,7 +70,10 @@ public class AuthenticationService {
 
             final String username = jwtService.extractUsername(token);
             final User user = repository.findByEmail(username).get();
-            return new AuthenticationResponse(jwtService.generateToken(user), jwtService.refreshToken(user));
+            Map<String, Object> extraClaims = new HashMap<>();
+            extraClaims.put("roles", user.getAuthorities());
+            extraClaims.put("UF", user.getAddress().getState().getUf());
+            return new AuthenticationResponse(jwtService.generateToken(user,extraClaims), jwtService.refreshToken(user));
         }catch (JwtException exception){
             throw new JwtException(exception.getMessage());
         }

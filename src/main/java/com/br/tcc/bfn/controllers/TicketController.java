@@ -49,7 +49,7 @@ public class TicketController {
         String ticket = ticketService.buildAndSaveTicket(token);
         Map<String, String> map = new HashMap<>();
         map.put("ticket", ticket);
-        response.setData(map);
+        response.setBody(map);
         response.setStatusCode(HttpStatus.OK.value());
         return response;
     }

@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/donation")
@@ -43,7 +41,7 @@ public class DonationController {
         Response<DonationDto> dtoResponse = new Response<>();
 
         try{
-            dtoResponse.setData(donationFacade.save(request));
+            dtoResponse.setBody(donationFacade.save(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         }catch (Exception e){
@@ -88,7 +86,7 @@ public class DonationController {
         Response<DonationDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.findById(id));
+            dtoResponse.setBody(donationFacade.findById(id));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -99,7 +97,7 @@ public class DonationController {
     }
 
 
-    @Operation(summary = "Find All Donations By Zipcode on Application")
+    @Operation(summary = "Find All Donations By City on Application")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
@@ -107,12 +105,12 @@ public class DonationController {
             @ApiResponse(responseCode = "500", description = "Error Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
-    @GetMapping("/feed/{zipCode}")
-    public Response<Page<DonationDto>> findAllByZipCode(Pageable pageable, @PathVariable String zipCode){
+    @GetMapping("/feed/{city}")
+    public Response<Page<DonationDto>> findAllByZipCode(Pageable pageable, @PathVariable String city){
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.findAllByZipCode(pageable, zipCode));
+            dtoResponse.setBody(donationFacade.findAllByZipCode(pageable, city));
             return dtoResponse;
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -131,11 +129,11 @@ public class DonationController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
     @GetMapping("/region/{uf}")
-    public ResponseEntity<Response<Page<ProductDto>>> findByRegion(@PathVariable String uf, Pageable pageable){
-        Response<Page<ProductDto>> dtoResponse = new Response<>();
+    public ResponseEntity<Response<Page<DonationDto>>> findByRegion(@PathVariable String uf, Pageable pageable){
+        Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(productService.findByUf(uf,pageable));
+            dtoResponse.setBody(donationFacade.findAllByUF(pageable, uf));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -157,7 +155,7 @@ public class DonationController {
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.findDonationsByUserId(userId,pageable));
+            dtoResponse.setBody(donationFacade.findDonationsByUserId(userId,pageable));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -179,7 +177,7 @@ public class DonationController {
         Response<DonationDto> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.update(id,request));
+            dtoResponse.setBody(donationFacade.update(id,request));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -201,7 +199,7 @@ public class DonationController {
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
-            dtoResponse.setData(donationFacade.findByCategory(category, pageable));
+            dtoResponse.setBody(donationFacade.findByCategory(category, pageable));
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
             dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -267,11 +265,11 @@ public class DonationController {
     }
 
     @GetMapping("/findAllDonationsOrder")
-    public ResponseEntity<Response<Map<String,Long>>> findAll(@RequestParam(value = "status", defaultValue = "") String status,
+    public ResponseEntity<Response<List<ResponseDashBoard>>> findAll(@RequestParam(value = "status", defaultValue = "") String status,
                                                               @RequestParam(value = "year", defaultValue = "") Integer year){
-        Response<Map<String,Long>> dtoResponse = new Response<>();
+        Response<List<ResponseDashBoard>> dtoResponse = new Response<>();
         try{
-            dtoResponse.setData(donationFacade.findAllDonationsOrderByQuery(status, year));
+            dtoResponse.setBody(donationFacade.findAllDonationsOrderByQuery(status, year));
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -282,10 +280,10 @@ public class DonationController {
     }
 
     @GetMapping("/findAllDonations")
-    public ResponseEntity<Response<Map<String,Long>>> findAll(@RequestParam(value = "year", defaultValue = "") Integer year){
-        Response<Map<String,Long>> dtoResponse = new Response<>();
+    public ResponseEntity<Response<List<ResponseDashBoard>>> findAll(@RequestParam(value = "year", defaultValue = "") Integer year){
+        Response<List<ResponseDashBoard>> dtoResponse = new Response<>();
         try{
-            dtoResponse.setData(donationFacade.findAllDonationsByQuery(year));
+            dtoResponse.setBody(donationFacade.findAllDonationsByQuery(year));
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

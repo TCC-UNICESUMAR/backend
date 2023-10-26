@@ -2,6 +2,7 @@ package com.br.tcc.bfn.facades.impl;
 
 import com.br.tcc.bfn.dtos.AddressRequest;
 import com.br.tcc.bfn.dtos.RegisterRequest;
+import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.UserFacade;
@@ -12,7 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.List;
 
 @Component
 public class UserFacadeImpl implements UserFacade {
@@ -64,7 +65,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public Map<String, Long> findAllUserActives(Boolean status, String roleName, Integer year) {
+    public List<ResponseDashBoard> findAllUserActives(Boolean status, String roleName, Integer year) {
         return userService.findAllUserActives(status,roleName,year);
+    }
+
+    public List<ResponseDashBoard> findAllUser(String roleName, Integer year) {
+        return userService.findAllUsers(roleName,year);
     }
 }

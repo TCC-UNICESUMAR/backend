@@ -59,7 +59,7 @@ public class AuthenticationController {
 	public ResponseEntity<Response<AuthenticationResponse>> getRefreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
 		Response<AuthenticationResponse> dtoResponse = new Response<>();
 		try{
-			dtoResponse.setData(service.refreshToken(authorization));
+			dtoResponse.setBody(service.refreshToken(authorization));
 			dtoResponse.setStatusCode(HttpStatus.OK.value());
 			return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
 		}catch (Exception e){
