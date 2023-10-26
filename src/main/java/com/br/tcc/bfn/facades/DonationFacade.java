@@ -9,12 +9,13 @@ import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Donation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface DonationFacade {
 
-    DonationDto save(RegisterDonationDto registerDonationDto) throws Exception;
+    DonationDto save(RegisterDonationDto registerDonationDto, MultipartFile[] files) throws Exception;
     DonationDto findById(Long id) throws DonationException;
     DonationDto update(Long id, RegisterDonationDto registerDonationDto) throws Exception;
     Page<DonationDto> findByCategory(String category, Pageable pageable) throws DonationException;

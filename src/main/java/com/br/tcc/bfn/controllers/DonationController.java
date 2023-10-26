@@ -1,14 +1,20 @@
 package com.br.tcc.bfn.controllers;
 
+import com.amazonaws.util.json.Jackson;
 import com.br.tcc.bfn.dtos.*;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.facades.DonationFacade;
 import com.br.tcc.bfn.services.IProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.nimbusds.jose.shaded.gson.GsonBuilder;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,12 +42,16 @@ public class DonationController {
             @ApiResponse(responseCode = "500", description = "Error Register new Product on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
-    @PostMapping()
-    public ResponseEntity<Response<DonationDto>> register(@RequestBody RegisterDonationDto request) {
+    @PostMapping(consumes = { "multipart/form-data" })
+    public ResponseEntity<Response<DonationDto>> register(@ModelAttribute RegisterDonationRequest request) throws JsonProcessingException {
         Response<DonationDto> dtoResponse = new Response<>();
 
         try{
-            dtoResponse.setBody(donationFacade.save(request));
+            GsonBuilder builder = new GsonBuilder();
+            builder.setPrettyPrinting();
+            Gson gson = builder.create();
+            RegisterDonationDto donationDto = gson.fromJson(request.getBody(), RegisterDonationDto.class);
+            dtoResponse.setBody(donationFacade.save(donationDto, request.getFiles()));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         }catch (Exception e){

@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class S3ServiceImpl implements S3Service {
@@ -31,13 +33,17 @@ public class S3ServiceImpl implements S3Service {
     private final static Logger LOGGER = LoggerFactory.getLogger(S3ServiceImpl.class);
 
     @Override
-    public void saveImageToS3(MultipartFile[] files) throws IOException {
+    public List<String> saveImageToS3(MultipartFile[] files, String bucketName) throws IOException {
+        List<String> fileNames = new ArrayList<>();
         for(MultipartFile file : files){
             File fileObj = convertMultiPartFileToFile(file);
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            amazon.getAmazonS3Client().putObject(new PutObjectRequest(environment.getProperty("aws.s3.buckets.product"), fileName, fileObj));
+            fileNames.add(fileName);
+            amazon.getAmazonS3Client().putObject(new PutObjectRequest(bucketName, fileName, fileObj));
             fileObj.delete();
         }
+
+        return fileNames;
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) {

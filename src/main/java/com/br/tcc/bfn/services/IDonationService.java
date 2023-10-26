@@ -8,12 +8,13 @@ import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Donation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IDonationService {
 
-    Donation save(RegisterDonationDto registerDonationDto) throws Exception;
+    Donation save(RegisterDonationDto registerDonationDto, MultipartFile[] files) throws Exception;
     Donation findById(final Long id) throws DonationException;
     Donation update(Long donationId, RegisterDonationDto registerDonationDto) throws Exception;
     void reserveDonation(Long donationId) throws DonationException;

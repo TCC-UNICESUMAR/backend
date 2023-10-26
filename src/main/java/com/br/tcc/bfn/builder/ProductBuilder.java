@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.builder;
 
-import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.Category;
-import com.br.tcc.bfn.models.Product;
-import com.br.tcc.bfn.models.User;
+import com.br.tcc.bfn.models.*;
 
 import java.util.Date;
 import java.util.List;
@@ -59,7 +56,10 @@ public class ProductBuilder {
         this.product.setCategory(category);
         return this;
     }
-
+    public ProductBuilder imagens(List<Image> value){
+        this.product.setImages(value);
+        return this;
+    }
     public Product build(){
         return this.product;
     }

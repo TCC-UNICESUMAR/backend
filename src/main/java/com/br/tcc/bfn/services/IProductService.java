@@ -7,12 +7,13 @@ import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import com.br.tcc.bfn.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IProductService {
 
-    Product register(RegisterDonationDto request) throws Exception;
+    Product register(RegisterDonationDto request, MultipartFile[] files) throws Exception;
 
     void disableProduct(Long id) throws Exception;
 

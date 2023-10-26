@@ -8,6 +8,7 @@ import com.br.tcc.bfn.exceptions.CategoryException;
 import com.br.tcc.bfn.exceptions.ProductException;
 import com.br.tcc.bfn.exceptions.ProductNotFoundException;
 import com.br.tcc.bfn.models.Category;
+import com.br.tcc.bfn.models.Image;
 import com.br.tcc.bfn.models.Product;
 import com.br.tcc.bfn.populators.ProductRequestPopulator;
 import com.br.tcc.bfn.repositories.*;
@@ -19,9 +20,11 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,14 +56,27 @@ public class ProductServiceImpl implements IProductService {
     private StateRepository stateRepository;
     @Autowired
     private DonationRepository donationRepository;
+    @Autowired
+    private Environment environment;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
-    public Product register(RegisterDonationDto request) throws Exception {
+    public Product register(RegisterDonationDto request, MultipartFile[] files) throws Exception {
         try {
             if (Objects.isNull(request)) {
                 LOGGER.error(String.format(BfnConstants.REQUEST_IS_NULL));
                 throw new Exception(BfnConstants.REQUEST_IS_NULL);
             }
+
+            List<Image> images = new ArrayList<>();
+            for(String name : s3Service.saveImageToS3(files, environment.getProperty("aws.s3.buckets.product"))){
+                Image img = new Image();
+                img.setName(name);
+                images.add(img);
+            }
+            
+            imageRepository.saveAll(images);
 
             final Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));
 
@@ -72,6 +88,7 @@ public class ProductServiceImpl implements IProductService {
                     .update(new Date())
                     .quantity(request.getQuantity())
                     .description(request.getDescription())
+                    .imagens(images)
                     .build();
 
             productRepository.save(product);
