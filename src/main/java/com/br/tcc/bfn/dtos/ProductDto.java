@@ -1,6 +1,9 @@
 package com.br.tcc.bfn.dtos;
 
 
+import com.br.tcc.bfn.models.Image;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +14,7 @@ public class ProductDto {
     private String description;
     private CategoryDto category;
     private Integer quantity;
-    private List<ProductImageUrlDto> productImageUrls;
+    private List<Image> images = new ArrayList<>();
     private Boolean reserved;
     private Boolean active;
     private Date createdAt;
@@ -109,11 +112,11 @@ public class ProductDto {
         this.address = address;
     }
 
-    public List<ProductImageUrlDto> getProductImageUrls() {
-        return productImageUrls;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setProductImageUrls(List<ProductImageUrlDto> productImageUrls) {
-        this.productImageUrls = productImageUrls;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

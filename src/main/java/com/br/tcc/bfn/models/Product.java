@@ -31,6 +31,12 @@ public class Product {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_products_images",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private List<Image> images = new ArrayList<>();
 
     public Product() {
     }
@@ -105,5 +111,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

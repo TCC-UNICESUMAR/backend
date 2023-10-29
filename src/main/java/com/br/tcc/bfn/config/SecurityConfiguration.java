@@ -46,6 +46,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         , new AntPathRequestMatcher("/api/v1/donation/findAllDonations")
                         , new AntPathRequestMatcher("/api/v1/donation/findAllDonationsOrder")
                         , new AntPathRequestMatcher("/api/v1/user/findAllUsers")
+                        , new AntPathRequestMatcher("/api/v1/donation/region/**")
                 )
                 .permitAll()
                 .anyRequest()

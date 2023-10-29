@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS tb_users(
 	email varchar(150) NOT NULL,
 	name varchar(150) NOT NULL,
 	phone varchar(11) NULL,
-	profile_image_id varchar(255) NULL,
+	profile_image text NULL,
 	password varchar(120) NOT NULL,
 	user_active int NOT NULL,
 	fk_address bigint NULL,

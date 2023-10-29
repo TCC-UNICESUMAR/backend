@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -26,12 +28,12 @@ public class DonationFacadeImpl implements DonationFacade {
     private ModelMapper modelMapper;
 
     @Override
-    public DonationDto save(RegisterDonationDto registerDonationDto) throws Exception {
-        return modelMapper.map(donationService.save(registerDonationDto), DonationDto.class);
+    public DonationDto save(RegisterDonationDto registerDonationDto, MultipartFile[] files) throws Exception {
+        return modelMapper.map(donationService.save(registerDonationDto, files), DonationDto.class);
     }
 
     @Override
-    public DonationDto findById(Long id) throws DonationException {
+    public DonationDto findById(Long id) throws Exception {
         return modelMapper.map(donationService.findById(id), DonationDto.class);
     }
 

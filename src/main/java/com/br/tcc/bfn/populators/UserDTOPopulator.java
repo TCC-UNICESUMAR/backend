@@ -9,7 +9,7 @@ public class UserDTOPopulator implements Populator<UserDTO, User>{
     @Override
     public void populate(UserDTO userDTO, User user) {
         userDTO.setEmail(user.getEmail());
-        userDTO.setProfileImageId(user.getProfileImageId());
+        userDTO.setProfileImage(user.getProfileImage());
         userDTO.setName(user.getName());
     }
 }

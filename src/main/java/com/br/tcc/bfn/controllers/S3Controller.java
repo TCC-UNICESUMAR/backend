@@ -1,37 +1,27 @@
 package com.br.tcc.bfn.controllers;
 
-import com.br.tcc.bfn.dtos.Response;
-import com.br.tcc.bfn.exceptions.ProductNotFoundException;
+import com.br.tcc.bfn.dtos.UploadImageProfileRequest;
 import com.br.tcc.bfn.services.S3Service;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 @RestController
-@RequestMapping("/api/v1/s3")
+@RequestMapping("/api/v1/s3/uploadImageProfile")
 public class S3Controller {
     @Autowired
     private S3Service s3Service;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadCustomerProfileImage(@RequestParam(defaultValue = "files") MultipartFile[] files) throws IOException {
+    @PostMapping(consumes = { "multipart/form-data" })
+    public void uploadCustomerProfileImage(@ModelAttribute UploadImageProfileRequest request) throws Exception {
         try {
-            this.s3Service.saveImageToS3(files);
-        }catch (IOException exc){
-            throw new IOException();
+            this.s3Service.saveImageToUser(Arrays.stream(request.getFile()).findFirst().get());
+        }catch (Exception exc){
+            throw new Exception(exc);
         }
     }
 

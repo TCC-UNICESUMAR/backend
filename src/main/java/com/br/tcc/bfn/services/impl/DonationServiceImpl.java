@@ -8,15 +8,9 @@ import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.enums.DonationOrderStatusEnum;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
-import com.br.tcc.bfn.models.Address;
-import com.br.tcc.bfn.models.Donation;
-import com.br.tcc.bfn.models.DonationOrder;
-import com.br.tcc.bfn.models.DonationStatus;
+import com.br.tcc.bfn.models.*;
 import com.br.tcc.bfn.repositories.*;
-import com.br.tcc.bfn.services.IDonationService;
-import com.br.tcc.bfn.services.IProductService;
-import com.br.tcc.bfn.services.IUserService;
-import com.br.tcc.bfn.services.SendNotification;
+import com.br.tcc.bfn.services.*;
 import com.br.tcc.bfn.utils.BfnConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
@@ -24,9 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Month;
 import java.util.*;
@@ -59,12 +55,15 @@ public class DonationServiceImpl implements IDonationService {
     private SendNotification sendNotification;
     @Autowired
     private TemplateSmsRepository templateSmsRepository;
-
+    @Autowired
+    private S3Service s3Service;
+    @Autowired
+    private Environment environment;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DonationServiceImpl.class);
 
     @Override
-    public Donation save(RegisterDonationDto request) throws Exception {
+    public Donation save(RegisterDonationDto request, MultipartFile[] files) throws Exception {
 
         try {
 
@@ -84,7 +83,7 @@ public class DonationServiceImpl implements IDonationService {
                     .created()
                     .update()
                     .reserved()
-                    .product(productService.register(request))
+                    .product(productService.register(request, files))
                     .userBy(userService.findAuth())
                     .build();
 
@@ -100,8 +99,9 @@ public class DonationServiceImpl implements IDonationService {
     @Override
     public Donation findById(Long id) throws DonationException {
         try {
-            return donationRepository.findById(id).orElseThrow(() -> new DonationException(BfnConstants.DONATION_NOT_FOUND));
-        } catch (DonationException exc) {
+            Donation donation = donationRepository.findById(id).orElseThrow(() -> new DonationException(BfnConstants.DONATION_NOT_FOUND));
+            return donation;
+        } catch (Exception exc) {
             LOGGER.error(exc.getMessage());
             throw new DonationException(exc.getMessage());
         }

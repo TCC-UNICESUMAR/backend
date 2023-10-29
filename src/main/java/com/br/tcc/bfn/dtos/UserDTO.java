@@ -1,6 +1,7 @@
 package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Address;
+import com.br.tcc.bfn.models.Image;
 import com.br.tcc.bfn.models.Role;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ public class UserDTO {
 
     private Long id;
     private String email;
-    private String profileImageId;
+    private String profileImage;
     private String name;
     private AddressDto address;
     private Boolean active;
@@ -34,12 +35,12 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getProfileImageId() {
-        return profileImageId;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImageId(String profileImageId) {
-        this.profileImageId = profileImageId;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getName() {
