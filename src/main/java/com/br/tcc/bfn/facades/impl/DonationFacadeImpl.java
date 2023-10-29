@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -32,7 +33,7 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public DonationDto findById(Long id) throws DonationException {
+    public DonationDto findById(Long id) throws Exception {
         return modelMapper.map(donationService.findById(id), DonationDto.class);
     }
 

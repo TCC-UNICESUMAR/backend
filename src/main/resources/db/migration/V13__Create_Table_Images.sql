@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS tb_images(
 	id bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name varchar(100) NULL
+	name varchar(255) NOT NULL,
+	url text NOT NULL
 );

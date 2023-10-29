@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
                     .city(cityRepository.findByCityName(request.getAddress().getCity()))
                     .zipCode(request.getAddress().getZipCode())
                     .complement(request.getAddress().getComplement())
-                    .streetNumber(request.getAddress().getZipCode())
+                    .streetNumber(request.getAddress().getStreetNumber())
                     .streetName(request.getAddress().getStreetName())
                     .update()
                     .create()

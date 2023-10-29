@@ -29,7 +29,7 @@ public class UserDtoBuilder {
         return this;
     }
     public UserDtoBuilder profileImageId(String profileImageId){
-        this.user.setProfileImageId(profileImageId);
+        this.user.setProfileImage(profileImageId);
         return this;
     }
     

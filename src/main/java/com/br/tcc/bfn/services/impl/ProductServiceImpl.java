@@ -70,12 +70,14 @@ public class ProductServiceImpl implements IProductService {
             }
 
             List<Image> images = new ArrayList<>();
-            for(String name : s3Service.saveImageToS3(files, environment.getProperty("aws.s3.buckets.product"))){
+            for(MultipartFile file : files){
+                String imageName = s3Service.saveImageToS3(file, environment.getProperty("aws.s3.buckets.product"));
                 Image img = new Image();
-                img.setName(name);
+                img.setName(imageName);
+                img.setUrl(s3Service.getImageS3(imageName, environment.getProperty("aws.s3.buckets.product")));
                 images.add(img);
             }
-            
+
             imageRepository.saveAll(images);
 
             final Category category = categoryRepository.findByCategoryName(request.getCategory()).orElseThrow(() -> new CategoryException(BfnConstants.CATEGORY_NOT_FOUND));

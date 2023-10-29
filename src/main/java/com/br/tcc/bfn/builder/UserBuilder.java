@@ -46,7 +46,7 @@ public class UserBuilder {
         return this;
     }
     public UserBuilder profileImageId(String profileImageId){
-        this.user.setProfileImageId(profileImageId);
+        this.user.setProfileImage(profileImageId);
         return this;
     }
 

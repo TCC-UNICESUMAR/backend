@@ -36,7 +36,7 @@ public class User implements UserDetails, Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phone;
     private Boolean userActive;
-    private String profileImageId;
+    private String profileImage;
     @JsonIgnore()
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
@@ -149,12 +149,12 @@ public class User implements UserDetails, Serializable {
         this.passportDocumentNumber = passportDocumentNumber;
     }
 
-    public String getProfileImageId() {
-        return profileImageId;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImageId(String profileImageId) {
-        this.profileImageId = profileImageId;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public Address getAddress() {

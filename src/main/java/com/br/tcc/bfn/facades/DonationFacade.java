@@ -11,12 +11,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DonationFacade {
 
     DonationDto save(RegisterDonationDto registerDonationDto, MultipartFile[] files) throws Exception;
-    DonationDto findById(Long id) throws DonationException;
+    DonationDto findById(Long id) throws Exception;
     DonationDto update(Long id, RegisterDonationDto registerDonationDto) throws Exception;
     Page<DonationDto> findByCategory(String category, Pageable pageable) throws DonationException;
     Page<DonationDto> findDonationsByUserId(Long userId, Pageable pageable) throws DonationException;

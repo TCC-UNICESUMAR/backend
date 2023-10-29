@@ -99,8 +99,9 @@ public class DonationServiceImpl implements IDonationService {
     @Override
     public Donation findById(Long id) throws DonationException {
         try {
-            return donationRepository.findById(id).orElseThrow(() -> new DonationException(BfnConstants.DONATION_NOT_FOUND));
-        } catch (DonationException exc) {
+            Donation donation = donationRepository.findById(id).orElseThrow(() -> new DonationException(BfnConstants.DONATION_NOT_FOUND));
+            return donation;
+        } catch (Exception exc) {
             LOGGER.error(exc.getMessage());
             throw new DonationException(exc.getMessage());
         }

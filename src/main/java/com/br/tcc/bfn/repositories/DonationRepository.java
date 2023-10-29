@@ -20,7 +20,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
             countQuery = "SELECT COUNT(donation) FROM Donation donation JOIN donation.product prod JOIN prod.category")
     Page<Donation> searchAllByCategory(@Param("category") String category, Pageable pageable);
 
-    @Query(value = "SELECT donation FROM Donation donation JOIN donation.userBy usr WHERE usr.id = :userId",
+    @Query(value = "SELECT donation FROM Donation donation JOIN donation.userBy usr WHERE usr.id = :userId AND donation.deletedAt = null",
             countQuery = "SELECT COUNT(donation) FROM Donation donation JOIN donation.userBy")
     Page<Donation> searchAllByUserId(@Param("userId") Long userId, Pageable pageable);
 
