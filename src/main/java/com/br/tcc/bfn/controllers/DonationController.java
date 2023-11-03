@@ -271,6 +271,20 @@ public class DonationController {
         }
     }
 
+    @PostMapping("/sendDonorApproveDonation/{donationId}")
+    public ResponseEntity<Response<Void>> sendDonorApproveDonation(@PathVariable Long donationId){
+        Response<Void> dtoResponse = new Response<>();
+        try{
+            donationFacade.saveDeliveredByDonor(donationId);
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
     @GetMapping("/findAllDonationsOrder")
     public ResponseEntity<Response<List<ResponseDashBoard>>> findAll(@RequestParam(value = "status", defaultValue = "") String status,
                                                               @RequestParam(value = "year", defaultValue = "") Integer year){

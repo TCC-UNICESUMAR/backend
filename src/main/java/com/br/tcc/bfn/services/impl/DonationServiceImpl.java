@@ -274,7 +274,6 @@ public class DonationServiceImpl implements IDonationService {
         try {
             final Donation donation = findById(id);
 
-            reserveDonation(id);
             if (donation.getReserved() == Boolean.TRUE) {
                 throw new DonationException("Donation is reserved by other user, try other donate!");
             }
@@ -284,6 +283,7 @@ public class DonationServiceImpl implements IDonationService {
             donationStatus.setCreatedAt(new Date());
             donationStatus.setUpdatedAt(new Date());
             donationStatus.setWaitingOngApprove(true);
+            donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_APPROVED);
 
             DonationOrder donationOrder = new DonationOrder();
             donationOrder.setDonation(donation);
@@ -292,37 +292,23 @@ public class DonationServiceImpl implements IDonationService {
             donationOrder.setReceived(userService.findAuth());
             donationOrder.setCreatedAt(new Date());
             donationOrder.setUpdatedAt(new Date());
-
+            donationOrder.setReason(request.getReason());
 
             if (donationOrder.getDonor() == donationOrder.getReceived()) {
                 throw new DonationException("Donor and Received are equals!");
             }
 
-            final Boolean roleOng = userService.findAuth().getRoles().stream().map(x -> BfnConstants.ROLE_ONG.equalsIgnoreCase(x.getRoleName())).findFirst().get();
-
-            if (roleOng) {
-
-                donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_SEND);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_ONG), donationOrder.getId());
-            } else {
-                if (request.getIntermediary() == null) {
-                    throw new DonationException("Intermediary can not be null!");
-                }
-                donationOrder.setIntermediary(userService.findById(request.getIntermediary()));
-                donationStatus.setStatus(DonationOrderStatusEnum.WAITING_ONG_APPROVED);
-            }
             donationStatusRepository.save(donationStatus);
             donationOrderRepository.save(donationOrder);
+            reserveDonation(id);
+            userService.saveDonationOrderToDonorApprove(donationOrder);
 
             sendNotification.send(CODE_BRAZIL.concat(userService.findAuth().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_CREATE_ORDER_DONATION), donationOrder.getId());
+            sendNotification.send(CODE_BRAZIL.concat(donation.getUserBy().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_TO_APPROVE_ORDER_DONATION), donationOrder.getId());
 
-            if (Objects.nonNull(donationOrder.getIntermediary())) {
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getIntermediary().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_INTERMEDIARY), donationOrder.getId());
-            }
         } catch (Exception exc) {
             throw new DonationException("Error to create order donation -> " + exc.getMessage());
         }
-
     }
 
     @Override

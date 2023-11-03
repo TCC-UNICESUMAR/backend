@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -79,6 +78,12 @@ public class DonationFacadeImpl implements DonationFacade {
     public void saveDeliveredByDonor(Long id) throws DonationException {
         donationService.saveDeliveredByDonor(id);
     }
+
+    @Override
+    public void sendDonorApprove(Long id) throws DonationException {
+        donationService.saveDeliveredByDonor(id);
+    }
+
 
     @Override
     public void finishedDonation(Long id) throws DonationException {

@@ -25,7 +25,7 @@ public class SendNotificationImpl implements SendNotification{
         Message.creator(
                         new PhoneNumber(to),
                         new PhoneNumber(environment.getProperty(TWILIO_PHONE_FROM)),
-                        templateBodySms.getMessage() + donationOrderId)
+                        templateBodySms.getMessage())
                 .create();
 
     }

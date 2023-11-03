@@ -13,6 +13,7 @@ public class DonationOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String reason;
     @ManyToOne @JoinColumn(name = "fk_user_donor")
     private User donor;
     @ManyToOne @JoinColumn(name = "fk_user_intermediary")
@@ -101,5 +102,13 @@ public class DonationOrder implements Serializable{
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

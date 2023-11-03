@@ -7,8 +7,10 @@ import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.DocumentException;
+import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Address;
+import com.br.tcc.bfn.models.DonationOrder;
 import com.br.tcc.bfn.models.User;
 import com.br.tcc.bfn.populators.UserDTOPopulator;
 import com.br.tcc.bfn.populators.UserPopulator;
@@ -307,6 +309,13 @@ public class UserServiceImpl implements IUserService {
         }
 
         return user.get();
+    }
+
+    @Override
+    public void saveDonationOrderToDonorApprove(DonationOrder donationOrder) throws UserException {
+        User user = donationOrder.getDonor();
+        user.getDonationsToApprove().add(donationOrder);
+        repository.save(user);
     }
 
     private boolean isCpf(String value) {

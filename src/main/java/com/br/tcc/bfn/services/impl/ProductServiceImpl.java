@@ -20,16 +20,14 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +67,9 @@ public class ProductServiceImpl implements IProductService {
                 throw new Exception(BfnConstants.REQUEST_IS_NULL);
             }
 
+            if (files == null) {
+                throw new ProductException("Files can not be null");
+            }
             List<Image> images = new ArrayList<>();
             for(MultipartFile file : files){
                 String imageName = s3Service.saveImageToS3(file, environment.getProperty("aws.s3.buckets.product"));

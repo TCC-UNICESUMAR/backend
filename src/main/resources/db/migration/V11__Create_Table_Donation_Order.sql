@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS tb_donations_orders(
     fk_user_intermediary bigint NULL,
     fk_donation_status bigint NOT NULL,
     fk_donation bigint NOT NULL,
+    reason varchar(155) NOT NULL,
     created_at timestamp(6) NOT NULL,
     updated_at timestamp(6) NOT NULL,
     deleted_at timestamp(6) NULL

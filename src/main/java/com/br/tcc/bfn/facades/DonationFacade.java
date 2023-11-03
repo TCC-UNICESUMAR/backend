@@ -26,6 +26,9 @@ public interface DonationFacade {
     void createDonationOrder(Long id, DonationOrderRegisterRequest request) throws Exception;
     void approvedDonationOder(Long id) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
+
+    void sendDonorApprove(Long id) throws DonationException;
+
     void finishedDonation(Long id) throws DonationException;
     List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
     List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException;

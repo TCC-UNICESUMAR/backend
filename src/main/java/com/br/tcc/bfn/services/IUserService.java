@@ -5,7 +5,9 @@ import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.DocumentException;
+import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
+import com.br.tcc.bfn.models.DonationOrder;
 import com.br.tcc.bfn.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +28,6 @@ public interface IUserService {
     UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException;
     List<ResponseDashBoard> findAllUserActives(Boolean status, String roleName, Integer year);
     List<ResponseDashBoard> findAllUsers(String roleName, Integer year);
+
+    void saveDonationOrderToDonorApprove(DonationOrder donationOrder) throws DonationException, UserException;
 }
