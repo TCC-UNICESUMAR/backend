@@ -5,6 +5,7 @@ import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.DonationFacade;
 import com.br.tcc.bfn.models.Donation;
+import com.br.tcc.bfn.models.DonationOrder;
 import com.br.tcc.bfn.services.IDonationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DonationFacadeImpl implements DonationFacade {
@@ -105,5 +107,10 @@ public class DonationFacadeImpl implements DonationFacade {
     @Override
     public void finishDonationOrder(Long donationId) throws DonationException {
         donationService.finishDonationOrder(donationId);
+    }
+
+    @Override
+    public List<DonationOrderDto> findAllDonationsToApprove() throws DonationException {
+        return donationService.findAllDonationsToApprove().stream().map(x -> modelMapper.map(x, DonationOrderDto.class)).collect(Collectors.toList());
     }
 }

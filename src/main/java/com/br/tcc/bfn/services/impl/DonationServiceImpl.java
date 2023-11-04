@@ -218,6 +218,16 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
+    public List<DonationOrder> findAllDonationsToApprove() throws DonationException {
+        try {
+            List<DonationOrder> donationOrders = donationOrderRepository.findAllDonationOrdersToApproveByDonor(DonationOrderStatusEnum.WAITING_DONOR_APPROVED, userService.findAuth().getId());
+            return donationOrders;
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Page<Donation> findDonationsByCategory(String category, Pageable pageable) throws DonationException {
         try {
 

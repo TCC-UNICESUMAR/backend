@@ -34,4 +34,5 @@ public interface IDonationService {
     List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException;
     Page<Donation> findAllByUF(Pageable pageable, String uf);
     void finishDonationOrder(Long donationId) throws DonationException;
+    List<DonationOrder> findAllDonationsToApprove() throws DonationException;
 }
