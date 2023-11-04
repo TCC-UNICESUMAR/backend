@@ -25,7 +25,7 @@ public class Product {
     private Integer quantity;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
-    @OneToOne @JoinColumn(name = "fk_category")
+    @OneToOne(fetch = FetchType.EAGER)  @JoinColumn(name = "fk_category")
     private Category category;
     private Boolean active;
     private Date createdAt;

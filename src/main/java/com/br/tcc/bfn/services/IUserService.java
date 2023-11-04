@@ -20,6 +20,7 @@ public interface IUserService {
     UserDTO registerAdmin(RegisterRequest request) throws UserException, DocumentException;
     void disableUser(Long id) throws UserException;
     UserDTO update(Long id, RegisterRequest request) throws UserException;
+    Page<UserDTO> findAllOngsWithPageable(String city, Pageable pageable);
     List<UserDTO> findAll() throws UserException;
     User findAuth() throws UserException;
     Page<UserDTO> findAllWithPageable(Pageable pageable);
@@ -28,6 +29,5 @@ public interface IUserService {
     UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException;
     List<ResponseDashBoard> findAllUserActives(Boolean status, String roleName, Integer year);
     List<ResponseDashBoard> findAllUsers(String roleName, Integer year);
-
     void saveDonationOrderToDonorApprove(DonationOrder donationOrder) throws DonationException, UserException;
 }

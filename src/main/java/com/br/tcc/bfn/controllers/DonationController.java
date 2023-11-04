@@ -261,7 +261,7 @@ public class DonationController {
     public ResponseEntity<Response<Void>> finishedDonation(@PathVariable Long donationId){
         Response<Void> dtoResponse = new Response<>();
         try{
-            donationFacade.saveDeliveredByDonor(donationId);
+            donationFacade.finishDonationOrder(donationId);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -271,11 +271,11 @@ public class DonationController {
         }
     }
 
-    @PostMapping("/sendDonorApproveDonation/{donationId}")
-    public ResponseEntity<Response<Void>> sendDonorApproveDonation(@PathVariable Long donationId){
+    @PostMapping("/sendDonorApproveDonation")
+    public ResponseEntity<Response<Void>> sendDonorApproveDonation(@RequestBody RequestApproveDonationOrder request){
         Response<Void> dtoResponse = new Response<>();
         try{
-            donationFacade.saveDeliveredByDonor(donationId);
+            donationFacade.sendDonorApprove(request);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

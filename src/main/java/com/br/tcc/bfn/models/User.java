@@ -49,12 +49,6 @@ public class User implements UserDetails, Serializable {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_donations_to_approve",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "donation_order_id")
-    )
-    private List<DonationOrder> donationsToApprove = new ArrayList<>();
 
     public User() {
     }
@@ -202,11 +196,4 @@ public class User implements UserDetails, Serializable {
         this.deletedAt = deletedAt;
     }
 
-    public List<DonationOrder> getDonationsToApprove() {
-        return donationsToApprove;
-    }
-
-    public void setDonationsToApprove(List<DonationOrder> donationsToApprove) {
-        this.donationsToApprove = donationsToApprove;
-    }
 }

@@ -130,6 +130,27 @@ public class UserController{
 
     }
 
+    @Operation(summary = "Find All ONG Users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Find All ONG Users",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Error Find All ONG Users",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))})})
+    @GetMapping("/findAllOngs/{cityName}")
+    public ResponseEntity<Response<Page<UserDTO>>> findAllOngsByCity(@PathVariable String cityName, Pageable pageable) {
+        LOGGER.info("Method Find All Ongs");
+        Response<Page<UserDTO>> dtoResponse = new Response<>();
+        dtoResponse.setStatusCode(HttpStatus.OK.value());
+        dtoResponse.setBody(userFacade.findAllOngsWithPageable(cityName,pageable));
+        return ResponseEntity.ok().body(dtoResponse);
+
+    }
+
     @Operation(summary = "Find User By Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Find User By Id",

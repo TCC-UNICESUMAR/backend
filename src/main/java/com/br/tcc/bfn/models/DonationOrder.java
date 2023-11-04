@@ -14,15 +14,15 @@ public class DonationOrder implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String reason;
-    @ManyToOne @JoinColumn(name = "fk_user_donor")
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_user_donor")
     private User donor;
-    @ManyToOne @JoinColumn(name = "fk_user_intermediary")
+    @ManyToOne(fetch = FetchType.EAGER)@JoinColumn(name = "fk_user_intermediary")
     private User intermediary;
-    @ManyToOne @JoinColumn(name = "fk_user_received")
+    @ManyToOne(fetch = FetchType.EAGER)@JoinColumn(name = "fk_user_received")
     private User received;
-    @OneToOne @JoinColumn(name = "fk_donation_status")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_donation_status")
     private DonationStatus donationStatus;
-    @OneToOne @JoinColumn(name = "fk_donation")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_donation")
     private Donation donation;
     private Date createdAt;
     private Date updatedAt;

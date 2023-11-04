@@ -7,7 +7,6 @@ import com.br.tcc.bfn.dtos.RegisterRequest;
 import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.dtos.UserDTO;
 import com.br.tcc.bfn.exceptions.DocumentException;
-import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.DonationOrder;
@@ -212,6 +211,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Page<UserDTO> findAllOngsWithPageable(String city, Pageable pageable) {
+        return repository.findAllOngsByCity(city, pageable).map(x -> this.modelMapper.map(x, UserDTO.class));
+    }
+
+    @Override
     public List<UserDTO> findAll() {
         return repository.findAll().stream().map(x -> this.modelMapper.map(x, UserDTO.class)).collect(Collectors.toList());
     }
@@ -313,9 +317,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void saveDonationOrderToDonorApprove(DonationOrder donationOrder) throws UserException {
-        User user = donationOrder.getDonor();
-        user.getDonationsToApprove().add(donationOrder);
-        repository.save(user);
+        //User user = donationOrder.getDonor();
+        //user.getDonationsToApprove().add(donationOrder);
+        //repository.save(user);
     }
 
     private boolean isCpf(String value) {

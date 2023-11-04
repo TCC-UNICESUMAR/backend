@@ -17,7 +17,7 @@ public class DonationStatus implements Serializable{
     private Boolean approved;
     private Boolean waitingOngApprove;
     private Boolean availableForPickup;
-    @OneToOne @JoinColumn(name = "fk_user_approved_by")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_user_approved_by")
     private User approvedBy;
     private Date createdAt;
     private Date updatedAt;
