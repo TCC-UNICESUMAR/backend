@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.facades.impl;
 
-import com.br.tcc.bfn.dtos.DonationDto;
-import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
-import com.br.tcc.bfn.dtos.RegisterDonationDto;
-import com.br.tcc.bfn.dtos.ResponseDashBoard;
+import com.br.tcc.bfn.dtos.*;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.DonationFacade;
@@ -16,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -81,6 +77,12 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
+    public void sendDonorApprove(RequestApproveDonationOrder req) throws DonationException, UserException {
+        donationService.saveApproveByDonor(req);
+    }
+
+
+    @Override
     public void finishedDonation(Long id) throws DonationException {
         donationService.finishedDonation(id);
     }
@@ -98,5 +100,10 @@ public class DonationFacadeImpl implements DonationFacade {
     @Override
     public Page<DonationDto> findAllByUF(Pageable pageable, String uf) {
         return donationService.findAllByUF(pageable, uf).map(x -> modelMapper.map(x, DonationDto.class));
+    }
+
+    @Override
+    public void finishDonationOrder(Long donationId) throws DonationException {
+        donationService.finishDonationOrder(donationId);
     }
 }

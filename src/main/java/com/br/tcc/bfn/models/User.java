@@ -50,7 +50,6 @@ public class User implements UserDetails, Serializable {
     private Date updatedAt;
     private Date deletedAt;
 
-
     public User() {
     }
 
@@ -196,4 +195,5 @@ public class User implements UserDetails, Serializable {
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
     }
+
 }

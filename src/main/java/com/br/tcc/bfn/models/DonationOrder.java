@@ -13,15 +13,16 @@ public class DonationOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne @JoinColumn(name = "fk_user_donor")
+    private String reason;
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_user_donor")
     private User donor;
-    @ManyToOne @JoinColumn(name = "fk_user_intermediary")
+    @ManyToOne(fetch = FetchType.EAGER)@JoinColumn(name = "fk_user_intermediary")
     private User intermediary;
-    @ManyToOne @JoinColumn(name = "fk_user_received")
+    @ManyToOne(fetch = FetchType.EAGER)@JoinColumn(name = "fk_user_received")
     private User received;
-    @OneToOne @JoinColumn(name = "fk_donation_status")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_donation_status")
     private DonationStatus donationStatus;
-    @OneToOne @JoinColumn(name = "fk_donation")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "fk_donation")
     private Donation donation;
     private Date createdAt;
     private Date updatedAt;
@@ -101,5 +102,13 @@ public class DonationOrder implements Serializable{
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

@@ -19,6 +19,7 @@ public interface UserFacade{
     UserDTO findAuth() throws UserException;
     UserDTO findById(Long id) throws UserException;
     Page<UserDTO> findAllWithPageable(Pageable pageable);
+    Page<UserDTO> findAllOngsWithPageable(String city, Pageable pageable);
     void disableUser(Long id) throws UserException;
     List<ResponseDashBoard> findAllUserActives(Boolean status, String roleName, Integer year);
     List<ResponseDashBoard> findAllUser(String roleName, Integer year);

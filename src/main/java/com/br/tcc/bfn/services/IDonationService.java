@@ -2,10 +2,12 @@ package com.br.tcc.bfn.services;
 
 import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
 import com.br.tcc.bfn.dtos.RegisterDonationDto;
+import com.br.tcc.bfn.dtos.RequestApproveDonationOrder;
 import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Donation;
+import com.br.tcc.bfn.models.DonationOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +28,10 @@ public interface IDonationService {
     void createDonationOrder(Long id, DonationOrderRegisterRequest request) throws Exception;
     void approvedDonationOder(Long id) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
+    void saveApproveByDonor(RequestApproveDonationOrder request) throws DonationException, UserException;
     void finishedDonation(Long id) throws DonationException;
     List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
     List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException;
     Page<Donation> findAllByUF(Pageable pageable, String uf);
+    void finishDonationOrder(Long donationId) throws DonationException;
 }

@@ -60,6 +60,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
+    public Page<UserDTO> findAllOngsWithPageable(String city, Pageable pageable) {
+        return userService.findAllOngsWithPageable(city, pageable);
+    }
+
+    @Override
     public void disableUser(Long id) throws UserException {
         userService.disableUser(id);
     }

@@ -5,16 +5,16 @@ import java.util.Date;
 
 public class DonationOrderRegisterRequest implements Serializable {
 
-    private Long intermediary;
+    private String reason;
 
     public DonationOrderRegisterRequest() {
     }
 
-    public Long getIntermediary() {
-        return intermediary;
+    public String getReason() {
+        return reason;
     }
 
-    public void setIntermediary(Long intermediary) {
-        this.intermediary = intermediary;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

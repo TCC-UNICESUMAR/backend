@@ -21,3 +21,6 @@ insert into tb_templates_sms (id,message_template,message) values (5,'NOTIFICATE
 
 insert into tb_templates_sms (id,message_template,message) values (6,'NOTIFICATE_DONOR_ONG',
 'Ola tudo bem? Ja pode encaminhar a doacao ate a ONG! Att Equipe BFN.');
+
+insert into tb_templates_sms (id,message_template,message) values (7,'NOTIFICATE_DONOR_TO_APPROVE_ORDER_DONATION',
+'Ola tudo bem? Que tal dar uma olhadinha nas solitacoes e aprovar um pedido que foi feito agora mesmo? Att Equipe BFN.');
