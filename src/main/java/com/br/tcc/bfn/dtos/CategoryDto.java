@@ -1,8 +1,8 @@
 package com.br.tcc.bfn.dtos;
 
-import com.br.tcc.bfn.models.Category;
+import java.io.Serializable;
 
-public class CategoryDto {
+public class CategoryDto implements Serializable {
 
     private Long categoryId;
 

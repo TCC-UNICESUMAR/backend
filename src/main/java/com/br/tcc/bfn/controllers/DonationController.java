@@ -112,8 +112,8 @@ public class DonationController {
             @ApiResponse(responseCode = "500", description = "Error Find All Donations on Application",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
-    @GetMapping("/feed/{city}")
-    public Response<Page<DonationDto>> findAllByZipCode(Pageable pageable, @PathVariable String city){
+    @GetMapping("/region/{city}")
+    public Response<Page<DonationDto>> findAllByCity(Pageable pageable, @PathVariable String city){
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
             dtoResponse.setStatusCode(HttpStatus.OK.value());
@@ -124,7 +124,6 @@ public class DonationController {
             dtoResponse.setError(e.getMessage());
             return dtoResponse;
         }
-
     }
 
     @Operation(summary = "Find Donations By UF on Application")
@@ -305,6 +304,20 @@ public class DonationController {
         Response<List<ResponseDashBoard>> dtoResponse = new Response<>();
         try{
             dtoResponse.setBody(donationFacade.findAllDonationsByQuery(year));
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
+    @GetMapping("/city")
+    public ResponseEntity<Response<List<DonationDto>>> findAllByCities(@RequestParam(value = "cities", defaultValue = "") List<String> cities){
+        Response<List<DonationDto>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setBody(donationFacade.findAllByCities(cities));
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

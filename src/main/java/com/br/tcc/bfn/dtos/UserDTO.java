@@ -4,10 +4,11 @@ import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Image;
 import com.br.tcc.bfn.models.Role;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private Long id;
     private String email;

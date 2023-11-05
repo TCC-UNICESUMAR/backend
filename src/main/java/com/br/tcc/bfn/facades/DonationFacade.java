@@ -31,4 +31,5 @@ public interface DonationFacade {
     Page<DonationDto> findAllByUF(Pageable pageable, String uf);
     void finishDonationOrder(Long donationId) throws DonationException;
     List<DonationOrderDto> findAllDonationsToApprove() throws DonationException;
+    List<DonationDto> findAllByCities(List<String> cities);
 }
