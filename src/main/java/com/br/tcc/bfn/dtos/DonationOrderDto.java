@@ -98,4 +98,12 @@ public class DonationOrderDto implements Serializable {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
+    public Boolean getNeedAnIntermediary() {
+        return needAnIntermediary;
+    }
+
+    public void setNeedAnIntermediary(Boolean needAnIntermediary) {
+        this.needAnIntermediary = needAnIntermediary;
+    }
 }
