@@ -16,6 +16,7 @@ public class DonationOrderDto implements Serializable {
     private Date deletedAt;
     private Boolean reserved;
     private String reason;
+    private Boolean needAnIntermediary;
 
     public DonationOrderDto() {
     }

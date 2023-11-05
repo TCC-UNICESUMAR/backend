@@ -27,7 +27,7 @@ public class DonationOrder implements Serializable{
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
-
+    private Boolean needAnIntermediary;
 
     public DonationOrder() {
     }
@@ -110,5 +110,13 @@ public class DonationOrder implements Serializable{
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public Boolean getNeedAnIntermediary() {
+        return needAnIntermediary;
+    }
+
+    public void setNeedAnIntermediary(Boolean needAnIntermediary) {
+        this.needAnIntermediary = needAnIntermediary;
     }
 }

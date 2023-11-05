@@ -327,8 +327,15 @@ public class DonationServiceImpl implements IDonationService {
             donationOrder.setUpdatedAt(new Date());
             donationOrder.setReason(request.getReason());
 
+
             if (donationOrder.getDonor() == donationOrder.getReceived()) {
                 throw new DonationException("Donor and Received are equals!");
+            }
+
+            if (userService.findAuth().getRoles().stream().findFirst().get().getRoleName().equals(BfnConstants.ROLE_DEFAULT_USER)) {
+                donationOrder.setNeedAnIntermediary(Boolean.TRUE);
+            } else {
+                donationOrder.setNeedAnIntermediary(Boolean.FALSE);
             }
 
             donationStatusRepository.save(donationStatus);
