@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.repositories;
 
-import com.br.tcc.bfn.enums.DonationOrderStatusEnum;
 import com.br.tcc.bfn.models.Donation;
-import com.br.tcc.bfn.models.DonationOrder;
-import com.br.tcc.bfn.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DonationRepository extends JpaRepository<Donation, Long> {
+public interface DonationRepository extends JpaRepository<Donation, Long>, CustomDonationRepository {
 
     @Query(value = "SELECT donation FROM Donation donation JOIN donation.product prod JOIN prod.category ct WHERE ct.categoryName = :category AND prod.deletedAt = null",
             countQuery = "SELECT COUNT(donation) FROM Donation donation JOIN donation.product prod JOIN prod.category")

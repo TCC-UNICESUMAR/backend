@@ -9,7 +9,10 @@ import com.br.tcc.bfn.dtos.ResponseDashBoard;
 import com.br.tcc.bfn.enums.DonationOrderStatusEnum;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
-import com.br.tcc.bfn.models.*;
+import com.br.tcc.bfn.models.Address;
+import com.br.tcc.bfn.models.Donation;
+import com.br.tcc.bfn.models.DonationOrder;
+import com.br.tcc.bfn.models.DonationStatus;
 import com.br.tcc.bfn.repositories.*;
 import com.br.tcc.bfn.services.*;
 import com.br.tcc.bfn.utils.BfnConstants;
@@ -20,6 +23,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +32,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class DonationServiceImpl implements IDonationService {
@@ -225,6 +232,12 @@ public class DonationServiceImpl implements IDonationService {
         } catch (UserException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Donation> findAllByCities(List<String> cities) {
+        List<Donation> donations = donationRepository.findAllByCities(cities);
+        return donations;
     }
 
     @Override

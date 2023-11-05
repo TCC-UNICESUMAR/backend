@@ -3,11 +3,12 @@ package com.br.tcc.bfn.dtos;
 
 import com.br.tcc.bfn.models.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProductDto {
+public class ProductDto implements Serializable {
 
     private Long productId;
     private String name;
@@ -20,7 +21,6 @@ public class ProductDto {
     private Date createdAt;
     private Date updateAt;
     private Date deleteAt;
-    private AddressDto address;
 
     public ProductDto() {
     }
@@ -102,14 +102,6 @@ public class ProductDto {
 
     public void setCategory(CategoryDto category) {
         this.category = category;
-    }
-
-    public AddressDto getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressDto address) {
-        this.address = address;
     }
 
     public List<Image> getImages() {

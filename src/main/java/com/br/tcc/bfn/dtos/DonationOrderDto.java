@@ -15,6 +15,7 @@ public class DonationOrderDto implements Serializable {
     private Date updatedAt;
     private Date deletedAt;
     private Boolean reserved;
+    private String reason;
 
     public DonationOrderDto() {
     }
@@ -88,4 +89,12 @@ public class DonationOrderDto implements Serializable {
     }
     public Boolean getReserved() {return reserved;}
     public void setReserved(Boolean reserved) {this.reserved = reserved;}
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
