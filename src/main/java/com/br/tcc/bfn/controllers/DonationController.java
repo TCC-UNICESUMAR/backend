@@ -134,7 +134,7 @@ public class DonationController {
             @ApiResponse(responseCode = "500", description = "Error Find Donations UF Id on Applicationn",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class)) })})
-    @GetMapping("/region/{uf}")
+    @GetMapping("/region/uf/{uf}")
     public ResponseEntity<Response<Page<DonationDto>>> findByRegion(@PathVariable String uf, Pageable pageable){
         Response<Page<DonationDto>> dtoResponse = new Response<>();
         try{
