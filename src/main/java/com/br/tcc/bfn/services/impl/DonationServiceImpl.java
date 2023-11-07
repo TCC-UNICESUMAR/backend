@@ -313,6 +313,12 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
+    public Page<DonationOrder> findAllDonationOrdersByDonor(Pageable pageable) throws UserException {
+        Page<DonationOrder> donations = donationOrderRepository.findAllDonationOrdersByDonor(pageable, userService.findAuth().getId());
+        return donations;
+    }
+
+    @Override
     public Page<Donation> findAllByUF(Pageable pageable, String uf) {
         Page<Donation> donations = donationRepository.searchAllByUf(pageable, uf);
         return donations;

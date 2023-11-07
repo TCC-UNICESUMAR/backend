@@ -20,11 +20,14 @@ public interface DonationOrderRepository extends JpaRepository<DonationOrder, Lo
     @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.intermediary inter JOIN donation.donationStatus dnst WHERE dnst.status = :status AND inter.id = :userId")
     List<DonationOrder> findAllDonationOrdersToOngApprove(DonationOrderStatusEnum status, Long userId);
     @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.received received WHERE  received.id = :userId",
-            countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received receivedt")
+            countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received received")
     Page<DonationOrder> findAllDonationOrdersByUser(Pageable pageable, Long userId);
 
     @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.intermediary inter WHERE  inter.id = :userId",
-            countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received receivedt")
+            countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received received")
     Page<DonationOrder> findAllDonationOrdersByIntermediary(Pageable pageable, Long userId);
+    @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.donor donor WHERE  donor.id = :userId",
+            countQuery = "SELECT COUNT(donation) DonationOrder donation JOIN donation.donor donor")
+    Page<DonationOrder> findAllDonationOrdersByDonor(Pageable pageable, Long userId);
 
 }

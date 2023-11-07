@@ -397,4 +397,18 @@ public class DonationController {
         }
     }
 
+    @GetMapping("/findAllDonationOrdersByDonor")
+    public ResponseEntity<Response<Page<DonationOrderDto>>> findAllDonationOrdersByDonor(Pageable pageable){
+        Response<Page<DonationOrderDto>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            dtoResponse.setBody(donationFacade.findAllDonationOrdersByDonor(pageable));
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
 }

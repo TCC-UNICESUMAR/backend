@@ -137,4 +137,9 @@ public class DonationFacadeImpl implements DonationFacade {
     public Page<DonationOrderDto> findAllDonationOrdersByIntermediary(Pageable pageable) throws UserException{
         return donationService.findAllDonationOrdersByIntermediary(pageable).map(x -> modelMapper.map(x, DonationOrderDto.class));
     }
+
+    @Override
+    public Page<DonationOrderDto> findAllDonationOrdersByDonor(Pageable pageable) {
+        return null;
+    }
 }
