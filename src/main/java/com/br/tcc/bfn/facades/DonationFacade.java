@@ -22,7 +22,7 @@ public interface DonationFacade {
     Page<DonationDto> findAllByZipCode(Pageable pageable, String zipCode);
     void disable(Long donationId) throws DonationException;
     void createDonationOrder(Long id, DonationOrderRegisterRequest request) throws Exception;
-    void approvedDonationOder(Long id) throws DonationException, UserException;
+    void approvedDonationOder(Long id, Boolean status) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
     void sendDonorApprove(RequestApproveDonationOrder req) throws DonationException, UserException;
     void finishedDonation(Long id) throws DonationException;

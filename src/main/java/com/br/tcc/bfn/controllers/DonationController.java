@@ -228,11 +228,11 @@ public class DonationController {
         }
     }
 
-    @PutMapping("/approveDonation/{donationId}")
-    public ResponseEntity<Response<Void>> approveDonation(@PathVariable Long donationId){
+    @PostMapping("/approveDonation/{donationId}/{status}")
+    public ResponseEntity<Response<Void>> approveDonation(@PathVariable Long donationId, @PathVariable Boolean status){
         Response<Void> dtoResponse = new Response<>();
         try{
-            donationFacade.approvedDonationOder(donationId);
+            donationFacade.approvedDonationOder(donationId, status);
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){

@@ -23,8 +23,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -367,17 +365,30 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
-    public void approvedDonationOder(Long id) throws DonationException, UserException {
+    public void approvedDonationOder(Long id, Boolean status) throws DonationException, UserException {
         try {
             final DonationOrder donationOrder = donationOrderRepository.findById(id).orElseThrow(() -> new DonationException("Donation Not Found"));
-
             DonationStatus donationStatus = donationOrder.getDonationStatus();
-            donationStatus.setAvailableForPickup(false);
             donationStatus.setUpdatedAt(new Date());
-            donationStatus.setWaitingOngApprove(false);
-            donationStatus.setApprovedBy(userService.findAuth());
-            donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_SEND);
-            donationStatus.setApproved(true);
+            if(status) {
+                donationStatus.setAvailableForPickup(false);
+                donationStatus.setWaitingOngApprove(false);
+                donationStatus.setApprovedBy(userService.findAuth());
+                donationStatus.setStatus(DonationOrderStatusEnum.WAITING_DONOR_SEND);
+                donationStatus.setApproved(true);
+            }else{
+                donationStatus.setAvailableForPickup(false);
+                donationStatus.setWaitingOngApprove(false);
+                donationStatus.setApprovedBy(userService.findAuth());
+                donationStatus.setStatus(DonationOrderStatusEnum.CANCELED);
+                donationStatus.setApproved(false);
+                donationOrder.getDonation().setReserved(false);
+                donationRepository.save(donationOrder.getDonation());
+                donationStatusRepository.save(donationStatus);
+                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_ONG), donationOrder.getId());
+                return;
+            }
 
             donationStatusRepository.save(donationStatus);
 

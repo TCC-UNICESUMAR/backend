@@ -23,7 +23,7 @@ public interface IDonationService {
     Page<Donation> findDonationsByUserId(Long userId, Pageable pageable) throws DonationException;
     Page<Donation> findAllByZipCode(Pageable pageable, String zipCode);
     void createDonationOrder(Long id, DonationOrderRegisterRequest request) throws Exception;
-    void approvedDonationOder(Long id) throws DonationException, UserException;
+    void approvedDonationOder(Long id, Boolean status) throws DonationException, UserException;
     void saveDeliveredByDonor(Long id) throws DonationException;
     void saveApproveByDonor(RequestApproveDonationOrder request) throws DonationException, UserException;
     void finishedDonation(Long id) throws DonationException;

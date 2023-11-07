@@ -69,8 +69,8 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public void approvedDonationOder(Long id) throws DonationException, UserException {
-        donationService.approvedDonationOder(id);
+    public void approvedDonationOder(Long id, Boolean status) throws DonationException, UserException {
+        donationService.approvedDonationOder(id, status);
     }
 
     @Override
