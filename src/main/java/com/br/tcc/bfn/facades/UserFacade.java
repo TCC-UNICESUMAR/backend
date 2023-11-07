@@ -14,6 +14,9 @@ public interface UserFacade{
 
     UserDTO updateUser(Long id, RegisterRequest request) throws UserException;
     UserDTO saveUser(RegisterRequest request) throws Exception;
+
+    UserDTO saveUserAdmin(RegisterRequest request) throws Exception;
+
     UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException;
     UserDTO saveUserAddress(Long id, AddressRequest request) throws UserException;
     UserDTO findAuth() throws UserException;

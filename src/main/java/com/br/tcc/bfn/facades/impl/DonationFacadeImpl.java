@@ -139,7 +139,7 @@ public class DonationFacadeImpl implements DonationFacade {
     }
 
     @Override
-    public Page<DonationOrderDto> findAllDonationOrdersByDonor(Pageable pageable) {
-        return null;
+    public Page<DonationOrderDto> findAllDonationOrdersByDonor(Pageable pageable) throws UserException {
+        return donationService.findAllDonationOrdersByDonor(pageable).map(x -> modelMapper.map(x, DonationOrderDto.class));
     }
 }

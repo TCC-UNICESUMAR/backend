@@ -71,7 +71,7 @@ public class UserController{
         Response<UserDTO> dtoResponse = new Response<>();
         try{
             LOGGER.info("Method Register Admin");
-            dtoResponse.setBody(userFacade.saveUser(request));
+            dtoResponse.setBody(userFacade.saveUserAdmin(request));
             dtoResponse.setStatusCode(HttpStatus.CREATED.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -79,7 +79,6 @@ public class UserController{
             dtoResponse.setError(e.getMessage());
             return ResponseEntity.internalServerError().body(dtoResponse);
         }
-
     }
 
     @Operation(summary = "Disable User on Application")

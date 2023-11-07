@@ -39,5 +39,5 @@ public interface DonationFacade {
 
     Page<DonationOrderDto> findAllDonationOrdersByIntermediary(Pageable pageable) throws UserException;
 
-    Page<DonationOrderDto> findAllDonationOrdersByDonor(Pageable pageable);
+    Page<DonationOrderDto> findAllDonationOrdersByDonor(Pageable pageable) throws UserException;
 }

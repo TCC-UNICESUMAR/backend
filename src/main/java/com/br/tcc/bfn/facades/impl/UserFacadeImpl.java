@@ -35,6 +35,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
+    public UserDTO saveUserAdmin(RegisterRequest request) throws Exception {
+        return userService.registerAdmin(request);
+    }
+
+    @Override
     public UserDTO updateUserAddress(Long id, AddressRequest request) throws UserException {
         return userService.updateUserAddress(id, request);
     }
