@@ -36,4 +36,6 @@ public interface DonationFacade {
     List<DonationOrderDto> findAllDonationsToOngApprove() throws DonationException;
 
     Page<DonationOrderDto> findAllDonationOrdersByUser(Pageable pageable) throws UserException;
+
+    Page<DonationOrderDto> findAllDonationOrdersByIntermediary(Pageable pageable) throws UserException;
 }

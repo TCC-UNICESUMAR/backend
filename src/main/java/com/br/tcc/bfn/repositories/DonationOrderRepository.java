@@ -23,4 +23,8 @@ public interface DonationOrderRepository extends JpaRepository<DonationOrder, Lo
             countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received receivedt")
     Page<DonationOrder> findAllDonationOrdersByUser(Pageable pageable, Long userId);
 
+    @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.intermediary inter WHERE  inter.id = :userId",
+            countQuery = "SELECT COUNT(donation) FROM DonationOrder donation JOIN donation.received receivedt")
+    Page<DonationOrder> findAllDonationOrdersByIntermediary(Pageable pageable, Long userId);
+
 }

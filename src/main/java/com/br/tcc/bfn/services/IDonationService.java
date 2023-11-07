@@ -32,6 +32,8 @@ public interface IDonationService {
 
     Page<DonationOrder> findAllDonationOrdersByUser(Pageable pageable) throws UserException;
 
+    Page<DonationOrder> findAllDonationOrdersByIntermediary(Pageable pageable) throws UserException;
+
     Page<Donation> findAllByUF(Pageable pageable, String uf);
     void finishDonationOrder(Long donationId) throws DonationException;
     List<DonationOrder> findAllDonationsToApprove() throws DonationException;
