@@ -3,6 +3,7 @@ package com.br.tcc.bfn.dtos;
 import com.br.tcc.bfn.models.Address;
 import com.br.tcc.bfn.models.Image;
 import com.br.tcc.bfn.models.Role;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +14,8 @@ public class UserDTO implements Serializable {
     private Long id;
     private String email;
     private String profileImage;
+    private String phone;
+    private String cpfOrCnpj;
     private String name;
     private AddressDto address;
     private Boolean active;
@@ -90,5 +93,21 @@ public class UserDTO implements Serializable {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCpfOrCnpj() {
+        return cpfOrCnpj;
+    }
+
+    public void setCpfOrCnpj(String cpfOrCnpj) {
+        this.cpfOrCnpj = cpfOrCnpj;
     }
 }
