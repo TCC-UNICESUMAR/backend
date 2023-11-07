@@ -242,11 +242,11 @@ public class DonationController {
         }
     }
 
-    @PutMapping("/deliveryByDonor/{donationId}")
-    public ResponseEntity<Response<Void>> saveDelivered(@PathVariable Long donationId){
+    @PutMapping("/deliveryByDonor")
+    public ResponseEntity<Response<Void>> saveDelivered(@RequestBody RequestDeliveredAndFinishedDonationOrder req){
         Response<Void> dtoResponse = new Response<>();
         try{
-            donationFacade.saveDeliveredByDonor(donationId);
+            donationFacade.saveDeliveredByDonor(req.getDonationOrderId());
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
@@ -256,11 +256,11 @@ public class DonationController {
         }
     }
 
-    @PutMapping("/finishedDonation/{donationId}")
-    public ResponseEntity<Response<Void>> finishedDonation(@PathVariable Long donationId){
+    @PutMapping("/finishedDonation")
+    public ResponseEntity<Response<Void>> finishedDonation(@RequestBody RequestDeliveredAndFinishedDonationOrder req){
         Response<Void> dtoResponse = new Response<>();
         try{
-            donationFacade.finishDonationOrder(donationId);
+            donationFacade.finishDonationOrder(req.getDonationOrderId());
             dtoResponse.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok().body(dtoResponse);
         }catch (Exception e){
