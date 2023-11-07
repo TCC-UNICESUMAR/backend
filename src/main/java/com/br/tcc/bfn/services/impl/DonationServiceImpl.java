@@ -235,6 +235,16 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
+    public List<DonationOrder> findAllDonationsToOngApprove() throws DonationException {
+        try {
+            List<DonationOrder> donationOrders = donationOrderRepository.findAllDonationOrdersToOngApprove(DonationOrderStatusEnum.WAITING_ONG_APPROVED, userService.findAuth().getId());
+            return donationOrders;
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<Donation> findAllByCities(List<String> cities) {
         List<Donation> donations = donationRepository.findAllByCities(cities);
         return donations;

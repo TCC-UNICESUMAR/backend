@@ -123,4 +123,9 @@ public class DonationFacadeImpl implements DonationFacade {
     public DonationOrderDto findDonationOrderById(Long id) throws Exception {
         return modelMapper.map(donationService.findDonationOrderById(id), DonationOrderDto.class);
     }
+
+    @Override
+    public List<DonationOrderDto> findAllDonationsToOngApprove() throws DonationException {
+        return donationService.findAllDonationsToOngApprove().stream().map(x -> modelMapper.map(x, DonationOrderDto.class)).collect(Collectors.toList());
+    }
 }

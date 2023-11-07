@@ -34,5 +34,6 @@ public interface IDonationService {
     List<DonationOrder> findAllDonationsToApprove() throws DonationException;
     List<Donation> findAllByCities(List<String> cities);
     DonationOrder findDonationOrderById(Long id) throws Exception;
+    List<DonationOrder> findAllDonationsToOngApprove() throws DonationException;
 
 }

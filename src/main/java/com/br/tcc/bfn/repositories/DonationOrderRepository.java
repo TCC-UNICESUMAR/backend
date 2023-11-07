@@ -15,5 +15,7 @@ public interface DonationOrderRepository extends JpaRepository<DonationOrder, Lo
     List<DonationOrder> findAllDonationOrderByQuery(DonationOrderStatusEnum status, Integer year);
     @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.donor donor JOIN donation.donationStatus dnst WHERE dnst.status = :status AND donor.id = :userId")
     List<DonationOrder> findAllDonationOrdersToApproveByDonor(DonationOrderStatusEnum status, Long userId);
+    @Query(value = "SELECT donation FROM DonationOrder donation JOIN donation.intermediary inter JOIN donation.donationStatus dnst WHERE dnst.status = :status AND inter.id = :userId")
+    List<DonationOrder> findAllDonationOrdersToOngApprove(DonationOrderStatusEnum status, Long userId);
 
 }

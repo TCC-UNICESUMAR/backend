@@ -355,4 +355,18 @@ public class DonationController {
         }
     }
 
+    @GetMapping("/findAllDonationsToOngApprove")
+    public ResponseEntity<Response<List<DonationOrderDto>>> findAllDonationsToOngApprove(){
+        Response<List<DonationOrderDto>> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setBody(donationFacade.findAllDonationsToOngApprove());
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
 }
