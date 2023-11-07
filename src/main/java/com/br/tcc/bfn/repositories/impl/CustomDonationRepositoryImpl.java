@@ -23,7 +23,7 @@ public class CustomDonationRepositoryImpl implements CustomDonationRepository {
                 query.append(String.format(" c.cityName = '%s' ", city));
             }
         }
-        query.append(" AND d.deletedAt = null");
+        query.append("AND d.deletedAt = null AND d.reserved = 0");
 
         TypedQuery<Donation> typedQuery = this.entityManager.createQuery(query.toString(), Donation.class);
 

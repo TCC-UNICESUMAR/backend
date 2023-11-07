@@ -5,7 +5,6 @@ import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.facades.DonationFacade;
 import com.br.tcc.bfn.models.Donation;
-import com.br.tcc.bfn.models.DonationOrder;
 import com.br.tcc.bfn.services.IDonationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,5 +126,10 @@ public class DonationFacadeImpl implements DonationFacade {
     @Override
     public List<DonationOrderDto> findAllDonationsToOngApprove() throws DonationException {
         return donationService.findAllDonationsToOngApprove().stream().map(x -> modelMapper.map(x, DonationOrderDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<DonationOrderDto> findAllDonationOrdersByUser(Pageable pageable) throws UserException{
+        return donationService.findAllDonationOrdersByUser(pageable).map(x -> modelMapper.map(x, DonationOrderDto.class));
     }
 }

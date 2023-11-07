@@ -29,6 +29,9 @@ public interface IDonationService {
     void finishedDonation(Long id) throws DonationException;
     List<ResponseDashBoard> findAllDonationsOrderByQuery(String status, Integer year) throws DonationException;
     List<ResponseDashBoard> findAllDonationsByQuery(Integer year) throws DonationException;
+
+    Page<DonationOrder> findAllDonationOrdersByUser(Pageable pageable) throws UserException;
+
     Page<Donation> findAllByUF(Pageable pageable, String uf);
     void finishDonationOrder(Long donationId) throws DonationException;
     List<DonationOrder> findAllDonationsToApprove() throws DonationException;
