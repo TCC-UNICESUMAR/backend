@@ -118,4 +118,9 @@ public class DonationFacadeImpl implements DonationFacade {
     public List<DonationDto> findAllByCities(List<String> cities) {
         return donationService.findAllByCities(cities).stream().map(x-> modelMapper.map(x, DonationDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public DonationOrderDto findDonationOrderById(Long id) throws Exception {
+        return modelMapper.map(donationService.findDonationOrderById(id), DonationOrderDto.class);
+    }
 }

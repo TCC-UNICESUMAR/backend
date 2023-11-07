@@ -32,4 +32,5 @@ public interface DonationFacade {
     void finishDonationOrder(Long donationId) throws DonationException;
     List<DonationOrderDto> findAllDonationsToApprove() throws DonationException;
     List<DonationDto> findAllByCities(List<String> cities);
+    DonationOrderDto findDonationOrderById(Long id) throws Exception;
 }

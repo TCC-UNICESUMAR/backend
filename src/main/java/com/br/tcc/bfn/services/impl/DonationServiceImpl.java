@@ -241,6 +241,11 @@ public class DonationServiceImpl implements IDonationService {
     }
 
     @Override
+    public DonationOrder findDonationOrderById(Long id) throws Exception {
+        return donationOrderRepository.findById(id).orElseThrow(() -> new Exception("Not Found"));
+    }
+
+    @Override
     public Page<Donation> findDonationsByCategory(String category, Pageable pageable) throws DonationException {
         try {
 
@@ -411,6 +416,10 @@ public class DonationServiceImpl implements IDonationService {
                 donationStatus.setStatus(DonationOrderStatusEnum.CANCELED);
                 donationOrder.getDonation().setReserved(false);
                 donationRepository.save(donationOrder.getDonation());
+                donationOrderRepository.save(donationOrder);
+                donationStatusRepository.save(donationStatus);
+                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_DONOR), donationOrder.getId());
                 return;
             }
 
@@ -424,6 +433,12 @@ public class DonationServiceImpl implements IDonationService {
 
             donationOrderRepository.save(donationOrder);
             donationStatusRepository.save(donationStatus);
+
+            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_ONG_APPROVED), donationOrder.getId());
+
+            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getIntermediary().getPhone()),
+                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_INTERMEDIARY), donationOrder.getId());
 
         } catch (DonationException exc) {
             throw new DonationException("Error to update order donation -> " + exc.getMessage());

@@ -1,7 +1,5 @@
 package com.br.tcc.bfn.dtos;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class RegisterDonationDto {
 
     private String name;

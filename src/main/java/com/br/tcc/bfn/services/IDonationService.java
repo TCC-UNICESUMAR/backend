@@ -1,9 +1,6 @@
 package com.br.tcc.bfn.services;
 
-import com.br.tcc.bfn.dtos.DonationOrderRegisterRequest;
-import com.br.tcc.bfn.dtos.RegisterDonationDto;
-import com.br.tcc.bfn.dtos.RequestApproveDonationOrder;
-import com.br.tcc.bfn.dtos.ResponseDashBoard;
+import com.br.tcc.bfn.dtos.*;
 import com.br.tcc.bfn.exceptions.DonationException;
 import com.br.tcc.bfn.exceptions.UserException;
 import com.br.tcc.bfn.models.Donation;
@@ -36,4 +33,6 @@ public interface IDonationService {
     void finishDonationOrder(Long donationId) throws DonationException;
     List<DonationOrder> findAllDonationsToApprove() throws DonationException;
     List<Donation> findAllByCities(List<String> cities);
+    DonationOrder findDonationOrderById(Long id) throws Exception;
+
 }

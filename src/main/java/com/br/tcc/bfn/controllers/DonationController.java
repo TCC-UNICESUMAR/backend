@@ -341,4 +341,18 @@ public class DonationController {
         }
     }
 
+    @GetMapping("/findDonationOrderById/{donationOrderId}")
+    public ResponseEntity<Response<DonationOrderDto>> findDonationOrderById(@PathVariable Long donationOrderId){
+        Response<DonationOrderDto> dtoResponse = new Response<>();
+        try{
+            dtoResponse.setBody(donationFacade.findDonationOrderById(donationOrderId));
+            dtoResponse.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok().body(dtoResponse);
+        }catch (Exception e){
+            dtoResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+            dtoResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(dtoResponse);
+        }
+    }
+
 }
