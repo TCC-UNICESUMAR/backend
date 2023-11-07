@@ -19,7 +19,7 @@ public class S3Controller {
     @PostMapping(consumes = { "multipart/form-data" })
     public void uploadCustomerProfileImage(@ModelAttribute UploadImageProfileRequest request) throws Exception {
         try {
-            this.s3Service.saveImageToUser(Arrays.stream(request.getFile()).findFirst().get());
+            this.s3Service.saveImageToUser(request.getFiles());
         }catch (Exception exc){
             throw new Exception(exc);
         }
