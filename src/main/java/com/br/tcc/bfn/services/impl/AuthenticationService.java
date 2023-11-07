@@ -44,7 +44,9 @@ public class AuthenticationService {
             httpServletRequest.getSession().setAttribute(user.getUsername(), user);
             Map<String, Object> extraClaims = new HashMap<>();
             extraClaims.put("roles", user.getAuthorities());
-            extraClaims.put("UF", user.getAddress().getState().getUf());
+            if(BfnConstants.ROLE_DEFAULT_USER.equals(user.getRoles().get(0).getRoleName()) || BfnConstants.ROLE_ONG.equals(user.getRoles().get(0).getRoleName())){
+                extraClaims.put("UF", user.getAddress().getState().getUf());
+            }
             AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwtService.generateToken(user,extraClaims), jwtService.refreshToken(user));
             response.setBody(authenticationResponse);
             response.setStatusCode(HttpStatus.OK.value());
