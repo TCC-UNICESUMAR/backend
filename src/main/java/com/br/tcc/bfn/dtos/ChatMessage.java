@@ -1,45 +1,55 @@
 package com.br.tcc.bfn.dtos;
 
-import com.br.tcc.bfn.models.User;
+import com.br.tcc.bfn.enums.ChatStatus;
 
-import java.io.Serializable;
-
-public class ChatMessage implements Serializable {
-
-    private UserDTO from;
-    private UserDTO to;
-    private String text;
+public class ChatMessage {
+    private String senderName;
+    private String receiverName;
+    private String message;
+    private String date;
+    private ChatStatus status;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(UserDTO from, UserDTO to, String text) {
-        this.from = from;
-        this.to = to;
-        this.text = text;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public UserDTO getFrom() {
-        return from;
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
-    public void setFrom(UserDTO from) {
-        this.from = from;
+    public String getReceiverName() {
+        return receiverName;
     }
 
-    public UserDTO getTo() {
-        return to;
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 
-    public void setTo(UserDTO to) {
-        this.to = to;
+    public String getMessage() {
+        return message;
     }
 
-    public String getText() {
-        return text;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public ChatStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ChatStatus status) {
+        this.status = status;
     }
 }
+
