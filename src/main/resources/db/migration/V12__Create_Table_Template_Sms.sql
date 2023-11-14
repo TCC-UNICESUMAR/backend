@@ -33,3 +33,6 @@ insert into tb_templates_sms (id,message_template,message) values (9,'NOTIFICATE
 
 insert into tb_templates_sms (id,message_template,message) values (10,'NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_ONG',
 'Ola tudo bem? Sentimos muito, mas seu pedido de doação foi negado pela ONG que estava intermediando esse pedido, não desista temos varias outras doações te esperando. Att Equipe BFN.');
+
+insert into tb_templates_sms (id,message_template,message) values (11,'NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION',
+'Ola tudo bem? Ficamos muito felizes em ver vc ajudando alguem com uma doação sua entregue, continue assim. Att Equipe BFN.');
