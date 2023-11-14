@@ -331,8 +331,8 @@ public class DonationServiceImpl implements IDonationService {
         donationStatus.setStatus(DonationOrderStatusEnum.SUCCESS);
         donationStatusRepository.save(donationStatus);
 
-        sendNotification.send(CODE_BRAZIL.concat(donation.getDonor().getPhone()),
-                templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donation.getId());
+//        sendNotification.send(CODE_BRAZIL.concat(donation.getDonor().getPhone()),
+//                templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donation.getId());
     }
 
     @Override
@@ -376,8 +376,8 @@ public class DonationServiceImpl implements IDonationService {
             reserveDonation(id);
             userService.saveDonationOrderToDonorApprove(donationOrder);
 
-            sendNotification.send(CODE_BRAZIL.concat(userService.findAuth().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_CREATE_ORDER_DONATION), donationOrder.getId());
-            sendNotification.send(CODE_BRAZIL.concat(donation.getUserBy().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_TO_APPROVE_ORDER_DONATION), donationOrder.getId());
+//            sendNotification.send(CODE_BRAZIL.concat(userService.findAuth().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_CREATE_ORDER_DONATION), donationOrder.getId());
+//            sendNotification.send(CODE_BRAZIL.concat(donation.getUserBy().getPhone()), templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_TO_APPROVE_ORDER_DONATION), donationOrder.getId());
 
         } catch (Exception exc) {
             throw new DonationException("Error to create order donation -> " + exc.getMessage());
@@ -405,18 +405,18 @@ public class DonationServiceImpl implements IDonationService {
                 donationOrder.getDonation().setReserved(false);
                 donationRepository.save(donationOrder.getDonation());
                 donationStatusRepository.save(donationStatus);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
-                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_ONG), donationOrder.getId());
+//                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+//                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_ONG), donationOrder.getId());
                 return;
             }
 
             donationStatusRepository.save(donationStatus);
 
-            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonation().getUserBy().getPhone()),
-                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR), donationOrder.getId());
-
-            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonation().getUserBy().getPhone()),
-                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_DONOR), donationOrder.getId());
+//            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonation().getUserBy().getPhone()),
+//                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR), donationOrder.getId());
+//
+//            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonation().getUserBy().getPhone()),
+//                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_DONOR), donationOrder.getId());
 
         } catch (DonationException exc) {
             throw new DonationException("Error to create order donation -> " + exc.getMessage());
@@ -434,12 +434,12 @@ public class DonationServiceImpl implements IDonationService {
 
             if (donationOrder.getIntermediary() != null) {
                 donationStatus.setStatus(DonationOrderStatusEnum.WAITING_RECEIVED_PICKUP);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
-                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_TO_GET_DONATION), donationOrder.getId());
+//                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+//                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_TO_GET_DONATION), donationOrder.getId());
             } else {
                 donationStatus.setStatus(DonationOrderStatusEnum.SUCCESS);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonor().getPhone()),
-                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donationOrder.getId());
+//                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonor().getPhone()),
+//                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donationOrder.getId());
             }
 
             donationStatusRepository.save(donationStatus);
@@ -463,8 +463,8 @@ public class DonationServiceImpl implements IDonationService {
                 donationRepository.save(donationOrder.getDonation());
                 donationOrderRepository.save(donationOrder);
                 donationStatusRepository.save(donationStatus);
-                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
-                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_DONOR), donationOrder.getId());
+//                sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+//                        templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_NOT_APPROVED_BY_DONOR), donationOrder.getId());
                 return;
             }
 
@@ -479,11 +479,11 @@ public class DonationServiceImpl implements IDonationService {
             donationOrderRepository.save(donationOrder);
             donationStatusRepository.save(donationStatus);
 
-            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
-                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_ONG_APPROVED), donationOrder.getId());
-
-            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getIntermediary().getPhone()),
-                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_INTERMEDIARY), donationOrder.getId());
+//            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getReceived().getPhone()),
+//                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_RECEIVED_WITH_STATUS_WAITING_ONG_APPROVED), donationOrder.getId());
+//
+//            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getIntermediary().getPhone()),
+//                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_INTERMEDIARY), donationOrder.getId());
 
         } catch (DonationException exc) {
             throw new DonationException("Error to update order donation -> " + exc.getMessage());
@@ -505,8 +505,8 @@ public class DonationServiceImpl implements IDonationService {
 
             donationOrderRepository.save(donationOrder);
 
-            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonor().getPhone()),
-                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donationOrder.getId());
+//            sendNotification.send(CODE_BRAZIL.concat(donationOrder.getDonor().getPhone()),
+//                    templateSmsRepository.findByMessageTemplate(BfnConstants.TEMPLATE_NOTIFICATE_DONOR_WITH_CONGRATULATION_BY_ACTION), donationOrder.getId());
         } catch (DonationException exc) {
             throw new DonationException("Error to create order donation -> " + exc.getMessage());
         }
